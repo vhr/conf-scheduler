@@ -1,0 +1,10 @@
+{% trans_default_domain 'FOSUserBundle' %}
+
+{{ form_start(form, {'method': 'post', 'action': path('fos_user_registration_register'), 'attr': {'class': 'fos_user_registration_register'}}) }}
+    <div class="mdl-card__supporting-text">
+        {{ form_widget(form) }}
+    </div>
+    <div class="mdl-card__actions mdl-card--border">
+        <input class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect" type="submit" id="_submit" value="{{ 'registration.submit'|trans }}" />
+    </div>
+{{ form_end(form) }}
