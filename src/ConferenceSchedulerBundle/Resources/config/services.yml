@@ -1,0 +1,23 @@
+parameters:
+    conference.converter.class: ConferenceSchedulerBundle\ParamConverter\ConferenceParamConverter
+
+services:
+#    conference_scheduler.example:
+#        class: ConferenceSchedulerBundle\Example
+#        arguments: ["@service_id", "plain_value", "%parameter%"]
+
+
+    conference.converter:
+        class: "%conference.converter.class%"
+        arguments:
+            - "@doctrine.orm.default_entity_manager"
+        tags:
+            - { name: request.param_converter, priority: -2, converter: conference.converter }
+            
+            
+    conference.registration:
+        class: ConferenceSchedulerBundle\EventListener\RegistrationListener
+        arguments:
+            - "@router"
+        tags:
+            - { name: kernel.event_subscriber }
