@@ -94,4 +94,3 @@ class ConferenceUser
         return $this->curriculum;
     }
 }
-

@@ -125,4 +125,3 @@ class Role
         return $this->updated;
     }
 }
-

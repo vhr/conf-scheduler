@@ -1,0 +1,51 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <h1>Conferences list</h1>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Title</th>
+                <th>Description</th>
+                <th>Date</th>
+                <th>Start</th>
+                <th>End</th>
+                <th>Created</th>
+                <th>Updated</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for conference in conferences %}
+            <tr>
+                <td><a href="{{ path('conference_show', { 'id': conference.id }) }}">{{ conference.id }}</a></td>
+                <td>{{ conference.title }}</td>
+                <td>{{ conference.description }}</td>
+                <td>{% if conference.date %}{{ conference.date|date('Y-m-d H:i:s') }}{% endif %}</td>
+                <td>{% if conference.start %}{{ conference.start|date('H:i:s') }}{% endif %}</td>
+                <td>{% if conference.end %}{{ conference.end|date('H:i:s') }}{% endif %}</td>
+                <td>{% if conference.created %}{{ conference.created|date('Y-m-d H:i:s') }}{% endif %}</td>
+                <td>{% if conference.updated %}{{ conference.updated|date('Y-m-d H:i:s') }}{% endif %}</td>
+                <td>
+                    <ul>
+                        <li>
+                            <a href="{{ path('conference_show', { 'id': conference.id }) }}">show</a>
+                        </li>
+                        <li>
+                            <a href="{{ path('conference_edit', { 'id': conference.id }) }}">edit</a>
+                        </li>
+                    </ul>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <ul>
+        <li>
+            <a href="{{ path('conference_new') }}">Create a new conference</a>
+        </li>
+    </ul>
+{% endblock %}

@@ -5,12 +5,12 @@ namespace ConferenceSchedulerBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * Venue
+ * Goods
  *
- * @ORM\Table(name="venue")
- * @ORM\Entity(repositoryClass="ConferenceSchedulerBundle\Repository\VenueRepository")
+ * @ORM\Table(name="goods")
+ * @ORM\Entity(repositoryClass="ConferenceSchedulerBundle\Repository\GoodsRepository")
  */
-class Venue
+class Goods
 {
     /**
      * @var int
@@ -28,13 +28,6 @@ class Venue
      */
     private $name;
 
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="address", type="text", nullable=true)
-     */
-    private $address;
-
 
     /**
      * Get id
@@ -51,7 +44,7 @@ class Venue
      *
      * @param string $name
      *
-     * @return Venue
+     * @return Goods
      */
     public function setName($name)
     {
@@ -68,29 +61,5 @@ class Venue
     public function getName()
     {
         return $this->name;
-    }
-
-    /**
-     * Set address
-     *
-     * @param string $address
-     *
-     * @return Venue
-     */
-    public function setAddress($address)
-    {
-        $this->address = $address;
-
-        return $this;
-    }
-
-    /**
-     * Get address
-     *
-     * @return string
-     */
-    public function getAddress()
-    {
-        return $this->address;
     }
 }

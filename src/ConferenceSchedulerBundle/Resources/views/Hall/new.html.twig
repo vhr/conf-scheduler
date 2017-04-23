@@ -1,0 +1,86 @@
+{% extends 'base.html.twig' %}
+
+{% set nav = 'venue' %}
+
+{% block body %}
+    <div class="mdl-tabs mdl-js-tabs mdl-js-ripple-effect">
+        <div class="mdl-tabs__tab-bar">
+            <a href="{{ path('venue_show', { 'id': venue.id }) }}" class="mdl-tabs__tab">Review</a>
+            <a href="{{ path('venue_edit', { 'id': venue.id }) }}" class="mdl-tabs__tab">Edit</a>
+            <a href="{{ path('hall_index', { 'venue_id': venue.id }) }}" class="mdl-tabs__tab is-active">Halls</a>
+        </div>
+
+        <div class="mdl-tabs__panel is-active">
+            <br>
+            {{ form_start(form) }}
+            {{ form_row(form.name) }}
+            {{ form_row(form.userLimit) }}
+
+            <h3>Goods</h3>
+            <ul class="goods" data-prototype="{{ form_widget(form.goods.vars.prototype)|e('html_attr') }}">
+                {% for goods in form.goods %}
+                    <li>{{ form_row(goods.name) }}</li>
+                    {% endfor %}
+            </ul>
+            {{ form_rest(form) }}
+
+            <input type="submit" value="Create" class="mdl-button" />
+            {{ form_end(form) }}
+
+            <ul>
+                <li>
+                    <a href="{{ path('hall_index', { 'venue_id': venue.id }) }}">Back to the list</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+{% endblock %}
+
+{% block javascripts %}
+    <script>
+        var $collectionHolder;
+
+        // setup an "add a good" link
+        var $addGoodLink = $('<a href="#" class="mdl-button add_good_link">Add a good</a>');
+        var $newLinkLi = $('<li></li>').append($addGoodLink);
+
+        function addGoodForm($collectionHolder, $newLinkLi) {
+            // Get the data-prototype explained earlier
+            var prototype = $collectionHolder.data('prototype');
+
+            // get the new index
+            var index = $collectionHolder.data('index');
+
+            // Replace '__name__' in the prototype's HTML to
+            // instead be a number based on how many items we have
+            var newForm = prototype.replace(/__name__/g, index);
+
+            // increase the index with one for the next item
+            $collectionHolder.data('index', index + 1);
+
+            // Display the form in the page in an li, before the "Add a good" link li
+            var $newFormLi = $('<li></li>').append(newForm);
+            $newLinkLi.before($newFormLi);
+        }
+
+        jQuery(document).ready(function () {
+            // Get the ul that holds the collection of goods
+            $collectionHolder = $('ul.goods');
+
+            // add the "add a good" anchor and li to the goods ul
+            $collectionHolder.append($newLinkLi);
+
+            // count the current form inputs we have (e.g. 2), use that as the new
+            // index when inserting a new item (e.g. 2)
+            $collectionHolder.data('index', $collectionHolder.find(':input').length);
+
+            $addGoodLink.on('click', function (e) {
+                // prevent the link from creating a "#" on the URL
+                e.preventDefault();
+
+                // add a new good form (see next code block)
+                addGoodForm($collectionHolder, $newLinkLi);
+            });
+        });
+    </script>
+{% endblock %}

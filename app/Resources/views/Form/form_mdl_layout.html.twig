@@ -1,3 +1,9 @@
+
+{% block textarea_widget -%}
+    {% set attr = attr|merge({class: (attr.class|default('') ~ ' mdl-textfield__input')|trim}) %}
+<textarea {{ block('widget_attributes') }}>{{ value }}</textarea>
+{%- endblock textarea_widget %}
+
 {%- block form_widget_simple -%}
     {% set attr = attr|merge({class: (attr.class|default('') ~ ' mdl-textfield__input')|trim}) %}
     {%- set type = type|default('text') -%}

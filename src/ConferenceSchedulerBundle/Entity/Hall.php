@@ -3,6 +3,7 @@
 namespace ConferenceSchedulerBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\Common\Collections\ArrayCollection;
 
 /**
  * Hall
@@ -10,8 +11,8 @@ use Doctrine\ORM\Mapping as ORM;
  * @ORM\Table(name="hall")
  * @ORM\Entity(repositoryClass="ConferenceSchedulerBundle\Repository\HallRepository")
  */
-class Hall
-{
+class Hall {
+
     /**
      * @var int
      *
@@ -35,14 +36,49 @@ class Hall
      */
     private $userLimit;
 
+    /**
+     * @ORM\ManyToOne(targetEntity="ConferenceSchedulerBundle\Entity\Venue")
+     * @ORM\JoinColumn(name="venue_id", referencedColumnName="id")
+     */
+    private $venue;
+
+    /**
+     * @ORM\ManyToMany(targetEntity="ConferenceSchedulerBundle\Entity\Goods", cascade={"persist"})
+     * @ORM\JoinTable(name="hall_goods",
+     *      joinColumns={@ORM\JoinColumn(name="hall_id", referencedColumnName="id")},
+     *      inverseJoinColumns={@ORM\JoinColumn(name="goods_id", referencedColumnName="id", unique=true)}
+     * )
+     */
+    private $goods;
+
+    /**
+     * Construct
+     */
+    public function __construct() {
+        $this->goods = new ArrayCollection();
+    }
+
+    /**
+     * To string
+     * 
+     * @return string
+     */
+    public function __toString() {
+        return $this->name;
+    }
+
+    /**
+     * 
+     * Auto generated
+     * 
+     */
 
     /**
      * Get id
      *
      * @return int
      */
-    public function getId()
-    {
+    public function getId() {
         return $this->id;
     }
 
@@ -53,8 +89,7 @@ class Hall
      *
      * @return Hall
      */
-    public function setName($name)
-    {
+    public function setName($name) {
         $this->name = $name;
 
         return $this;
@@ -65,8 +100,7 @@ class Hall
      *
      * @return string
      */
-    public function getName()
-    {
+    public function getName() {
         return $this->name;
     }
 
@@ -77,8 +111,7 @@ class Hall
      *
      * @return Hall
      */
-    public function setUserLimit($userLimit)
-    {
+    public function setUserLimit($userLimit) {
         $this->userLimit = $userLimit;
 
         return $this;
@@ -89,9 +122,61 @@ class Hall
      *
      * @return int
      */
-    public function getUserLimit()
-    {
+    public function getUserLimit() {
         return $this->userLimit;
     }
-}
 
+    /**
+     * Set venue
+     *
+     * @param \ConferenceSchedulerBundle\Entity\Venue $venue
+     *
+     * @return Hall
+     */
+    public function setVenue(\ConferenceSchedulerBundle\Entity\Venue $venue = null) {
+        $this->venue = $venue;
+
+        return $this;
+    }
+
+    /**
+     * Get venue
+     *
+     * @return \ConferenceSchedulerBundle\Entity\Venue
+     */
+    public function getVenue() {
+        return $this->venue;
+    }
+
+    /**
+     * Add good
+     *
+     * @param \ConferenceSchedulerBundle\Entity\Goods $good
+     *
+     * @return Hall
+     */
+    public function addGood(\ConferenceSchedulerBundle\Entity\Goods $good) {
+        $this->goods[] = $good;
+
+        return $this;
+    }
+
+    /**
+     * Remove good
+     *
+     * @param \ConferenceSchedulerBundle\Entity\Goods $good
+     */
+    public function removeGood(\ConferenceSchedulerBundle\Entity\Goods $good) {
+        $this->goods->removeElement($good);
+    }
+
+    /**
+     * Get goods
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getGoods() {
+        return $this->goods;
+    }
+
+}
