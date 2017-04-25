@@ -29,7 +29,7 @@
                 </div>
                 <div class="mdl-layout__header-row portfolio-navigation-row mdl-layout--large-screen-only">
                     <nav class="mdl-navigation mdl-typography--body-1-force-preferred-font">
-                        <a class="mdl-navigation__link{% if nav|default('conference') == 'conference' %} is-active{% endif %}" href="{{ path('conference') }}">Conference</a>
+                        <a class="mdl-navigation__link{% if nav|default('conference') == 'conference' %} is-active{% endif %}" href="{{ path('conference_index') }}">Conference</a>
                         <a class="mdl-navigation__link{% if nav|default() == 'venue' %} is-active{% endif %}" href="{{ path('venue_index') }}">Venue</a>
                         <a class="mdl-navigation__link{% if nav|default() == 'contact' %} is-active{% endif %}" href="contact.html">Schedule</a>
                     </nav>
@@ -37,9 +37,9 @@
             </header>
             <div class="mdl-layout__drawer mdl-layout--small-screen-only">
                 <nav class="mdl-navigation mdl-typography--body-1-force-preferred-font">
-                    <a class="mdl-navigation__link is-active" href="{{ path('conference') }}">Conference</a>
-                    <a class="mdl-navigation__link is-active" href="{{ path('venue_index') }}">Venue</a>
-                        <a class="mdl-navigation__link" href="contact.html">Schedule</a>
+                    <a class="mdl-navigation__link{% if nav|default('conference') == 'conference' %} is-active{% endif %}" href="{{ path('conference_index') }}">Conference</a>
+                    <a class="mdl-navigation__link{% if nav|default() == 'venue' %} is-active{% endif %}" href="{{ path('venue_index') }}">Venue</a>
+                    <a class="mdl-navigation__link{% if nav|default() == 'contact' %} is-active{% endif %}" href="contact.html">Schedule</a>
                 </nav>
             </div>
             <main class="mdl-layout__content">

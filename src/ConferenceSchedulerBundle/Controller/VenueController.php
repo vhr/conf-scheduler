@@ -8,6 +8,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Component\HttpFoundation\Request;
+use ConferenceSchedulerBundle\Form\VenueType;
 
 /**
  * Venue controller.
@@ -42,7 +43,7 @@ class VenueController extends Controller {
      */
     public function newAction(Request $request) {
         $venue = new Venue();
-        $form = $this->createForm('ConferenceSchedulerBundle\Form\VenueType', $venue);
+        $form = $this->createForm(VenueType::class, $venue);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
@@ -84,7 +85,7 @@ class VenueController extends Controller {
      */
     public function editAction(Request $request, Venue $venue) {
         $deleteForm = $this->createDeleteForm($venue);
-        $editForm = $this->createForm('ConferenceSchedulerBundle\Form\VenueType', $venue);
+        $editForm = $this->createForm(VenueType::class, $venue);
         $editForm->handleRequest($request);
 
         if ($editForm->isSubmitted() && $editForm->isValid()) {

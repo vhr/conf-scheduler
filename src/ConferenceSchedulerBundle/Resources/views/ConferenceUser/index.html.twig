@@ -1,0 +1,25 @@
+{% extends 'base.html.twig' %}
+
+{% set nav = 'conference' %}
+
+{% block body %}
+
+    <div class="mdl-tabs mdl-js-tabs ">
+        {% include 'ConferenceSchedulerBundle:Conference:tabs.html.twig' with {'conference': conference, 'active': 'users'} %}
+
+        <div class="mdl-tabs__panel is-active">
+            <br>
+            <div class="mdl-list">
+                {% for user in users %}
+                <div class="mdl-list__item">
+                    <span class="mdl-list__item-primary-content">
+                        <i class="material-icons mdl-list__item-avatar">person</i>
+                        <span>{{ user.username }}</span>
+                    </span>
+                    <a class="mdl-list__item-secondary-action" href="{{ path('conference_admin_remove', { 'conference_id': conference.id, 'id': user.id }) }}"><i class="material-icons">remove</i></a>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+{% endblock %}

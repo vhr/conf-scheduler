@@ -1,0 +1,10 @@
+<div class="mdl-tabs__tab-bar">
+    <a href="{{ path('conference_show', { 'id': conference.id }) }}" class="mdl-tabs__tab{% if active|default('review') == 'review' %} is-active{% endif %}">Review</a>
+    <a href="{{ path('conference_edit', { 'id': conference.id }) }}" class="mdl-tabs__tab{% if active|default() == 'edit' %} is-active{% endif %}">Edit</a>
+    <a href="{{ path('conference_program_index', { 'conference_id': conference.id }) }}" class="mdl-tabs__tab{% if active|default() == 'program' %} is-active{% endif %}">Program</a>
+    <a href="#" class="mdl-tabs__tab{% if active|default() == 'goods' %} is-active{% endif %}">Goods</a>
+    {#<a href="#" class="mdl-tabs__tab{% if active|default() == 'freepass' %} is-active{% endif %}">Free-pass</a>#}
+    <a href="{{ path('conference_user_index', { 'conference_id': conference.id }) }}" class="mdl-tabs__tab{% if active|default() == 'users' %} is-active{% endif %}">Users</a>
+    <a href="#" class="mdl-tabs__tab{% if active|default() == 'lectors' %} is-active{% endif %}">Lectors</a>
+    <a href="{{ path('conference_admin_index', { 'conference_id': conference.id }) }}" class="mdl-tabs__tab{% if active|default() == 'admins' %} is-active{% endif %}">Administrators</a>
+</div>

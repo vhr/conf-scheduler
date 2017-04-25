@@ -1,7 +1,9 @@
 {% extends 'base.html.twig' %}
 
+{% set nav = 'conference' %}
+
 {% block body %}
-    <h1>Conference creation</h1>
+    <h1 class="mdl-layout-title">Conference creation</h1>
 
     {{ form_start(form) }}
         {{ form_widget(form) }}

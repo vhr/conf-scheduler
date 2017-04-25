@@ -67,7 +67,7 @@ class Hall {
         return $this->name;
     }
 
-    /**
+    /*
      * 
      * Auto generated
      * 

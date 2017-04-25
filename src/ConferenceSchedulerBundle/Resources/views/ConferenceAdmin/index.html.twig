@@ -1,0 +1,46 @@
+{% extends 'base.html.twig' %}
+
+{% set nav = 'conference' %}
+
+{% block body %}
+
+    <div class="mdl-tabs mdl-js-tabs ">
+        {% include 'ConferenceSchedulerBundle:Conference:tabs.html.twig' with {'conference': conference, 'active': 'admins'} %}
+
+        <div class="mdl-tabs__panel is-active">
+            <br>
+            <div class="mdl-list">
+                {% for user in conference.admins %}
+                <div class="mdl-list__item">
+                    <span class="mdl-list__item-primary-content">
+                        <i class="material-icons mdl-list__item-avatar">person</i>
+                        <span>{{ user.username }}</span>
+                    </span>
+                    <a class="mdl-list__item-secondary-action" href="{{ path('conference_admin_remove', { 'conference_id': conference.id, 'id': user.id }) }}"><i class="material-icons">remove</i></a>
+                </div>
+                {% endfor %}
+            </div>
+            <br>
+            <table class="mdl-data-table mdl-js-data-table mdl-shadow--2dp">
+                <thead>
+                    <tr>
+                        <th class="mdl-data-table__cell--non-numeric">Username</th>
+                        <th class="mdl-data-table__cell--non-numeric">Email</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for user in admins %}
+                        <tr>
+                            <td class="mdl-data-table__cell--non-numeric">{{ user.username }}</td>
+                            <td class="mdl-data-table__cell--non-numeric">{{ user.email }}</td>
+                            <td>
+                                <a href="{{ path('conference_admin_add', { 'conference_id': conference.id, 'id': user.id }) }}" class="mdl-button mdl-js-button">add</a>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+{% endblock %}

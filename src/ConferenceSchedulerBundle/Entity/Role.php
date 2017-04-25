@@ -43,6 +43,12 @@ class Role
     private $updated;
 
 
+    /*
+     * 
+     * Auto generated
+     * 
+     */
+
     /**
      * Get id
      *

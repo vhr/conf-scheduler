@@ -10,8 +10,8 @@ use Doctrine\ORM\Mapping as ORM;
  * @ORM\Table(name="goods")
  * @ORM\Entity(repositoryClass="ConferenceSchedulerBundle\Repository\GoodsRepository")
  */
-class Goods
-{
+class Goods {
+
     /**
      * @var int
      *
@@ -28,14 +28,18 @@ class Goods
      */
     private $name;
 
+    /*
+     * 
+     * Auto generated
+     * 
+     */
 
     /**
      * Get id
      *
      * @return int
      */
-    public function getId()
-    {
+    public function getId() {
         return $this->id;
     }
 
@@ -46,8 +50,7 @@ class Goods
      *
      * @return Goods
      */
-    public function setName($name)
-    {
+    public function setName($name) {
         $this->name = $name;
 
         return $this;
@@ -58,8 +61,8 @@ class Goods
      *
      * @return string
      */
-    public function getName()
-    {
+    public function getName() {
         return $this->name;
     }
+
 }

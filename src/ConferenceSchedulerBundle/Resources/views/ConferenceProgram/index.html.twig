@@ -1,0 +1,37 @@
+{% extends 'base.html.twig' %}
+
+{% set nav = 'conference' %}
+
+{% block body %}
+    <div class="mdl-tabs mdl-js-tabs ">
+        {% include 'ConferenceSchedulerBundle:Conference:tabs.html.twig' with {'conference': conference, 'active': 'program'} %}
+
+        <div class="mdl-tabs__panel is-active">
+            <br>
+            <table class="mdl-data-table mdl-js-data-table mdl-data-table--selectable mdl-shadow--2dp">
+                <thead>
+                    <tr>
+                        <th>Start</th>
+                        <th>End</th>
+                        <th>Event</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for event in program %}
+                        <tr>
+                            <td>{{ event.start|date('H:i') }}</td>
+                            <td>{{ event.end|date('H:i') }}</td>
+                            <td>{{ event.name }}</td>
+                            <td></td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+            <br>
+            <a href="{{ path('conference_program_new', { 'conference_id': conference.id }) }}"  class="mdl-button mdl-js-button mdl-button--fab mdl-js-ripple-effect mdl-button--colored" title="Create a new event">
+                <i class="material-icons">add</i>
+            </a>
+        </div>
+    </div>
+{% endblock %}

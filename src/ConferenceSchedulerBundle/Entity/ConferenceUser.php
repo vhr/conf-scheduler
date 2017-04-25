@@ -7,11 +7,11 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * ConferenceUser
  *
- * @ORM\Table(name="conference_user")
+ * @ORM\Table(name="conference_user2")
  * @ORM\Entity(repositoryClass="ConferenceSchedulerBundle\Repository\ConferenceUserRepository")
  */
-class ConferenceUser
-{
+class ConferenceUser {
+
     /**
      * @var int
      *
@@ -35,14 +35,18 @@ class ConferenceUser
      */
     private $curriculum;
 
+    /*
+     * 
+     * Auto generated
+     * 
+     */
 
     /**
      * Get id
      *
      * @return int
      */
-    public function getId()
-    {
+    public function getId() {
         return $this->id;
     }
 
@@ -53,8 +57,7 @@ class ConferenceUser
      *
      * @return ConferenceUser
      */
-    public function setUser($user)
-    {
+    public function setUser($user) {
         $this->user = $user;
 
         return $this;
@@ -65,8 +68,7 @@ class ConferenceUser
      *
      * @return \stdClass
      */
-    public function getUser()
-    {
+    public function getUser() {
         return $this->user;
     }
 
@@ -77,8 +79,7 @@ class ConferenceUser
      *
      * @return ConferenceUser
      */
-    public function setCurriculum($curriculum)
-    {
+    public function setCurriculum($curriculum) {
         $this->curriculum = $curriculum;
 
         return $this;
@@ -89,8 +90,8 @@ class ConferenceUser
      *
      * @return \stdClass
      */
-    public function getCurriculum()
-    {
+    public function getCurriculum() {
         return $this->curriculum;
     }
+
 }

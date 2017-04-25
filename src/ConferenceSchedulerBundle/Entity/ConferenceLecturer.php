@@ -10,8 +10,8 @@ use Doctrine\ORM\Mapping as ORM;
  * @ORM\Table(name="conference_lecturer")
  * @ORM\Entity(repositoryClass="ConferenceSchedulerBundle\Repository\ConferenceLecturerRepository")
  */
-class ConferenceLecturer
-{
+class ConferenceLecturer {
+
     /**
      * @var int
      *
@@ -29,27 +29,32 @@ class ConferenceLecturer
     private $user;
 
     /**
-     * @var \stdClass
-     *
-     * @ORM\Column(name="curriculum", type="object")
-     */
-    private $curriculum;
-
-    /**
      * @var int
      *
      * @ORM\Column(name="status", type="smallint")
      */
     private $status;
 
+    /**
+     *
+     * 
+     * @ORM\ManyToOne(targetEntity="ConferenceSchedulerBundle\Entity\Conference", inversedBy="lecturers")
+     * @ORM\JoinColumn(name="conference_id", referencedColumnName="id")
+     */
+    private $conference;
+
+    /*
+     * 
+     * Auto generated
+     * 
+     */
 
     /**
      * Get id
      *
      * @return int
      */
-    public function getId()
-    {
+    public function getId() {
         return $this->id;
     }
 
@@ -60,8 +65,7 @@ class ConferenceLecturer
      *
      * @return ConferenceLecturer
      */
-    public function setUser($user)
-    {
+    public function setUser($user) {
         $this->user = $user;
 
         return $this;
@@ -72,8 +76,7 @@ class ConferenceLecturer
      *
      * @return \stdClass
      */
-    public function getUser()
-    {
+    public function getUser() {
         return $this->user;
     }
 
@@ -84,8 +87,7 @@ class ConferenceLecturer
      *
      * @return ConferenceLecturer
      */
-    public function setCurriculum($curriculum)
-    {
+    public function setCurriculum($curriculum) {
         $this->curriculum = $curriculum;
 
         return $this;
@@ -96,8 +98,7 @@ class ConferenceLecturer
      *
      * @return \stdClass
      */
-    public function getCurriculum()
-    {
+    public function getCurriculum() {
         return $this->curriculum;
     }
 
@@ -108,8 +109,7 @@ class ConferenceLecturer
      *
      * @return ConferenceLecturer
      */
-    public function setStatus($status)
-    {
+    public function setStatus($status) {
         $this->status = $status;
 
         return $this;
@@ -120,8 +120,32 @@ class ConferenceLecturer
      *
      * @return int
      */
-    public function getStatus()
-    {
+    public function getStatus() {
         return $this->status;
+    }
+
+
+    /**
+     * Set conference
+     *
+     * @param \ConferenceSchedulerBundle\Entity\Conference $conference
+     *
+     * @return ConferenceLecturer
+     */
+    public function setConference(\ConferenceSchedulerBundle\Entity\Conference $conference = null)
+    {
+        $this->conference = $conference;
+
+        return $this;
+    }
+
+    /**
+     * Get conference
+     *
+     * @return \ConferenceSchedulerBundle\Entity\Conference
+     */
+    public function getConference()
+    {
+        return $this->conference;
     }
 }
