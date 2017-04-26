@@ -8,6 +8,18 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Doctrine\ORM\EntityManagerInterface;
 
+//
+// services.yml
+// 
+//    conference.converter.class: ConferenceSchedulerBundle\ParamConverter\ConferenceParamConverter
+//
+//    conference.converter:
+//        class: "%conference.converter.class%"
+//        arguments:
+//            - "@doctrine.orm.default_entity_manager"
+//        tags:
+//            - { name: request.param_converter, priority: -2, converter: conference.converter }
+
 /**
  * Convert parameter to Conference entity
  * 
@@ -16,6 +28,8 @@ use Doctrine\ORM\EntityManagerInterface;
  * </code>
  * 
  * @author Valentin Hristov <v.hristov@mail.ru>
+ * @deprecated
+ * 
  */
 class ConferenceParamConverter implements ParamConverterInterface {
 

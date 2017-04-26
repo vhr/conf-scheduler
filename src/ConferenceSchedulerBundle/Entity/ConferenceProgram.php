@@ -13,6 +13,13 @@ use Doctrine\Common\Collections\ArrayCollection;
  */
 class ConferenceProgram {
 
+    const TYPE_LECTURE = 1;
+    const TYPE_BREAK = 2;
+    const TYPES = [
+        'Lecture' => self::TYPE_LECTURE,
+        'Break' => self::TYPE_BREAK,
+    ];
+
     /**
      * @var int
      *
@@ -60,7 +67,8 @@ class ConferenceProgram {
     /**
      * @var \ConferenceSchedulerBundle\Entity\ConferenceProgramLecturer[]
      * 
-     * @ORM\OneToMany(targetEntity="ConferenceSchedulerBundle\Entity\ConferenceProgramLecturer", mappedBy="program")
+     * @ORM\OneToMany(targetEntity="ConferenceSchedulerBundle\Entity\ConferenceProgramLecturer", mappedBy="program", cascade={"persist"})
+     * @ORM\OrderBy({"mustVisit"="DESC"})
      */
     private $lecturers;
 
@@ -71,15 +79,59 @@ class ConferenceProgram {
      * @ORM\JoinColumn(name="conference_id", referencedColumnName="id")
      */
     private $conference;
-    
-    
+
     /**
      * Constructor
      */
-    public function __construct()
-    {
+    public function __construct() {
         $this->lecturers = new ArrayCollection;
-        $this->type = 1;
+        $this->type = static::TYPE_LECTURE;
+    }
+
+    /**
+     * Is it event is a break
+     * 
+     * @return bool
+     */
+    public function isBreak() {
+        $result = $this->type === static::TYPE_BREAK;
+        
+        return $result;
+    }
+
+    /**
+     * Get array of lecturers names
+     * 
+     * @return array
+     */
+    public function getLecturersList() {
+        $names = [];
+
+        foreach ($this->lecturers as $lecturer) {
+            $names[] = $lecturer->getUser()->getNames();
+        }
+
+        return $names;
+    }
+
+    /**
+     * Get type like string
+     * 
+     * @return string
+     */
+    public function getTypeName() {
+        $name = '';
+
+        switch ($this->type) {
+            case static::TYPE_LECTURE:
+                $name = 'Lecture';
+                break;
+            case static::TYPE_BREAK:
+                $name = 'Break';
+                break;
+        }
+
+        return $name;
     }
 
     /*
@@ -93,8 +145,7 @@ class ConferenceProgram {
      *
      * @return integer
      */
-    public function getId()
-    {
+    public function getId() {
         return $this->id;
     }
 
@@ -105,8 +156,7 @@ class ConferenceProgram {
      *
      * @return ConferenceProgram
      */
-    public function setName($name)
-    {
+    public function setName($name) {
         $this->name = $name;
 
         return $this;
@@ -117,8 +167,7 @@ class ConferenceProgram {
      *
      * @return string
      */
-    public function getName()
-    {
+    public function getName() {
         return $this->name;
     }
 
@@ -129,8 +178,7 @@ class ConferenceProgram {
      *
      * @return ConferenceProgram
      */
-    public function setDescription($description)
-    {
+    public function setDescription($description) {
         $this->description = $description;
 
         return $this;
@@ -141,8 +189,7 @@ class ConferenceProgram {
      *
      * @return string
      */
-    public function getDescription()
-    {
+    public function getDescription() {
         return $this->description;
     }
 
@@ -153,8 +200,7 @@ class ConferenceProgram {
      *
      * @return ConferenceProgram
      */
-    public function setStart($start)
-    {
+    public function setStart($start) {
         $this->start = $start;
 
         return $this;
@@ -165,8 +211,7 @@ class ConferenceProgram {
      *
      * @return \DateTime
      */
-    public function getStart()
-    {
+    public function getStart() {
         return $this->start;
     }
 
@@ -177,8 +222,7 @@ class ConferenceProgram {
      *
      * @return ConferenceProgram
      */
-    public function setEnd($end)
-    {
+    public function setEnd($end) {
         $this->end = $end;
 
         return $this;
@@ -189,8 +233,7 @@ class ConferenceProgram {
      *
      * @return \DateTime
      */
-    public function getEnd()
-    {
+    public function getEnd() {
         return $this->end;
     }
 
@@ -201,8 +244,7 @@ class ConferenceProgram {
      *
      * @return ConferenceProgram
      */
-    public function setType($type)
-    {
+    public function setType($type) {
         $this->type = $type;
 
         return $this;
@@ -213,8 +255,7 @@ class ConferenceProgram {
      *
      * @return integer
      */
-    public function getType()
-    {
+    public function getType() {
         return $this->type;
     }
 
@@ -225,8 +266,7 @@ class ConferenceProgram {
      *
      * @return ConferenceProgram
      */
-    public function setConference(\ConferenceSchedulerBundle\Entity\Conference $conference = null)
-    {
+    public function setConference(\ConferenceSchedulerBundle\Entity\Conference $conference = null) {
         $this->conference = $conference;
 
         return $this;
@@ -237,8 +277,7 @@ class ConferenceProgram {
      *
      * @return \ConferenceSchedulerBundle\Entity\Conference
      */
-    public function getConference()
-    {
+    public function getConference() {
         return $this->conference;
     }
 
@@ -249,8 +288,7 @@ class ConferenceProgram {
      *
      * @return ConferenceProgram
      */
-    public function addLecturer(\ConferenceSchedulerBundle\Entity\ConferenceProgramLecturer $lecturer)
-    {
+    public function addLecturer(\ConferenceSchedulerBundle\Entity\ConferenceProgramLecturer $lecturer) {
         $this->lecturers[] = $lecturer;
 
         return $this;
@@ -261,8 +299,7 @@ class ConferenceProgram {
      *
      * @param \ConferenceSchedulerBundle\Entity\ConferenceProgramLecturer $lecturer
      */
-    public function removeLecturer(\ConferenceSchedulerBundle\Entity\ConferenceProgramLecturer $lecturer)
-    {
+    public function removeLecturer(\ConferenceSchedulerBundle\Entity\ConferenceProgramLecturer $lecturer) {
         $this->lecturers->removeElement($lecturer);
     }
 
@@ -271,8 +308,8 @@ class ConferenceProgram {
      *
      * @return \Doctrine\Common\Collections\Collection
      */
-    public function getLecturers()
-    {
+    public function getLecturers() {
         return $this->lecturers;
     }
+
 }

@@ -6,6 +6,7 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\TimeType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use ConferenceSchedulerBundle\Entity\ConferenceProgram;
 
 class ConferenceProgramType extends AbstractType {
@@ -18,12 +19,9 @@ class ConferenceProgramType extends AbstractType {
                 ->add('start', TimeType::class)
                 ->add('end', TimeType::class)
 //                ->add('description')
-//                ->add('access', ChoiceType::class, [
-//                    'choices' => [
-//                        'Open' => 1,
-//                        'Particular' => 2,
-//                    ]
-//                ])
+                ->add('type', ChoiceType::class, [
+                    'choices' => ConferenceProgram::TYPES
+                ])
         ;
     }
 

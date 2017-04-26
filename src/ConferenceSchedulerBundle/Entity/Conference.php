@@ -92,7 +92,7 @@ class Conference {
     /**
      * @var \ConferenceSchedulerBundle\Entity\ConferenceProgram[]
      * 
-     * @ORM\OneToMany(targetEntity="ConferenceSchedulerBundle\Entity\ConferenceProgram", mappedBy="conference")
+     * @ORM\OneToMany(targetEntity="ConferenceSchedulerBundle\Entity\ConferenceProgram", mappedBy="conference", cascade={"persist"})
      * @ORM\OrderBy({"start"="ASC"})
      */
     private $programs;
@@ -100,7 +100,7 @@ class Conference {
     /**
      * @var \ConferenceSchedulerBundle\Entity\ConferenceLecturer[]
      * 
-     * @ORM\OneToMany(targetEntity="ConferenceSchedulerBundle\Entity\ConferenceLecturer", mappedBy="conference")
+     * @ORM\OneToMany(targetEntity="ConferenceSchedulerBundle\Entity\ConferenceLecturer", mappedBy="conference", cascade={"persist"})
      */
     private $lecturers;
 

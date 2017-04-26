@@ -16,10 +16,14 @@
                         <i class="material-icons mdl-list__item-avatar">person</i>
                         <span>{{ user.username }}</span>
                     </span>
-                    <a class="mdl-list__item-secondary-action" href="{{ path('conference_admin_remove', { 'conference_id': conference.id, 'id': user.id }) }}"><i class="material-icons">remove</i></a>
+                    <a class="mdl-list__item-secondary-action" href="{{ path('conference_user_remove', { 'conference_id': conference.id, 'id': user.id }) }}"><i class="material-icons">remove</i></a>
                 </div>
                 {% endfor %}
             </div>
+    <br>
+    <a href="{{ path('conference_user_add', { 'conference_id': conference.id }) }}"  class="mdl-button mdl-js-button mdl-button--fab mdl-js-ripple-effect mdl-button--colored" title="Add me">
+        <i class="material-icons">add</i>
+    </a>
         </div>
     </div>
 {% endblock %}

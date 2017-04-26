@@ -61,6 +61,15 @@ class User extends BaseUser {
         $this->setCreated(new DateTime);
         $this->setUpdated(new DateTime);
     }
+    
+    /**
+     * Get names
+     * 
+     * @return string
+     */
+    public function getNames() {
+        return $this->username;
+    }
 
     /*
      * 

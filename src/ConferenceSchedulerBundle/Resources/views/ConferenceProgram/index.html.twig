@@ -14,6 +14,8 @@
                         <th>Start</th>
                         <th>End</th>
                         <th>Event</th>
+                        <th>Type</th>
+                        <th>Lecturers</th>
                         <th>Actions</th>
                     </tr>
                 </thead>
@@ -23,7 +25,25 @@
                             <td>{{ event.start|date('H:i') }}</td>
                             <td>{{ event.end|date('H:i') }}</td>
                             <td>{{ event.name }}</td>
-                            <td></td>
+                            <td>{{ event.typeName }}</td>
+                            <td>{{ event.lecturersList|join(', ') }}</td>
+                            <td>
+                                <button id="program-event-menu-{{ event.id }}"
+                                        class="mdl-button mdl-js-button mdl-button--icon">
+                                    <i class="material-icons">more_vert</i>
+                                </button>
+
+                                <ul class="mdl-menu mdl-menu--bottom-left mdl-js-menu mdl-js-ripple-effect" for="program-event-menu-{{ event.id }}">
+                                    {% if event.isBreak == false %}
+                                        <li class="mdl-menu__item">
+                                            <a href="{{ path('conference_program_lecturers', { 'conference_id': conference.id, 'program_id': event.id }) }}">lecturers</a>
+                                        </li>
+                                    {% endif %}
+                                    <li class="mdl-menu__item">
+                                        <a href="{{ path('conference_program_edit', { 'conference_id': conference.id, 'id': event.id }) }}">edit</a>
+                                    </li>
+                                </ul>
+                            </td>
                         </tr>
                     {% endfor %}
                 </tbody>

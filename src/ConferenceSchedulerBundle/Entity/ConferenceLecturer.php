@@ -12,6 +12,9 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class ConferenceLecturer {
 
+    const STATUS_ACTIVE = 1;
+    const STATUS_PENDING = 2;
+
     /**
      * @var int
      *
@@ -22,9 +25,10 @@ class ConferenceLecturer {
     private $id;
 
     /**
-     * @var \stdClass
+     * @var \ConferenceSchedulerBundle\Entity\User
      *
-     * @ORM\Column(name="user", type="object")
+     * @ORM\ManyToOne(targetEntity="ConferenceSchedulerBundle\Entity\User")
+     * @ORM\JoinColumn(name="user_id", referencedColumnName="id")
      */
     private $user;
 
@@ -36,12 +40,19 @@ class ConferenceLecturer {
     private $status;
 
     /**
-     *
+     * @var \ConferenceSchedulerBundle\Entity\Conference
      * 
      * @ORM\ManyToOne(targetEntity="ConferenceSchedulerBundle\Entity\Conference", inversedBy="lecturers")
      * @ORM\JoinColumn(name="conference_id", referencedColumnName="id")
      */
     private $conference;
+
+    /**
+     * Construct
+     */
+    public function __construct() {
+        $this->status = static::STATUS_PENDING;
+    }
 
     /*
      * 
@@ -52,7 +63,7 @@ class ConferenceLecturer {
     /**
      * Get id
      *
-     * @return int
+     * @return integer
      */
     public function getId() {
         return $this->id;
@@ -81,28 +92,6 @@ class ConferenceLecturer {
     }
 
     /**
-     * Set curriculum
-     *
-     * @param \stdClass $curriculum
-     *
-     * @return ConferenceLecturer
-     */
-    public function setCurriculum($curriculum) {
-        $this->curriculum = $curriculum;
-
-        return $this;
-    }
-
-    /**
-     * Get curriculum
-     *
-     * @return \stdClass
-     */
-    public function getCurriculum() {
-        return $this->curriculum;
-    }
-
-    /**
      * Set status
      *
      * @param integer $status
@@ -118,12 +107,11 @@ class ConferenceLecturer {
     /**
      * Get status
      *
-     * @return int
+     * @return integer
      */
     public function getStatus() {
         return $this->status;
     }
-
 
     /**
      * Set conference
@@ -132,8 +120,7 @@ class ConferenceLecturer {
      *
      * @return ConferenceLecturer
      */
-    public function setConference(\ConferenceSchedulerBundle\Entity\Conference $conference = null)
-    {
+    public function setConference(\ConferenceSchedulerBundle\Entity\Conference $conference = null) {
         $this->conference = $conference;
 
         return $this;
@@ -144,8 +131,8 @@ class ConferenceLecturer {
      *
      * @return \ConferenceSchedulerBundle\Entity\Conference
      */
-    public function getConference()
-    {
+    public function getConference() {
         return $this->conference;
     }
+
 }
