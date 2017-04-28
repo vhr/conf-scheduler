@@ -9,6 +9,8 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Component\HttpFoundation\Request;
 use ConferenceSchedulerBundle\Form\ConferenceType;
+use ConferenceSchedulerBundle\Event\ConferenceEvent;
+use DateTime;
 
 /**
  * Conference controller.
@@ -116,6 +118,28 @@ class ConferenceController extends Controller {
             $em->remove($conference);
             $em->flush();
         }
+
+        return $this->redirectToRoute('conference_index');
+    }
+
+    /**
+     * Deletes a conference entity.
+     *
+     * @Route("/{id}/dismiss", name="conference_dismiss")
+     * @Method("GET")
+     */
+    public function dismissAction(Conference $conference) {
+        $deleted = new DateTime;
+        $conference->setDeleted($deleted);
+        
+        // dispatch event
+        $event = new ConferenceEvent($conference, $this->getUser());
+        $this->get('event_dispatcher')
+                ->dispatch(ConferenceEvent::EVENT_DISMISS, $event);
+
+        $this->getDoctrine()
+                ->getManager()
+                ->flush();
 
         return $this->redirectToRoute('conference_index');
     }

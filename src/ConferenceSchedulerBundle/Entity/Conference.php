@@ -164,6 +164,17 @@ class Conference {
         return $name;
     }
 
+    /**
+     * Is conference has dismissed
+     * 
+     * @return bool
+     */
+    public function isDeleted() {
+        $result = $this->deleted !== null ? true : false;
+
+        return $result;
+    }
+
     /*
      * 
      * Auto generated
