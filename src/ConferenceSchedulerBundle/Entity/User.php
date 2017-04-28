@@ -51,17 +51,17 @@ class User extends BaseUser {
      * @ORM\Column(name="updated", type="datetime")
      */
     private $updated;
-    
+
     /**
      * Construct
      */
     public function __construct() {
         parent::__construct();
-        
+
         $this->setCreated(new DateTime);
         $this->setUpdated(new DateTime);
     }
-    
+
     /**
      * Get names
      * 
@@ -69,6 +69,18 @@ class User extends BaseUser {
      */
     public function getNames() {
         return $this->username;
+    }
+
+    /**
+     * Get either a Gravatar URL or complete image tag for user.
+     * 
+     * @return string
+     * @source https://gravatar.com/site/implement/images/php/
+     */
+    public function getGravatar() {
+        $url = "https://www.gravatar.com/avatar/" . md5(strtolower(trim($this->email))) . "?s=" . 32;
+
+        return $url;
     }
 
     /*
@@ -130,7 +142,6 @@ class User extends BaseUser {
         return $this->updated;
     }
 
-
     /**
      * Set name
      *
@@ -138,8 +149,7 @@ class User extends BaseUser {
      *
      * @return User
      */
-    public function setName($name)
-    {
+    public function setName($name) {
         $this->name = $name;
 
         return $this;
@@ -150,8 +160,8 @@ class User extends BaseUser {
      *
      * @return string
      */
-    public function getName()
-    {
+    public function getName() {
         return $this->name;
     }
+
 }
