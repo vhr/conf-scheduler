@@ -1,65 +1,71 @@
 {% extends 'base.html.twig' %}
 
-{% set nav = 'conference' %}
+{% block layout_title %}
+    {{ 'My conferences'|trans }}
+{% endblock %}
 
 {% block body %}
-    <table class="mdl-data-table mdl-js-data-table mdl-shadow--2dp">
-        <thead>
-            <tr>
-                <th>Id</th>
-                <th class="mdl-data-table__cell--non-numeric">Title</th>
-                <th class="mdl-data-table__cell--non-numeric">Description</th>
-                    {#<th class="mdl-data-table__cell--non-numeric">Date</th>
-                    <th class="mdl-data-table__cell--non-numeric">Start</th>
-                    <th class="mdl-data-table__cell--non-numeric">End</th>#}
-                <th class="mdl-data-table__cell--non-numeric">Access</th>
-                <th>Price</th>
-                <th>Created</th>
-                <th>Updated</th>
-                <th>Dismiss</th>
-                <th>Actions</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for conference in conferences %}
-                <tr>
-                    <td><a href="{{ path('conference_show', { 'id': conference.id }) }}">{{ conference.id }}</a></td>
-                    <td class="mdl-data-table__cell--non-numeric">{{ conference.title }}</td>
-                    <td class="mdl-data-table__cell--non-numeric">{{ conference.description|truncate(50) }}</td>
-                    <td class="mdl-data-table__cell--non-numeric">{{ conference.accessName }}</td>
-                    <td>{{ conference.price }}</td>
-                    {#  <td class="mdl-data-table__cell--non-numeric">{% if conference.date %}{{ conference.date|date('Y-m-d H:i:s') }}{% endif %}</td>
-                      <td class="mdl-data-table__cell--non-numeric">{% if conference.start %}{{ conference.start|date('H:i:s') }}{% endif %}</td>
-                      <td class="mdl-data-table__cell--non-numeric">{% if conference.end %}{{ conference.end|date('H:i:s') }}{% endif %}</td>#}
-                    <td>{% if conference.created %}{{ conference.created|date('Y-m-d H:i:s') }}{% endif %}</td>
-                    <td>{% if conference.updated %}{{ conference.updated|date('Y-m-d H:i:s') }}{% endif %}</td>
-                    <td>{% if conference.deleted %}{{ conference.deleted|date('Y-m-d H:i:s') }}{% endif %}</td>
-                    <td>
-                        <button id="conference-menu-{{ conference.id }}"
-                                class="mdl-button mdl-js-button mdl-button--icon">
-                            <i class="material-icons">more_vert</i>
-                        </button>
+    <div class="mdl-list">
+        <div class="mdl-list__item">
+            <span class="mdl-list__item-primary-content">
+                <span>
+                    <h6>{{ 'Conferences'|trans }}</h6>
+                </span>
+            </span>
+            <span class="mdl-list__item-secondary-content">
+                <a id="conference-add" class="mdl-list__item-secondary-action" href="{{ path('conference_new') }}">
+                    <i class="material-icons">add</i>
+                </a>
+                <div class="mdl-tooltip" data-mdl-for="conference-add">
+                    {{ 'Create a conference'|trans }}
+                </div>
+            </span>
+        </div>
+        {% for conference in pagination %}
+            <div class="mdl-list__item mdl-list__item--three-line">
+                <span class="mdl-list__item-primary-content">
+                    <span href="{{ path('conference_show', { 'id': conference.id }) }}">{{ conference.title }}</span>
+                    <span class="mdl-list__item-text-body">
+                        {% if conference.programStart %}
+                            {{ '%date% starts at %start% ends at %end%'|trans({ '%date%': conference.date|date('M d'), '%start%': conference.programStart|date('H:i'), '%end%': conference.programEnd|date('H:i') }) }}
+                        {% else %}
+                            {{ conference.date|date('M d') }}
+                        {% endif %}
+                    </span>
+                </span>
+                <span class="mdl-list__item-secondary-content">
+                    <button id="conference-menu-{{ conference.id }}"
+                            class="mdl-button mdl-js-button mdl-button--icon">
+                        <i class="material-icons">more_vert</i>
+                    </button>
 
-                        <ul class="mdl-menu mdl-menu--bottom-left mdl-js-menu mdl-js-ripple-effect" for="conference-menu-{{ conference.id }}">
-                            <li class="mdl-menu__item">
-                                <a href="{{ path('conference_show', { 'id': conference.id }) }}" class="mdl-button mdl-js-button mdl-js-ripple-effect">Show</a>
+                    <ul class="mdl-menu mdl-menu--bottom-left mdl-js-menu mdl-js-ripple-effect" for="conference-menu-{{ conference.id }}">
+                        {% if conference.isDeleted == false %}
+                            <li class="mdl-menu__item mdl-menu__item--full-bleed-divider" href="{{ path('conference_edit', { 'id': conference.id }) }}">
+                                {{ 'Edit'|trans }}
                             </li>
-                            {% if conference.isDeleted == false %}
-                                <li class="mdl-menu__item mdl-menu__item--full-bleed-divider">
-                                    <a href="{{ path('conference_edit', { 'id': conference.id }) }}" class="mdl-button mdl-js-button mdl-js-ripple-effect">Edit</a>
-                                </li>
-                                <li class="mdl-menu__item">
-                                    <a href="{{ path('conference_dismiss', { 'id': conference.id }) }}" class="mdl-button mdl-js-button mdl-js-ripple-effect">Dismiss</a>
-                                </li>
-                            {% endif %}
-                        </ul>
-                    </td>
-                </tr>
-            {% endfor %}
-        </tbody>
-    </table>
-    <br>
-    <a href="{{ path('conference_new') }}"  class="mdl-button mdl-js-button mdl-button--fab mdl-js-ripple-effect mdl-button--colored" title="Create a new conference">
-        <i class="material-icons">add</i>
-    </a>
+                            <li class="mdl-menu__item" href="{{ path('conference_program_index', { 'conference_id': conference.id }) }}">
+                                {{ 'Program'|trans }}
+                            </li>
+                            <li class="mdl-menu__item" href="{{ path('conference_user_index', { 'conference_id': conference.id }) }}">
+                                {{ 'Users'|trans }}
+                            </li>
+                            <li class="mdl-menu__item" href="{{ path('conference_lecturer_index', { 'conference_id': conference.id }) }}">
+                                {{ 'Lecturers'|trans }}
+                            </li>
+                            <li class="mdl-menu__item mdl-menu__item--full-bleed-divider" href="{{ path('conference_admin_index', { 'conference_id': conference.id }) }}">
+                                {{ 'Administrators'|trans }}
+                            </li>
+                            <li class="mdl-menu__item mdl-color-text--accent" href="{{ path('conference_dismiss', { 'id': conference.id }) }}">
+                                {{ 'Dismiss'|trans }}
+                            </li>
+                        {% endif %}
+                    </ul>
+                </span>
+            </div>
+        {% endfor %}
+    </div>
+    <div class="navigation">
+        {{ knp_pagination_render(pagination) }}
+    </div>
 {% endblock %}

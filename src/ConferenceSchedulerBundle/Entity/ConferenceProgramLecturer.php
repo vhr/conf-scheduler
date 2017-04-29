@@ -22,9 +22,10 @@ class ConferenceProgramLecturer {
     private $id;
 
     /**
-     * @var \stdClass
+     * @var \ConferenceSchedulerBundle\Entity\User
      *
-     * @ORM\Column(name="user", type="object")
+     * @ORM\ManyToOne(targetEntity="ConferenceSchedulerBundle\Entity\User")
+     * @ORM\JoinColumn(name="user_id", referencedColumnName="id")
      */
     private $user;
 

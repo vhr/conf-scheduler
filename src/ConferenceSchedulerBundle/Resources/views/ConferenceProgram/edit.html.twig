@@ -1,13 +1,16 @@
 {% extends 'base.html.twig' %}
 
-{% set nav = 'conference' %}
+{% block layout_title %}
+    {{ 'Edit program event'|trans }}
+{% endblock %}
 
 {% block body %}
     <div class="mdl-tabs mdl-js-tabs ">
         {% include 'ConferenceSchedulerBundle:Conference:tabs.html.twig' with {'conference': conference, 'active': 'program'} %}
 
         <div class="mdl-tabs__panel is-active">
-            <br>
+            {% include 'ConferenceSchedulerBundle:ConferenceProgram:review.html.twig' with {'program': event} %}
+
             {{ form_start(edit_form) }}
             {{ form_widget(edit_form) }}
             <input type="submit" value="Edit" />

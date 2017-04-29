@@ -27,13 +27,18 @@ class ConferenceController extends Controller {
      * @Method("GET")
      * @Template()
      */
-    public function indexAction() {
-        $em = $this->getDoctrine()->getManager();
+    public function indexAction(Request $request) {
+        $query = $this->getDoctrine()
+                ->getManager()
+                ->getRepository('ConferenceSchedulerBundle:Conference')
+                ->findAllByAccessQuery($this->getUser());
 
-        $conferences = $em->getRepository('ConferenceSchedulerBundle:Conference')->findAll();
+        $pagination = $this->get('knp_paginator')
+                ->paginate($query, $request->query->getInt('page', 1))
+        ;
 
         return [
-            'conferences' => $conferences,
+            'pagination' => $pagination,
         ];
     }
 

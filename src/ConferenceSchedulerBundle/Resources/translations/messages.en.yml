@@ -1,0 +1,39 @@
+Users: Users
+'Send an invitation': 'Send an invitation'
+'Invited lecturers': 'Invited lecturers'
+'Invite lectorers': 'Invite lectorers'
+'Remove user from lecturers': 'Remove user from lecturers'
+'Add user to conference administrators': 'Add user to conference administrators'
+Administrators: Administrators
+'Add administrators': 'Add administrators'
+'Remove user from administrators': 'Remove user from administrators'
+Events: Events
+'Add event to conference program': 'Add event to conference program'
+break: break
+Lecturers: Lecturers
+Edit: Edit
+'Add user to conference': 'Add user to conference'
+'Joined users': 'Joined users'
+'Add users to the conference': 'Add users to the conference'
+'Invite lecturers': 'Invite lecturers'
+'Invited lectures': 'Invited lectures'
+'My conferences': 'My conferences'
+Conferences: Conferences
+'Create a conference': 'Create a conference'
+'start %time%': 'start %time%'
+Program: Program
+Dismiss: Dismiss
+List: List
+'Add lectures to event': 'Add lectures to event'
+'Add lecturer to event': 'Add lecturer to event'
+'Program lecturers': 'Program lecturers'
+'Add lectorers to event': 'Add lectorers to event'
+'must visit': 'must visit'
+'Remove lecturer from event': 'Remove lecturer from event'
+'Add administrators to conference': 'Add administrators to conference'
+'Conference administrators': 'Conference administrators'
+'Conference program': 'Conference program'
+'Must visit': 'Must visit'
+'Edit program event': 'Edit program event'
+'Add users to conference': 'Add users to conference'
+'Conference users': 'Conference users'

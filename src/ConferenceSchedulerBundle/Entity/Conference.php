@@ -160,6 +160,38 @@ class Conference {
     }
 
     /**
+     * Program start
+     * 
+     * @return \DateTime|null
+     */
+    public function getProgramStart() {
+        $time = null;
+        $event = $this->getPrograms()->first();
+
+        if ($event) {
+            $time = $event->getStart();
+        }
+
+        return $time;
+    }
+
+    /**
+     * Program end
+     * 
+     * @return \DateTime|null
+     */
+    public function getProgramEnd() {
+        $time = null;
+        $event = $this->getPrograms()->last();
+
+        if ($event) {
+            $time = $event->getEnd();
+        }
+
+        return $time;
+    }
+
+    /**
      * Is conference has dismissed
      * 
      * @return bool
@@ -176,14 +208,12 @@ class Conference {
      * 
      */
 
-
     /**
      * Get id
      *
      * @return integer
      */
-    public function getId()
-    {
+    public function getId() {
         return $this->id;
     }
 
@@ -194,8 +224,7 @@ class Conference {
      *
      * @return Conference
      */
-    public function setTitle($title)
-    {
+    public function setTitle($title) {
         $this->title = $title;
 
         return $this;
@@ -206,8 +235,7 @@ class Conference {
      *
      * @return string
      */
-    public function getTitle()
-    {
+    public function getTitle() {
         return $this->title;
     }
 
@@ -218,8 +246,7 @@ class Conference {
      *
      * @return Conference
      */
-    public function setDescription($description)
-    {
+    public function setDescription($description) {
         $this->description = $description;
 
         return $this;
@@ -230,8 +257,7 @@ class Conference {
      *
      * @return string
      */
-    public function getDescription()
-    {
+    public function getDescription() {
         return $this->description;
     }
 
@@ -242,8 +268,7 @@ class Conference {
      *
      * @return Conference
      */
-    public function setAccess($access)
-    {
+    public function setAccess($access) {
         $this->access = $access;
 
         return $this;
@@ -254,8 +279,7 @@ class Conference {
      *
      * @return integer
      */
-    public function getAccess()
-    {
+    public function getAccess() {
         return $this->access;
     }
 
@@ -266,8 +290,7 @@ class Conference {
      *
      * @return Conference
      */
-    public function setPrice($price)
-    {
+    public function setPrice($price) {
         $this->price = $price;
 
         return $this;
@@ -278,8 +301,7 @@ class Conference {
      *
      * @return string
      */
-    public function getPrice()
-    {
+    public function getPrice() {
         return $this->price;
     }
 
@@ -290,8 +312,7 @@ class Conference {
      *
      * @return Conference
      */
-    public function setDate($date)
-    {
+    public function setDate($date) {
         $this->date = $date;
 
         return $this;
@@ -302,8 +323,7 @@ class Conference {
      *
      * @return \DateTime
      */
-    public function getDate()
-    {
+    public function getDate() {
         return $this->date;
     }
 
@@ -314,8 +334,7 @@ class Conference {
      *
      * @return Conference
      */
-    public function setCreated($created)
-    {
+    public function setCreated($created) {
         $this->created = $created;
 
         return $this;
@@ -326,8 +345,7 @@ class Conference {
      *
      * @return \DateTime
      */
-    public function getCreated()
-    {
+    public function getCreated() {
         return $this->created;
     }
 
@@ -338,8 +356,7 @@ class Conference {
      *
      * @return Conference
      */
-    public function setUpdated($updated)
-    {
+    public function setUpdated($updated) {
         $this->updated = $updated;
 
         return $this;
@@ -350,8 +367,7 @@ class Conference {
      *
      * @return \DateTime
      */
-    public function getUpdated()
-    {
+    public function getUpdated() {
         return $this->updated;
     }
 
@@ -362,8 +378,7 @@ class Conference {
      *
      * @return Conference
      */
-    public function setDeleted($deleted)
-    {
+    public function setDeleted($deleted) {
         $this->deleted = $deleted;
 
         return $this;
@@ -374,8 +389,7 @@ class Conference {
      *
      * @return \DateTime
      */
-    public function getDeleted()
-    {
+    public function getDeleted() {
         return $this->deleted;
     }
 
@@ -386,8 +400,7 @@ class Conference {
      *
      * @return Conference
      */
-    public function setHall(\ConferenceSchedulerBundle\Entity\Hall $hall = null)
-    {
+    public function setHall(\ConferenceSchedulerBundle\Entity\Hall $hall = null) {
         $this->hall = $hall;
 
         return $this;
@@ -398,8 +411,7 @@ class Conference {
      *
      * @return \ConferenceSchedulerBundle\Entity\Hall
      */
-    public function getHall()
-    {
+    public function getHall() {
         return $this->hall;
     }
 
@@ -410,8 +422,7 @@ class Conference {
      *
      * @return Conference
      */
-    public function addProgram(\ConferenceSchedulerBundle\Entity\ConferenceProgram $program)
-    {
+    public function addProgram(\ConferenceSchedulerBundle\Entity\ConferenceProgram $program) {
         $this->programs[] = $program;
 
         return $this;
@@ -422,8 +433,7 @@ class Conference {
      *
      * @param \ConferenceSchedulerBundle\Entity\ConferenceProgram $program
      */
-    public function removeProgram(\ConferenceSchedulerBundle\Entity\ConferenceProgram $program)
-    {
+    public function removeProgram(\ConferenceSchedulerBundle\Entity\ConferenceProgram $program) {
         $this->programs->removeElement($program);
     }
 
@@ -432,8 +442,7 @@ class Conference {
      *
      * @return \Doctrine\Common\Collections\Collection
      */
-    public function getPrograms()
-    {
+    public function getPrograms() {
         return $this->programs;
     }
 
@@ -444,8 +453,7 @@ class Conference {
      *
      * @return Conference
      */
-    public function addLecturer(\ConferenceSchedulerBundle\Entity\ConferenceLecturer $lecturer)
-    {
+    public function addLecturer(\ConferenceSchedulerBundle\Entity\ConferenceLecturer $lecturer) {
         $this->lecturers[] = $lecturer;
 
         return $this;
@@ -456,8 +464,7 @@ class Conference {
      *
      * @param \ConferenceSchedulerBundle\Entity\ConferenceLecturer $lecturer
      */
-    public function removeLecturer(\ConferenceSchedulerBundle\Entity\ConferenceLecturer $lecturer)
-    {
+    public function removeLecturer(\ConferenceSchedulerBundle\Entity\ConferenceLecturer $lecturer) {
         $this->lecturers->removeElement($lecturer);
     }
 
@@ -466,8 +473,7 @@ class Conference {
      *
      * @return \Doctrine\Common\Collections\Collection
      */
-    public function getLecturers()
-    {
+    public function getLecturers() {
         return $this->lecturers;
     }
 
@@ -478,8 +484,7 @@ class Conference {
      *
      * @return Conference
      */
-    public function addAdmin(\ConferenceSchedulerBundle\Entity\ConferenceAdmin $admin)
-    {
+    public function addAdmin(\ConferenceSchedulerBundle\Entity\ConferenceAdmin $admin) {
         $this->admins[] = $admin;
 
         return $this;
@@ -490,8 +495,7 @@ class Conference {
      *
      * @param \ConferenceSchedulerBundle\Entity\ConferenceAdmin $admin
      */
-    public function removeAdmin(\ConferenceSchedulerBundle\Entity\ConferenceAdmin $admin)
-    {
+    public function removeAdmin(\ConferenceSchedulerBundle\Entity\ConferenceAdmin $admin) {
         $this->admins->removeElement($admin);
     }
 
@@ -500,8 +504,7 @@ class Conference {
      *
      * @return \Doctrine\Common\Collections\Collection
      */
-    public function getAdmins()
-    {
+    public function getAdmins() {
         return $this->admins;
     }
 
@@ -512,8 +515,7 @@ class Conference {
      *
      * @return Conference
      */
-    public function addUser(\ConferenceSchedulerBundle\Entity\ConferenceUser $user)
-    {
+    public function addUser(\ConferenceSchedulerBundle\Entity\ConferenceUser $user) {
         $this->users[] = $user;
 
         return $this;
@@ -524,8 +526,7 @@ class Conference {
      *
      * @param \ConferenceSchedulerBundle\Entity\ConferenceUser $user
      */
-    public function removeUser(\ConferenceSchedulerBundle\Entity\ConferenceUser $user)
-    {
+    public function removeUser(\ConferenceSchedulerBundle\Entity\ConferenceUser $user) {
         $this->users->removeElement($user);
     }
 
@@ -534,8 +535,8 @@ class Conference {
      *
      * @return \Doctrine\Common\Collections\Collection
      */
-    public function getUsers()
-    {
+    public function getUsers() {
         return $this->users;
     }
+
 }

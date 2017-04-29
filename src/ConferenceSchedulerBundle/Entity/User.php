@@ -68,7 +68,13 @@ class User extends BaseUser {
      * @return string
      */
     public function getNames() {
-        return $this->name;
+        if ($this->name) {
+            return $this->name;
+        } elseif ($this->username) {
+            return $this->username;
+        }
+
+        return $this->email;
     }
 
     /**
@@ -80,7 +86,7 @@ class User extends BaseUser {
      */
     public function getGravatar($size = 32) {
         $slug = substr(md5("{$this->email}|{$this->username}"), 0, 12);
-        $url = "https://robohash.org/{$slug}.png?size={$size}x{$size}";
+        $url = "https://robohash.org/{$slug}.png?bgset=bg1&size={$size}x{$size}";
 
 //        $url = "https://www.gravatar.com/avatar/" . md5(strtolower(trim($this->email))) . "?s={$size}";
 

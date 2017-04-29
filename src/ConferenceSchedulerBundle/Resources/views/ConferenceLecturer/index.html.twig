@@ -1,6 +1,8 @@
 {% extends 'base.html.twig' %}
 
-{% set nav = 'conference' %}
+{% block layout_title %}
+    {{ 'Invited lectures'|trans }}
+{% endblock %}
 
 {% block body %}
 
@@ -26,7 +28,7 @@
                 </div>
                 {% for lecturer in lecturers %}
                     {% set user = lecturer.user %}
-                    <div class="mdl-list__item mdl-list__item--three-line">
+                    <div class="mdl-list__item mdl-list__item--three-line{% if lecturer.isActive %} mdl-color-text--accent{% endif %}">
                         <span class="mdl-list__item-primary-content">
                             {% if user.gravatar %}
                                 <img src="{{ user.gravatar(40) }}" class="mdl-list__item-avatar" alt="{{ user.names|e }}">

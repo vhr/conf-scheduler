@@ -17,6 +17,9 @@
     <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}" />
     <script src="https://code.jquery.com/jquery-2.2.4.min.js"></script>
     <style>
+        li[href], span[href] {
+            cursor: pointer;
+        }
         /**
  * Paging
  */
@@ -184,14 +187,13 @@
             <div class="mdl-layout__header-row">
                 <!-- Title -->
                 <span class="mdl-layout-title">
-                    Conference schedule
-                    {#<a href="{{ path('homepage') }}"></a>#}
+                    {% block layout_title %}{{ 'Conference schedule'|trans }}{% endblock %}
                 </span>
                 <!-- Add spacer, to align navigation to the right -->
                 <div class="mdl-layout-spacer"></div>
                 <!-- Navigation -->
                 <nav class="mdl-navigation">
-                    <a class="mdl-navigation__link" href="{{ path('conference_index') }}">{{ 'Conferences'|trans }}</a>
+                    <a class="mdl-navigation__link" href="{{ path('homepage') }}">{{ 'Conferences'|trans }}</a>
                     <a class="mdl-navigation__link" href="{{ path('schedule_index') }}">{{ 'Schedule'|trans }}</a>
                     <a class="mdl-navigation__link" href="{{ path('schedule_index') }}">{{ 'Halls'|trans }}</a>
 
@@ -219,12 +221,10 @@
                             </button>
                             <ul class="mdl-menu mdl-menu--bottom-right mdl-js-menu mdl-js-ripple-effect"
                                 for="user-profile-menu">
-                                <li class="mdl-menu__item">My conferences</li>
-                                <li class="mdl-menu__item mdl-menu__item--full-bleed-divider">My schedule</li>
-                                    {#                                <li disabled class="mdl-menu__item">Disabled Action</li>#}
-                                    {#                                <li class="mdl-menu__item mdl-menu__item--full-bleed-divider">Another Action</li>#}
-                                    {#                                <li class="mdl-menu__item"><a href="{{ path('fos_user_profile_show') }}">{{ 'Profile'|trans }}</a></li>#}
-                                    {#                                <li class="mdl-menu__item"><a href="{{ path('fos_user_profile_edit') }}" class="mdl-button mdl-js-button mdl-js-ripple-effect">{{ 'Settings'|trans }}</a></li>#}
+                                <li class="mdl-menu__item" href="{{ path('conference_index') }}">{{ 'My conferences'|trans }}</li>
+                                <li class="mdl-menu__item mdl-menu__item--full-bleed-divider">{{ 'My schedule'|trans }}</li>
+                                {#<li class="mdl-menu__item"><a href="{{ path('fos_user_profile_show') }}">{{ 'Profile'|trans }}</a></li>
+                                <li class="mdl-menu__item"><a href="{{ path('fos_user_profile_edit') }}" class="mdl-button mdl-js-button mdl-js-ripple-effect">{{ 'Settings'|trans }}</a></li>#}
                                 <li class="mdl-menu__item" href="{{ path('fos_user_security_logout') }}">{{ 'Logout'|trans }}</li>
                             </ul>
                         </div>
@@ -264,7 +264,7 @@
 {% block javascripts %}{% endblock %}
 <script>
     $(function () {
-        $(document).on('click', 'li[href]', function () {
+        $(document).on('click', 'li[href], span[href]', function () {
             window.location.href = $(this).attr('href');
         });
     });

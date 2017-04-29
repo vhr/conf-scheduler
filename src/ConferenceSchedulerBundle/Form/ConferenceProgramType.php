@@ -15,10 +15,10 @@ class ConferenceProgramType extends AbstractType {
      * {@inheritdoc}
      */
     public function buildForm(FormBuilderInterface $builder, array $options) {
-        $builder->add('name')
-                ->add('start', TimeType::class)
+        $builder->add('start', TimeType::class)
                 ->add('end', TimeType::class)
-//                ->add('description')
+                ->add('name')
+                ->add('description')
                 ->add('type', ChoiceType::class, [
                     'choices' => ConferenceProgram::TYPES
                 ])

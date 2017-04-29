@@ -1,5 +1,9 @@
 {% extends 'base.html.twig' %}
 
+{% block layout_title %}
+    {{ 'Invite lecturers'|trans }}
+{% endblock %}
+
 {% block body %}
     <div class="mdl-tabs mdl-js-tabs ">
         {% include 'ConferenceSchedulerBundle:Conference:tabs.html.twig' with {'conference': conference, 'active': 'lecturers'} %}

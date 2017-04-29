@@ -71,6 +71,8 @@ class ConferenceLecturerController extends Controller {
      * @ParamConverter("conference", class="ConferenceSchedulerBundle:Conference", options={"id"="conference_id"})
      */
     public function addAction(Conference $conference, User $user) {
+        // @todo check for collusion
+        
         $em = $this->getDoctrine()->getManager();
 
         $lecturer = new ConferenceLecturer;

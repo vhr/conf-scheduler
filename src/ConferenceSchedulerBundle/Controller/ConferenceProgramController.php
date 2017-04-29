@@ -27,14 +27,19 @@ class ConferenceProgramController extends Controller {
      * @Template()
      * @ParamConverter("conference", class="ConferenceSchedulerBundle:Conference", options={"id"="conference_id"})
      */
-    public function indexAction(Conference $conference) {
-        $em = $this->getDoctrine()->getManager();
+    public function indexAction(Request $request, Conference $conference) {
+        $query = $this->getDoctrine()
+                ->getManager()
+                ->getRepository('ConferenceSchedulerBundle:ConferenceProgram')
+                ->findAllByConferenceQuery($conference);
 
-        $program = $conference->getPrograms();
+        $pagination = $this->get('knp_paginator')
+                ->paginate($query, $request->query->getInt('page', 1))
+        ;
 
         return [
             'conference' => $conference,
-            'program' => $program,
+            'pagination' => $pagination,
         ];
     }
 
@@ -112,7 +117,7 @@ class ConferenceProgramController extends Controller {
 
         return [
             'conference' => $conference,
-            'program' => $program,
+            'event' => $program,
             'edit_form' => $editForm->createView(),
             'delete_form' => $deleteForm->createView(),
         ];

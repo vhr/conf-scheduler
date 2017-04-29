@@ -56,6 +56,15 @@ class ConferenceLecturer {
     }
 
     /**
+     * Is lecturer active
+     */
+    public function isActive() {
+        $result = $this->status === static::STATUS_ACTIVE;
+
+        return $result;
+    }
+
+    /**
      * Get status name
      * 
      * @return string

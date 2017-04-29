@@ -1,23 +1,25 @@
 {% extends 'base.html.twig' %}
 
 {% block layout_title %}
-    {{ 'Add administrators to conference'|trans }}
+    {{ 'Add lectures to event'|trans }}
 {% endblock %}
 
 {% block body %}
     <div class="mdl-tabs mdl-js-tabs ">
-        {% include 'ConferenceSchedulerBundle:Conference:tabs.html.twig' with {'conference': conference, 'active': 'admins'} %}
+        {% include 'ConferenceSchedulerBundle:Conference:tabs.html.twig' with {'conference': conference, 'active': 'program'} %}
 
         <div class="mdl-tabs__panel is-active">
+            {% include 'ConferenceSchedulerBundle:ConferenceProgram:review.html.twig' with {'program': event} %}
             <div class="mdl-list">
                 <div class="mdl-list__item">
                     <span class="mdl-list__item-primary-content">
                         <span>
-                            <h6>{{ 'Users'|trans }}</h6>
+                            <h6>{{ 'Invited lecturers'|trans }}</h6>
                         </span>
                     </span>
                 </div>
-                {% for user in pagination %}
+                {% for lecturer in pagination %}
+                    {% set user = lecturer.user %}
                     <div class="mdl-list__item mdl-list__item--three-line">
                         <span class="mdl-list__item-primary-content">
                             {% if user.gravatar %}
@@ -27,15 +29,15 @@
                             {% endif %}
                             <span>{{ user.names }}</span>
                             <span class="mdl-list__item-text-body">
-                                {{ user.email }}
+                                {{ user.username }}
                             </span>
                         </span>
                         <span class="mdl-list__item-secondary-content">
-                            <a id="user-add-{{ user.id }}" class="mdl-list__item-secondary-action" href="{{ path('conference_admin_add', { 'conference_id': conference.id, 'id': user.id }) }}" class="mdl-button mdl-js-button">
+                            <a id="user-add-{{ user.id }}" class="mdl-list__item-secondary-action" href="{{ path('conference_program_lecturer_add', { 'conference_id': conference.id, 'program_id': event.id, 'id': lecturer.id }) }}" class="mdl-button mdl-js-button">
                                 <i class="material-icons">add</i>
                             </a>
                             <div class="mdl-tooltip" data-mdl-for="user-add-{{ user.id }}">
-                                {{ 'Add user to conference administrators'|trans }}
+                                {{ 'Add lecturer to event'|trans }}
                             </div>
                         </span>
                     </div>

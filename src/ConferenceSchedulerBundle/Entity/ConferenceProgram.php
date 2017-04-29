@@ -107,7 +107,7 @@ class ConferenceProgram {
     public function getLecturersList() {
         $names = [];
 
-        foreach ($this->lecturers as $lecturer) {
+        foreach ($this->getLecturers() as $lecturer) {
             $names[] = $lecturer->getUser()->getNames();
         }
 
