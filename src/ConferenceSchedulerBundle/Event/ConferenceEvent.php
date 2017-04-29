@@ -11,6 +11,8 @@ class ConferenceEvent extends Event {
     const EVENT_DISMISS = 'conference.dismiss';
     const EVENT_ADMIN_ADD = 'conference.admin.add';
     const EVENT_ADMIN_DELETE = 'conference.admin.delete';
+    const EVENT_LECTURER_ADD = 'conference.lecturer.add';
+    const EVENT_LECTURER_DELETE = 'conference.lecturer.delete';
 
     /**
      * @var \ConferenceSchedulerBundle\Entity\Conference

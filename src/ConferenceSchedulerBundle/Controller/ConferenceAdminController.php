@@ -127,8 +127,9 @@ class ConferenceAdminController extends Controller {
         $event = new ConferenceEvent($conference, $this->getUser());
         $this->get('event_dispatcher')
                 ->dispatch(ConferenceEvent::EVENT_ADMIN_ADD, $event);
-
-        $this->getDoctrine()->getManager()->flush();
+        
+        // flashbag
+        $this->addFlash('notice', 'User has been removed from administrators');
 
         redirectToList: {
             return $this->redirectToRoute('conference_admin_index', [

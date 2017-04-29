@@ -29,6 +29,24 @@ class UserRepository extends EntityRepository {
     }
 
     /**
+     * Find all users who are not in invited for lecturers in conference
+     * 
+     * @param Conference $conference
+     * @return \Doctrine\ORM\Query
+     */
+    public function findNotLecturerInConferenceQuery(Conference $conference) {
+        $result = $this->createQueryBuilder('t')
+                ->leftJoin('ConferenceSchedulerBundle:ConferenceLecturer', 'cl', 'WITH', 't.id = cl.user')
+                ->where('cl.id IS NULL OR cl.conference <> :conference')
+                ->setParameter('conference', $conference)
+                ->orderBy('t.name')
+                ->getQuery()
+        ;
+
+        return $result;
+    }
+
+    /**
      * Find all administrators who are not in specific conference
      * 
      * @param Conference $conference
@@ -47,10 +65,7 @@ class UserRepository extends EntityRepository {
      * @return array
      */
     public function findNotLecturerInConference(Conference $conference) {
-        $result = $this->createQueryBuilder('t')
-                ->leftJoin('ConferenceSchedulerBundle:ConferenceLecturer', 'cl', 'WITH', 't.id = cl.user')
-                ->where('cl.id IS NULL')
-                ->getQuery()
+        $result = $this->findNotLecturerInConferenceQuery($conference)
                 ->getResult()
         ;
 

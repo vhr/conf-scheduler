@@ -7,9 +7,11 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
+use Symfony\Component\HttpFoundation\Request;
 use ConferenceSchedulerBundle\Entity\Conference;
 use ConferenceSchedulerBundle\Entity\User;
 use ConferenceSchedulerBundle\Entity\ConferenceLecturer;
+use ConferenceSchedulerBundle\Event\ConferenceEvent;
 
 /**
  * Conference lecturers controller.
@@ -27,16 +29,36 @@ class ConferenceLecturerController extends Controller {
      * @ParamConverter("conference", class="ConferenceSchedulerBundle:Conference", options={"id"="conference_id"})
      */
     public function indexAction(Conference $conference) {
-        $em = $this->getDoctrine()->getManager();
-
         $lecturers = $conference->getLecturers();
-        $users = $em->getRepository('ConferenceSchedulerBundle:User')
-                ->findNotLecturerInConference($conference);
 
         return [
             'conference' => $conference,
             'lecturers' => $lecturers,
-            'users' => $users,
+        ];
+    }
+
+    /**
+     * Lists all users that not lecturers
+     *
+     * @Route("/invite", name="conference_lecturer_invite")
+     * @Method("GET")
+     * @Template()
+     * @ParamConverter("conference", class="ConferenceSchedulerBundle:Conference", options={"id"="conference_id"})
+     */
+    public function inviteAction(Request $request, Conference $conference) {
+        $query = $this->getDoctrine()
+                ->getManager()
+                ->getRepository('ConferenceSchedulerBundle:User')
+                ->findNotLecturerInConferenceQuery($conference);
+
+        $pagination = $this->get('knp_paginator')
+                ->paginate($query, $request->query->getInt('page', 1))
+        ;
+
+
+        return [
+            'conference' => $conference,
+            'pagination' => $pagination,
         ];
     }
 
@@ -50,10 +72,7 @@ class ConferenceLecturerController extends Controller {
      */
     public function addAction(Conference $conference, User $user) {
         $em = $this->getDoctrine()->getManager();
-        
-        // @todo check if a lecturer is not invited yet
-        // ...
-        
+
         $lecturer = new ConferenceLecturer;
         $lecturer->setConference($conference);
         $lecturer->setUser($user);
@@ -62,7 +81,15 @@ class ConferenceLecturerController extends Controller {
 
         $em->flush();
 
-        return $this->redirectToRoute('conference_lecturer_index', [
+        // dispatch event
+        $event = new ConferenceEvent($conference, $this->getUser());
+        $this->get('event_dispatcher')
+                ->dispatch(ConferenceEvent::EVENT_LECTURER_ADD, $event);
+
+        // flashbag
+        $this->addFlash('notice', 'Invitation has sent');
+
+        return $this->redirectToRoute('conference_lecturer_invite', [
                     'conference_id' => $conference->getId(),
         ]);
     }
@@ -77,7 +104,7 @@ class ConferenceLecturerController extends Controller {
      */
     public function removeAction(Conference $conference, User $user) {
         $em = $this->getDoctrine()->getManager();
-        
+
         // find relation lecture with conference
         $lecturer = $em->getRepository('ConferenceSchedulerBundle:ConferenceLecturer')
                 ->findOneBy([
@@ -87,6 +114,14 @@ class ConferenceLecturerController extends Controller {
 
         $em->remove($lecturer);
         $em->flush();
+
+        // dispatch event
+        $event = new ConferenceEvent($conference, $this->getUser());
+        $this->get('event_dispatcher')
+                ->dispatch(ConferenceEvent::EVENT_LECTURER_DELETE, $event);
+
+        // flashbag
+        $this->addFlash('notice', 'User has been removed from lecturers');
 
         return $this->redirectToRoute('conference_lecturer_index', [
                     'conference_id' => $conference->getId(),
