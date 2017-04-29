@@ -4,53 +4,54 @@
     {{ 'Conference administrators'|trans }}
 {% endblock %}
 
+{% block header %}
+    {% include 'ConferenceSchedulerBundle:Conference:tabs.html.twig' with {'conference': conference, 'active': 'admins'} %}
+{% endblock %}
+
 {% block body %}
-    <div class="mdl-tabs mdl-js-tabs ">
-        {% include 'ConferenceSchedulerBundle:Conference:tabs.html.twig' with {'conference': conference, 'active': 'admins'} %}
-        <div class="mdl-tabs__panel is-active">
-            <div class="mdl-list">
-                <div class="mdl-list__item">
+    <section class="mdl-layout__tab-panel is-active">
+        <div class="mdl-list">
+            <div class="mdl-list__item">
+                <span class="mdl-list__item-primary-content">
+                    <span>
+                        <h6>{{ 'Administrators'|trans }}</h6>
+                    </span>
+                </span>
+                <span class="mdl-list__item-secondary-content">
+                    <a id="user-admin-add" class="mdl-list__item-secondary-action" href="{{ path('conference_admin_invite', { 'conference_id': conference.id }) }}">
+                        <i class="material-icons">group_add</i>
+                    </a>
+                    <div class="mdl-tooltip" data-mdl-for="user-admin-add">
+                        {{ 'Add administrators'|trans }}
+                    </div>
+                </span>
+            </div>
+            {% for admin in conference.admins %}
+                {% set user = admin.user %}
+                <div class="mdl-list__item mdl-list__item--three-line">
                     <span class="mdl-list__item-primary-content">
-                        <span>
-                            <h6>{{ 'Administrators'|trans }}</h6>
+                        {% if user.gravatar %}
+                            <img src="{{ user.gravatar(40) }}" class="mdl-list__item-avatar" alt="{{ user.names|e }}">
+                        {% else %}
+                            <i class="material-icons mdl-list__item-avatar">person</i>
+                        {% endif %}
+                        <span>{{ user.names }}</span>
+                        <span class="mdl-list__item-text-body">
+                            {{ admin.role.name }}
                         </span>
                     </span>
                     <span class="mdl-list__item-secondary-content">
-                        <a id="user-admin-add" class="mdl-list__item-secondary-action" href="{{ path('conference_admin_invite', { 'conference_id': conference.id }) }}">
-                            <i class="material-icons">group_add</i>
-                        </a>
-                        <div class="mdl-tooltip" data-mdl-for="user-admin-add">
-                            {{ 'Add administrators'|trans }}
-                        </div>
+                        {% if app.user.id != user.id %}
+                            <a id="user-admin-{{ user.id }}" class="mdl-list__item-secondary-action" href="{{ path('conference_admin_remove', { 'conference_id': conference.id, 'id': user.id }) }}">
+                                <i class="material-icons">clear</i>
+                            </a>
+                            <div class="mdl-tooltip" data-mdl-for="user-admin-{{ user.id }}">
+                                {{ 'Remove user from administrators'|trans }}
+                            </div>
+                        {% endif %}
                     </span>
                 </div>
-                {% for admin in conference.admins %}
-                    {% set user = admin.user %}
-                    <div class="mdl-list__item mdl-list__item--three-line">
-                        <span class="mdl-list__item-primary-content">
-                            {% if user.gravatar %}
-                                <img src="{{ user.gravatar(40) }}" class="mdl-list__item-avatar" alt="{{ user.names|e }}">
-                            {% else %}
-                                <i class="material-icons mdl-list__item-avatar">person</i>
-                            {% endif %}
-                            <span>{{ user.names }}</span>
-                            <span class="mdl-list__item-text-body">
-                                {{ admin.role.name }}
-                            </span>
-                        </span>
-                        <span class="mdl-list__item-secondary-content">
-                            {% if app.user.id != user.id %}
-                                <a id="user-admin-{{ user.id }}" class="mdl-list__item-secondary-action" href="{{ path('conference_admin_remove', { 'conference_id': conference.id, 'id': user.id }) }}">
-                                    <i class="material-icons">clear</i>
-                                </a>
-                                <div class="mdl-tooltip" data-mdl-for="user-admin-{{ user.id }}">
-                                    {{ 'Remove user from administrators'|trans }}
-                                </div>
-                            {% endif %}
-                        </span>
-                    </div>
-                {% endfor %}
-            </div>
+            {% endfor %}
         </div>
-    </div>
+    </section>
 {% endblock %}

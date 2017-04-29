@@ -2,31 +2,30 @@
 
 {% set nav = 'venue' %}
 
-{% block body %}
-    <div class="mdl-tabs mdl-js-tabs mdl-js-ripple-effect">
-        <div class="mdl-tabs__tab-bar">
-            <a href="{{ path('venue_show', { 'id': venue.id }) }}" class="mdl-tabs__tab">Review</a>
-            <a href="{{ path('venue_edit', { 'id': venue.id }) }}" class="mdl-tabs__tab is-active">Edit</a>
-            <a href="{{ path('hall_index', { 'venue_id': venue.id }) }}" class="mdl-tabs__tab">Halls</a>
-        </div>
-
-        <div class="mdl-tabs__panel is-active">
-            <br>
-            {{ form_start(edit_form) }}
-            {{ form_widget(edit_form) }}
-            <input type="submit" value="Edit" class="mdl-button mdl-js-button mdl-button--colored" />
-            {{ form_end(edit_form) }}
-
-            <ul>
-                <li>
-                    <a href="{{ path('venue_index') }}">Back to the list</a>
-                </li>
-                <li>
-                    {{ form_start(delete_form) }}
-                    <input type="submit" value="Delete">
-                    {{ form_end(delete_form) }}
-                </li>
-            </ul>
-        </div>
+{% block header %}
+    <div class="mdl-tabs__tab-bar">
+        <a href="{{ path('venue_show', { 'id': venue.id }) }}" class="mdl-tabs__tab">Review</a>
+        <a href="{{ path('venue_edit', { 'id': venue.id }) }}" class="mdl-tabs__tab is-active">Edit</a>
+        <a href="{{ path('hall_index', { 'venue_id': venue.id }) }}" class="mdl-tabs__tab">Halls</a>
     </div>
+{% endblock %}
+
+{% block body %}
+    <section class="mdl-layout__tab-panel is-active">
+        {{ form_start(edit_form) }}
+        {{ form_widget(edit_form) }}
+        <input type="submit" value="Edit" class="mdl-button mdl-js-button mdl-button--colored" />
+        {{ form_end(edit_form) }}
+
+        <ul>
+            <li>
+                <a href="{{ path('venue_index') }}">Back to the list</a>
+            </li>
+            <li>
+                {{ form_start(delete_form) }}
+                <input type="submit" value="Delete">
+                {{ form_end(delete_form) }}
+            </li>
+        </ul>
+    </section>
 {% endblock %}

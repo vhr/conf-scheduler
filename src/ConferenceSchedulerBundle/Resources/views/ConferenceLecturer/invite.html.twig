@@ -4,46 +4,46 @@
     {{ 'Invite lecturers'|trans }}
 {% endblock %}
 
-{% block body %}
-    <div class="mdl-tabs mdl-js-tabs ">
-        {% include 'ConferenceSchedulerBundle:Conference:tabs.html.twig' with {'conference': conference, 'active': 'lecturers'} %}
+{% block header %}
+    {% include 'ConferenceSchedulerBundle:Conference:tabs.html.twig' with {'conference': conference, 'active': 'lecturers'} %}
+{% endblock %}
 
-        <div class="mdl-tabs__panel is-active">
-            <div class="mdl-list">
-                <div class="mdl-list__item">
+{% block body %}
+    <section class="mdl-layout__tab-panel is-active">
+        <div class="mdl-list">
+            <div class="mdl-list__item">
+                <span class="mdl-list__item-primary-content">
+                    <span>
+                        <h6>{{ 'Users'|trans }}</h6>
+                    </span>
+                </span>
+            </div>
+            {% for user in pagination %}
+                <div class="mdl-list__item mdl-list__item--three-line">
                     <span class="mdl-list__item-primary-content">
-                        <span>
-                            <h6>{{ 'Users'|trans }}</h6>
+                        {% if user.gravatar %}
+                            <img src="{{ user.gravatar(40) }}" class="mdl-list__item-avatar" alt="{{ user.names|e }}">
+                        {% else %}
+                            <i class="material-icons mdl-list__item-avatar">person</i>
+                        {% endif %}
+                        <span>{{ user.names }}</span>
+                        <span class="mdl-list__item-text-body">
+                            {{ user.email }}
                         </span>
                     </span>
+                    <span class="mdl-list__item-secondary-content">
+                        <a id="lecturer-add-{{ user.id }}" class="mdl-list__item-secondary-action" href="{{ path('conference_lecturer_add', { 'conference_id': conference.id, 'id': user.id }) }}" class="mdl-button mdl-js-button">
+                            <i class="material-icons">send</i>
+                        </a>
+                        <div class="mdl-tooltip" data-mdl-for="lecturer-add-{{ user.id }}">
+                            {{ 'Send an invitation'|trans }}
+                        </div>
+                    </span>
                 </div>
-                {% for user in pagination %}
-                    <div class="mdl-list__item mdl-list__item--three-line">
-                        <span class="mdl-list__item-primary-content">
-                            {% if user.gravatar %}
-                                <img src="{{ user.gravatar(40) }}" class="mdl-list__item-avatar" alt="{{ user.names|e }}">
-                            {% else %}
-                                <i class="material-icons mdl-list__item-avatar">person</i>
-                            {% endif %}
-                            <span>{{ user.names }}</span>
-                            <span class="mdl-list__item-text-body">
-                                {{ user.email }}
-                            </span>
-                        </span>
-                        <span class="mdl-list__item-secondary-content">
-                            <a id="lecturer-add-{{ user.id }}" class="mdl-list__item-secondary-action" href="{{ path('conference_lecturer_add', { 'conference_id': conference.id, 'id': user.id }) }}" class="mdl-button mdl-js-button">
-                                <i class="material-icons">send</i>
-                            </a>
-                            <div class="mdl-tooltip" data-mdl-for="lecturer-add-{{ user.id }}">
-                                {{ 'Send an invitation'|trans }}
-                            </div>
-                        </span>
-                    </div>
-                {% endfor %}
-            </div>
-            <div class="navigation">
-                {{ knp_pagination_render(pagination) }}
-            </div>
+            {% endfor %}
         </div>
-    </div>
+        <div class="navigation">
+            {{ knp_pagination_render(pagination) }}
+        </div>
+    </section>
 {% endblock %}

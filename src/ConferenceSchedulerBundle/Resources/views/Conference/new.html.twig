@@ -1,13 +1,15 @@
 {% extends 'base.html.twig' %}
 
-{% set nav = 'conference' %}
+{% block layout_title %}
+    {{ 'Create a conference'|trans }}
+{% endblock %}
 
 {% block body %}
     <h1 class="mdl-layout-title">Conference creation</h1>
 
     {{ form_start(form) }}
-        {{ form_widget(form) }}
-        <input type="submit" value="Create" />
+    {{ form_widget(form) }}
+    <input type="submit" value="Create" />
     {{ form_end(form) }}
 
     <ul>

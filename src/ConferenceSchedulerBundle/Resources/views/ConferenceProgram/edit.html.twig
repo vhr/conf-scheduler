@@ -4,28 +4,28 @@
     {{ 'Edit program event'|trans }}
 {% endblock %}
 
+{% block header %}
+    {% include 'ConferenceSchedulerBundle:Conference:tabs.html.twig' with {'conference': conference, 'active': 'program'} %}
+{% endblock %}
+
 {% block body %}
-    <div class="mdl-tabs mdl-js-tabs ">
-        {% include 'ConferenceSchedulerBundle:Conference:tabs.html.twig' with {'conference': conference, 'active': 'program'} %}
+    <section class="mdl-layout__tab-panel is-active">
+        {% include 'ConferenceSchedulerBundle:ConferenceProgram:review.html.twig' with {'program': event} %}
 
-        <div class="mdl-tabs__panel is-active">
-            {% include 'ConferenceSchedulerBundle:ConferenceProgram:review.html.twig' with {'program': event} %}
+        {{ form_start(edit_form) }}
+        {{ form_widget(edit_form) }}
+        <input type="submit" value="Edit" />
+        {{ form_end(edit_form) }}
 
-            {{ form_start(edit_form) }}
-            {{ form_widget(edit_form) }}
-            <input type="submit" value="Edit" />
-            {{ form_end(edit_form) }}
-
-            <ul>
-                <li>
-                    <a href="{{ path('conference_program_index', { 'conference_id': conference.id}) }}">Back to the list</a>
-                </li>
-                <li>
-                    {{ form_start(delete_form) }}
-                    <input type="submit" value="Delete">
-                    {{ form_end(delete_form) }}
-                </li>
-            </ul>
-        </div>
-    </div>
+        <ul>
+            <li>
+                <a href="{{ path('conference_program_index', { 'conference_id': conference.id}) }}">Back to the list</a>
+            </li>
+            <li>
+                {{ form_start(delete_form) }}
+                <input type="submit" value="Delete">
+                {{ form_end(delete_form) }}
+            </li>
+        </ul>
+    </section>
 {% endblock %}

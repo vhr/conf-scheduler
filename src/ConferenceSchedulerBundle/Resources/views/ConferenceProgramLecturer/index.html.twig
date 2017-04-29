@@ -4,53 +4,53 @@
     {{ 'Program lecturers'|trans }}
 {% endblock %}
 
-{% block body %}
-    <div class="mdl-tabs mdl-js-tabs ">
-        {% include 'ConferenceSchedulerBundle:Conference:tabs.html.twig' with {'conference': conference, 'active': 'program'} %}
+{% block header %}
+    {% include 'ConferenceSchedulerBundle:Conference:tabs.html.twig' with {'conference': conference, 'active': 'program'} %}
+{% endblock %}
 
-        <div class="mdl-tabs__panel is-active">
-            {% include 'ConferenceSchedulerBundle:ConferenceProgram:review.html.twig' with {'program': event} %}
-            <div class="mdl-list">
-                <div class="mdl-list__item">
-                    <span class="mdl-list__item-primary-content">
-                        <span>
-                            <h6>{{ 'Lecturers'|trans }}</h6>
-                        </span>
+{% block body %}
+    <section class="mdl-layout__tab-panel is-active">
+        {% include 'ConferenceSchedulerBundle:ConferenceProgram:review.html.twig' with {'program': event} %}
+        <div class="mdl-list">
+            <div class="mdl-list__item">
+                <span class="mdl-list__item-primary-content">
+                    <span>
+                        <h6>{{ 'Lecturers'|trans }}</h6>
                     </span>
-                    <span class="mdl-list__item-secondary-content">
-                        <a id="user-lecturer-add" class="mdl-list__item-secondary-action" href="{{ path('conference_program_lecturer_invite', { 'conference_id': conference.id, 'program_id': event.id }) }}">
-                            <i class="material-icons">group_add</i>
-                        </a>
-                        <div class="mdl-tooltip" data-mdl-for="user-lecturer-add">
-                            {{ 'Add lectorers to event'|trans }}
-                        </div>
-                    </span>
-                </div>
-                {% for lecturer in event.lecturers %}
-                    {% set user = lecturer.user %}
-                    <div class="mdl-list__item mdl-list__item--three-line">
-                        <span class="mdl-list__item-primary-content">
-                            {% if user.gravatar %}
-                                <img src="{{ user.gravatar(40) }}" class="mdl-list__item-avatar" alt="{{ user.names|e }}">
-                            {% else %}
-                                <i class="material-icons mdl-list__item-avatar">person</i>
-                            {% endif %}
-                            <span{% if lecturer.mustVisit %} class="mdl-color-text--accent"{% endif %}>{{ user.names }}</span>
-                            <span class="mdl-list__item-text-body">
-                                {% if lecturer.mustVisit %}
-                                    {{ 'must visit'|trans }}
-                                {% endif %}
-                            </span>
-                        </span>
-                        <a id="lecturer-{{ lecturer.id }}" class="mdl-list__item-secondary-action" href="{{ path('conference_program_lecturer_delete', { 'conference_id': conference.id, 'program_id': event.id, 'id': lecturer.id }) }}">
-                            <i class="material-icons">clear</i>
-                        </a>
-                        <div class="mdl-tooltip" data-mdl-for="lecturer-{{ lecturer.id }}">
-                            {{ 'Remove lecturer from event'|trans }}
-                        </div>
+                </span>
+                <span class="mdl-list__item-secondary-content">
+                    <a id="user-lecturer-add" class="mdl-list__item-secondary-action" href="{{ path('conference_program_lecturer_invite', { 'conference_id': conference.id, 'program_id': event.id }) }}">
+                        <i class="material-icons">group_add</i>
+                    </a>
+                    <div class="mdl-tooltip" data-mdl-for="user-lecturer-add">
+                        {{ 'Add lectorers to event'|trans }}
                     </div>
-                {% endfor %}
+                </span>
             </div>
+            {% for lecturer in event.lecturers %}
+                {% set user = lecturer.user %}
+                <div class="mdl-list__item mdl-list__item--three-line">
+                    <span class="mdl-list__item-primary-content">
+                        {% if user.gravatar %}
+                            <img src="{{ user.gravatar(40) }}" class="mdl-list__item-avatar" alt="{{ user.names|e }}">
+                        {% else %}
+                            <i class="material-icons mdl-list__item-avatar">person</i>
+                        {% endif %}
+                        <span{% if lecturer.mustVisit %} class="mdl-color-text--accent"{% endif %}>{{ user.names }}</span>
+                        <span class="mdl-list__item-text-body">
+                            {% if lecturer.mustVisit %}
+                                {{ 'must visit'|trans }}
+                            {% endif %}
+                        </span>
+                    </span>
+                    <a id="lecturer-{{ lecturer.id }}" class="mdl-list__item-secondary-action" href="{{ path('conference_program_lecturer_delete', { 'conference_id': conference.id, 'program_id': event.id, 'id': lecturer.id }) }}">
+                        <i class="material-icons">clear</i>
+                    </a>
+                    <div class="mdl-tooltip" data-mdl-for="lecturer-{{ lecturer.id }}">
+                        {{ 'Remove lecturer from event'|trans }}
+                    </div>
+                </div>
+            {% endfor %}
         </div>
-    </div>
+    </section>
 {% endblock %}

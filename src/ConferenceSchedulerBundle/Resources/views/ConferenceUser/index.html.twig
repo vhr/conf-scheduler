@@ -4,45 +4,46 @@
     {{ 'Conference users'|trans }}
 {% endblock %}
 
+{% block header %}
+    {% include 'ConferenceSchedulerBundle:Conference:tabs.html.twig' with {'conference': conference, 'active': 'users'} %}
+{% endblock %}
+
 {% block body %}
-    <div class="mdl-tabs mdl-js-tabs ">
-        {% include 'ConferenceSchedulerBundle:Conference:tabs.html.twig' with {'conference': conference, 'active': 'users'} %}
-        <div class="mdl-tabs__panel is-active">
-            <div class="mdl-list">
-                <div class="mdl-list__item">
-                    <span class="mdl-list__item-primary-content">
-                        <span>
-                            <h6>{{ 'Joined users'|trans }} ({{ totalUsers }}/{{ conference.hall.userLimit }})</h6>
-                        </span>
+    <section class="mdl-layout__tab-panel is-active">
+        <div class="mdl-list">
+            <div class="mdl-list__item">
+                <span class="mdl-list__item-primary-content">
+                    <span>
+                        <h6>{{ 'Joined users'|trans }} ({{ totalUsers }}/{{ conference.hall.userLimit }})</h6>
                     </span>
-                    <span class="mdl-list__item-secondary-content">
-                        <a id="user-add" class="mdl-list__item-secondary-action" href="{{ path('conference_user_invite', { 'conference_id': conference.id }) }}">
-                            <i class="material-icons">group_add</i>
-                        </a>
-                        <div class="mdl-tooltip" data-mdl-for="user-add">
-                            {{ 'Add users to the conference'|trans }}
-                        </div>
-                    </span>
-                </div>
-                {% for confUser in conference.users %}
-                    {% set user = confUser.user %}
-                    <div class="mdl-list__item mdl-list__item--three-line">
-                        <span class="mdl-list__item-primary-content">
-                            {% if user.gravatar %}
-                                <img src="{{ user.gravatar(40) }}" class="mdl-list__item-avatar" alt="{{ user.names|e }}">
-                            {% else %}
-                                <i class="material-icons mdl-list__item-avatar">person</i>
-                            {% endif %}
-                            <span>{{ user.names }}</span>
-                            <span class="mdl-list__item-text-body">
-                                {{ confUser.statusName }}
-                            </span>
-                        </span>
-                        <a class="mdl-list__item-secondary-action" href="{{ path('conference_user_remove', { 'conference_id': conference.id, 'id': user.id }) }}">
-                            <i class="material-icons">clear</i>
-                        </a>
+                </span>
+                <span class="mdl-list__item-secondary-content">
+                    <a id="user-add" class="mdl-list__item-secondary-action" href="{{ path('conference_user_invite', { 'conference_id': conference.id }) }}">
+                        <i class="material-icons">group_add</i>
+                    </a>
+                    <div class="mdl-tooltip" data-mdl-for="user-add">
+                        {{ 'Add users to the conference'|trans }}
                     </div>
-                {% endfor %}
+                </span>
             </div>
-        </div>
-    {% endblock %}
+            {% for confUser in conference.users %}
+                {% set user = confUser.user %}
+                <div class="mdl-list__item mdl-list__item--three-line">
+                    <span class="mdl-list__item-primary-content">
+                        {% if user.gravatar %}
+                            <img src="{{ user.gravatar(40) }}" class="mdl-list__item-avatar" alt="{{ user.names|e }}">
+                        {% else %}
+                            <i class="material-icons mdl-list__item-avatar">person</i>
+                        {% endif %}
+                        <span>{{ user.names }}</span>
+                        <span class="mdl-list__item-text-body">
+                            {{ confUser.statusName }}
+                        </span>
+                    </span>
+                    <a class="mdl-list__item-secondary-action" href="{{ path('conference_user_remove', { 'conference_id': conference.id, 'id': user.id }) }}">
+                        <i class="material-icons">clear</i>
+                    </a>
+                </div>
+            {% endfor %}
+    </section>
+{% endblock %}

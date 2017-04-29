@@ -4,72 +4,72 @@
     {{ 'Conference program'|trans }}
 {% endblock %}
 
-{% block body %}
-    <div class="mdl-tabs mdl-js-tabs ">
-        {% include 'ConferenceSchedulerBundle:Conference:tabs.html.twig' with {'conference': conference, 'active': 'program'} %}
+{% block header %}
+    {% include 'ConferenceSchedulerBundle:Conference:tabs.html.twig' with {'conference': conference, 'active': 'program'} %}
+{% endblock %}
 
-        <div class="mdl-tabs__panel is-active">
-            <div class="mdl-list">
-                <div class="mdl-list__item">
+{% block body %}
+    <section class="mdl-layout__tab-panel is-active">
+        <div class="mdl-list">
+            <div class="mdl-list__item">
+                <span class="mdl-list__item-primary-content">
+                    <span>
+                        <h6>{{ 'Events'|trans }}</h6>
+                    </span>
+                </span>
+                <span class="mdl-list__item-secondary-content">
+                    <a id="user-add" class="mdl-list__item-secondary-action" href="{{ path('conference_program_new', { 'conference_id': conference.id }) }}">
+                        <i class="material-icons">add</i>
+                    </a>
+                    <div class="mdl-tooltip" data-mdl-for="user-add">
+                        {{ 'Add event to conference program'|trans }}
+                    </div>
+                </span>
+            </div>
+            {% for event in pagination %}
+                <div class="mdl-list__item mdl-list__item--three-line">
                     <span class="mdl-list__item-primary-content">
                         <span>
-                            <h6>{{ 'Events'|trans }}</h6>
+                            <strong>{{ event.start|date('H:i') }}-{{ event.end|date('H:i') }}</strong>
+                            {{ event.name }}{% if event.isBreak %} <i class="mdl-color-text--accent">({{ 'break'|trans }})</i>{% endif %}
+                        </span>
+                        <span class="mdl-list__item-text-body">
+                            {% for lecturer in event.lecturers %}
+                                <span id="lecturer-{{ lecturer.id }}" class="mdl-chip mdl-chip--contact">
+                                    <img class="mdl-chip__contact" src="{{ lecturer.user.gravatar }}"></img>
+                                    <span class="mdl-chip__text{% if lecturer.mustVisit %} mdl-color-text--primary{% endif %}">{{ lecturer.user.names }}</span>
+                                </span>
+                                {% if lecturer.mustVisit %}
+                                    <div class="mdl-tooltip" data-mdl-for="lecturer-{{ lecturer.id }}">
+                                        {{ 'Must visit'|trans }}
+                                    </div>
+                                {% endif %}
+                            {% endfor %}
                         </span>
                     </span>
+
                     <span class="mdl-list__item-secondary-content">
-                        <a id="user-add" class="mdl-list__item-secondary-action" href="{{ path('conference_program_new', { 'conference_id': conference.id }) }}">
-                            <i class="material-icons">add</i>
-                        </a>
-                        <div class="mdl-tooltip" data-mdl-for="user-add">
-                            {{ 'Add event to conference program'|trans }}
-                        </div>
+                        <button id="program-event-menu-{{ event.id }}"
+                                class="mdl-button mdl-js-button mdl-button--icon mdl-list__item-secondary-action">
+                            <i class="material-icons">more_vert</i>
+                        </button>
+
+                        <ul class="mdl-menu mdl-menu--bottom-left mdl-js-menu mdl-js-ripple-effect" for="program-event-menu-{{ event.id }}">
+                            {% if event.isBreak == false %}
+                                <li class="mdl-menu__item" href="{{ path('conference_program_lecturers', { 'conference_id': conference.id, 'program_id': event.id }) }}">
+                                    {{ 'Lecturers'|trans }}
+                                </li>
+                            {% endif %}
+                            <li class="mdl-menu__item" href="{{ path('conference_program_edit', { 'conference_id': conference.id, 'id': event.id }) }}">
+                                {{ 'Edit'|trans }}
+                            </li>
+                        </ul>
                     </span>
                 </div>
-                {% for event in pagination %}
-                    <div class="mdl-list__item mdl-list__item--three-line">
-                        <span class="mdl-list__item-primary-content">
-                            <span>
-                                <strong>{{ event.start|date('H:i') }}-{{ event.end|date('H:i') }}</strong>
-                                {{ event.name }}{% if event.isBreak %} <i class="mdl-color-text--accent">({{ 'break'|trans }})</i>{% endif %}
-                            </span>
-                            <span class="mdl-list__item-text-body">
-                                {% for lecturer in event.lecturers %}
-                                    <span id="lecturer-{{ lecturer.id }}" class="mdl-chip mdl-chip--contact">
-                                        <img class="mdl-chip__contact" src="{{ lecturer.user.gravatar }}"></img>
-                                        <span class="mdl-chip__text{% if lecturer.mustVisit %} mdl-color-text--primary{% endif %}">{{ lecturer.user.names }}</span>
-                                    </span>
-                                    {% if lecturer.mustVisit %}
-                                        <div class="mdl-tooltip" data-mdl-for="lecturer-{{ lecturer.id }}">
-                                            {{ 'Must visit'|trans }}
-                                        </div>
-                                    {% endif %}
-                                {% endfor %}
-                            </span>
-                        </span>
-
-                        <span class="mdl-list__item-secondary-content">
-                            <button id="program-event-menu-{{ event.id }}"
-                                    class="mdl-button mdl-js-button mdl-button--icon mdl-list__item-secondary-action">
-                                <i class="material-icons">more_vert</i>
-                            </button>
-
-                            <ul class="mdl-menu mdl-menu--bottom-left mdl-js-menu mdl-js-ripple-effect" for="program-event-menu-{{ event.id }}">
-                                {% if event.isBreak == false %}
-                                    <li class="mdl-menu__item" href="{{ path('conference_program_lecturers', { 'conference_id': conference.id, 'program_id': event.id }) }}">
-                                        {{ 'Lecturers'|trans }}
-                                    </li>
-                                {% endif %}
-                                <li class="mdl-menu__item" href="{{ path('conference_program_edit', { 'conference_id': conference.id, 'id': event.id }) }}">
-                                    {{ 'Edit'|trans }}
-                                </li>
-                            </ul>
-                        </span>
-                    </div>
-                {% endfor %}
-            </div>
-            <div class="navigation">
-                {{ knp_pagination_render(pagination) }}
-            </div>
+            {% endfor %}
         </div>
-    </div>
+        <div class="navigation">
+            {{ knp_pagination_render(pagination) }}
+        </div>
+    </section>
 {% endblock %}

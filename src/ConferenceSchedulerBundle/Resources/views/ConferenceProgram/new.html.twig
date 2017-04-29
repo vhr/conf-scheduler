@@ -1,25 +1,26 @@
 {% extends 'base.html.twig' %}
 
-{% set nav = 'conference' %}
+{% block layout_title %}
+    {{ 'Create event in program'|trans }}
+{% endblock %}
+
+{% block header %}
+    {% include 'ConferenceSchedulerBundle:Conference:tabs.html.twig' with {'conference': conference, 'active': 'program'} %}
+{% endblock %}
 
 {% block body %}
-    <div class="mdl-tabs mdl-js-tabs ">
-        {% include 'ConferenceSchedulerBundle:Conference:tabs.html.twig' with {'conference': conference, 'active': 'program'} %}
+    <section class="mdl-layout__tab-panel is-active">
+        <h1 class="mdl-layout-title">Conference creation</h1>
 
-        <div class="mdl-tabs__panel is-active">
-            <br>
-            <h1 class="mdl-layout-title">Conference creation</h1>
+        {{ form_start(form) }}
+        {{ form_widget(form) }}
+        <input type="submit" value="Create" />
+        {{ form_end(form) }}
 
-            {{ form_start(form) }}
-            {{ form_widget(form) }}
-            <input type="submit" value="Create" />
-            {{ form_end(form) }}
-
-            <ul>
-                <li>
-                    <a href="{{ path('conference_index') }}">Back to the list</a>
-                </li>
-            </ul>
-        </div>
-    </div>
+        <ul>
+            <li>
+                <a href="{{ path('conference_index') }}">Back to the list</a>
+            </li>
+        </ul>
+    </section>
 {% endblock %}
