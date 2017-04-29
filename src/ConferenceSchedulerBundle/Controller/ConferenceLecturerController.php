@@ -30,27 +30,33 @@ class ConferenceLecturerController extends Controller {
         $em = $this->getDoctrine()->getManager();
 
         $lecturers = $conference->getLecturers();
+        $users = $em->getRepository('ConferenceSchedulerBundle:User')
+                ->findNotLecturerInConference($conference);
 
         return [
             'conference' => $conference,
             'lecturers' => $lecturers,
+            'users' => $users,
         ];
     }
 
     /**
      * Add user to conference
      *
-     * @Route("/add", name="conference_lecturer_add")
+     * @Route("/{id}/add", name="conference_lecturer_add")
      * @Method("GET")
      * @Template()
      * @ParamConverter("conference", class="ConferenceSchedulerBundle:Conference", options={"id"="conference_id"})
      */
-    public function addAction(Conference $conference) {
+    public function addAction(Conference $conference, User $user) {
         $em = $this->getDoctrine()->getManager();
+        
+        // @todo check if a lecturer is not invited yet
+        // ...
         
         $lecturer = new ConferenceLecturer;
         $lecturer->setConference($conference);
-        $lecturer->setUser($this->getUser());
+        $lecturer->setUser($user);
 
         $conference->addLecturer($lecturer);
 

@@ -101,28 +101,23 @@ class Conference {
      * @var \ConferenceSchedulerBundle\Entity\ConferenceLecturer[]
      * 
      * @ORM\OneToMany(targetEntity="ConferenceSchedulerBundle\Entity\ConferenceLecturer", mappedBy="conference", cascade={"persist"})
+     * @ORM\OrderBy({"user"="ASC"})
      */
     private $lecturers;
 
     /**
-     * @var \ConferenceSchedulerBundle\Entity\User[]
+     * @var \ConferenceSchedulerBundle\Entity\ConferenceAdmin[]
      * 
-     * @ORM\ManyToMany(targetEntity="ConferenceSchedulerBundle\Entity\User")
-     * @ORM\JoinTable(name="conference_admin",
-     *      joinColumns={@ORM\JoinColumn(name="conference_id", referencedColumnName="id")},
-     *      inverseJoinColumns={@ORM\JoinColumn(name="user_id", referencedColumnName="id", unique=true)}
-     * )
+     * @ORM\OneToMany(targetEntity="ConferenceSchedulerBundle\Entity\ConferenceAdmin", mappedBy="conference", cascade={"persist", "remove"})
+     * @ORM\OrderBy({"user"="ASC"})
      */
     private $admins;
 
     /**
-     * @var \ConferenceSchedulerBundle\Entity\User[]
+     * @var \ConferenceSchedulerBundle\Entity\ConferenceUser[]
      * 
-     * @ORM\ManyToMany(targetEntity="ConferenceSchedulerBundle\Entity\User")
-     * @ORM\JoinTable(name="conference_user",
-     *      joinColumns={@ORM\JoinColumn(name="conference_id", referencedColumnName="id")},
-     *      inverseJoinColumns={@ORM\JoinColumn(name="user_id", referencedColumnName="id", unique=true)}
-     * )
+     * @ORM\OneToMany(targetEntity="ConferenceSchedulerBundle\Entity\ConferenceUser", mappedBy="conference", cascade={"persist"})
+     * @ORM\OrderBy({"user"="ASC"})
      */
     private $users;
 
@@ -180,6 +175,7 @@ class Conference {
      * Auto generated
      * 
      */
+
 
     /**
      * Get id
@@ -478,11 +474,11 @@ class Conference {
     /**
      * Add admin
      *
-     * @param \ConferenceSchedulerBundle\Entity\User $admin
+     * @param \ConferenceSchedulerBundle\Entity\ConferenceAdmin $admin
      *
      * @return Conference
      */
-    public function addAdmin(\ConferenceSchedulerBundle\Entity\User $admin)
+    public function addAdmin(\ConferenceSchedulerBundle\Entity\ConferenceAdmin $admin)
     {
         $this->admins[] = $admin;
 
@@ -492,9 +488,9 @@ class Conference {
     /**
      * Remove admin
      *
-     * @param \ConferenceSchedulerBundle\Entity\User $admin
+     * @param \ConferenceSchedulerBundle\Entity\ConferenceAdmin $admin
      */
-    public function removeAdmin(\ConferenceSchedulerBundle\Entity\User $admin)
+    public function removeAdmin(\ConferenceSchedulerBundle\Entity\ConferenceAdmin $admin)
     {
         $this->admins->removeElement($admin);
     }
@@ -512,11 +508,11 @@ class Conference {
     /**
      * Add user
      *
-     * @param \ConferenceSchedulerBundle\Entity\User $user
+     * @param \ConferenceSchedulerBundle\Entity\ConferenceUser $user
      *
      * @return Conference
      */
-    public function addUser(\ConferenceSchedulerBundle\Entity\User $user)
+    public function addUser(\ConferenceSchedulerBundle\Entity\ConferenceUser $user)
     {
         $this->users[] = $user;
 
@@ -526,9 +522,9 @@ class Conference {
     /**
      * Remove user
      *
-     * @param \ConferenceSchedulerBundle\Entity\User $user
+     * @param \ConferenceSchedulerBundle\Entity\ConferenceUser $user
      */
-    public function removeUser(\ConferenceSchedulerBundle\Entity\User $user)
+    public function removeUser(\ConferenceSchedulerBundle\Entity\ConferenceUser $user)
     {
         $this->users->removeElement($user);
     }

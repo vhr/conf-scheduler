@@ -67,7 +67,7 @@ class ConferenceProgram {
     /**
      * @var \ConferenceSchedulerBundle\Entity\ConferenceProgramLecturer[]
      * 
-     * @ORM\OneToMany(targetEntity="ConferenceSchedulerBundle\Entity\ConferenceProgramLecturer", mappedBy="program", cascade={"persist"})
+     * @ORM\OneToMany(targetEntity="ConferenceSchedulerBundle\Entity\ConferenceProgramLecturer", mappedBy="program", cascade={"persist", "remove"})
      * @ORM\OrderBy({"mustVisit"="DESC"})
      */
     private $lecturers;

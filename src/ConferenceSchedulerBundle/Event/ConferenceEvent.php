@@ -9,6 +9,8 @@ use ConferenceSchedulerBundle\Entity\User;
 class ConferenceEvent extends Event {
 
     const EVENT_DISMISS = 'conference.dismiss';
+    const EVENT_ADMIN_ADD = 'conference.admin.add';
+    const EVENT_ADMIN_DELETE = 'conference.admin.delete';
 
     /**
      * @var \ConferenceSchedulerBundle\Entity\Conference

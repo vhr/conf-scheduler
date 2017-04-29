@@ -14,26 +14,63 @@ class UserRepository extends EntityRepository {
      * Find all administrators who are not in specific conference
      * 
      * @param Conference $conference
+     * @return \Doctrine\ORM\Query
+     */
+    public function findAdminsWithoutConferenceQuery(Conference $conference) {
+        $result = $this->createQueryBuilder('t')
+                ->leftJoin('ConferenceSchedulerBundle:ConferenceAdmin', 'ca', 'WITH', 't.id = ca.user')
+                ->where('ca.id IS NULL OR ca.conference <> :conference')
+                ->setParameter('conference', $conference)
+                ->orderBy('t.name')
+                ->getQuery()
+        ;
+
+        return $result;
+    }
+
+    /**
+     * Find all administrators who are not in specific conference
+     * 
+     * @param Conference $conference
      * @return array
      */
     public function findAdminsWithoutConference(Conference $conference) {
-        $list = [];
+        $result = $this->findAdminsWithoutConferenceQuery($conference)
+                ->getResult()
+        ;
+    }
 
-        foreach ($conference->getAdmins() as $admin) {
-            $list[] = $admin->getId();
-        }
+    /**
+     * Find all users who are not in invited for lecturers in conference
+     * 
+     * @param Conference $conference
+     * @return array
+     */
+    public function findNotLecturerInConference(Conference $conference) {
+        $result = $this->createQueryBuilder('t')
+                ->leftJoin('ConferenceSchedulerBundle:ConferenceLecturer', 'cl', 'WITH', 't.id = cl.user')
+                ->where('cl.id IS NULL')
+                ->getQuery()
+                ->getResult()
+        ;
 
-        $query = $this->createQueryBuilder('t')
-                ->where('t.roles LIKE :role_admin')
-                ->setParameter('role_admin', '%ROLE_ADMIN%');
+        return $result;
+    }
 
-        if ($list) {
-            $query = $query->andWhere('t.id NOT IN (:list)')
-                    ->setParameter('list', $list);
-        }
-
-        $result = $query->getQuery()
-                ->getResult();
+    /**
+     * Find all users who are not in invited for lecturers and not join as users to conference
+     * 
+     * @param Conference $conference
+     * @return array
+     */
+    public function findNotUserOrLecturerInConference(Conference $conference) {
+        $result = $this->createQueryBuilder('t')
+                ->leftJoin('ConferenceSchedulerBundle:ConferenceLecturer', 'cl', 'WITH', 't.id = cl.user')
+                ->leftJoin('ConferenceSchedulerBundle:ConferenceUser', 'cu', 'WITH', 't.id = cu.user')
+                ->where('cl.id IS NULL AND cu.id IS NULL')
+                ->getQuery()
+                ->getResult()
+        ;
 
         return $result;
     }

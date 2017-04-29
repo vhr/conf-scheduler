@@ -9,7 +9,9 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Symfony\Component\HttpFoundation\Request;
 use ConferenceSchedulerBundle\Entity\Conference;
+use ConferenceSchedulerBundle\Entity\ConferenceAdmin;
 use ConferenceSchedulerBundle\Entity\User;
+use ConferenceSchedulerBundle\Event\ConferenceEvent;
 
 /**
  * Conference administrators controller.
@@ -27,14 +29,33 @@ class ConferenceAdminController extends Controller {
      * @ParamConverter("conference", class="ConferenceSchedulerBundle:Conference", options={"id"="conference_id"})
      */
     public function indexAction(Conference $conference) {
-        $em = $this->getDoctrine()->getManager();
+        return [
+            'conference' => $conference,
+        ];
+    }
 
-        $admins = $em->getRepository('ConferenceSchedulerBundle:User')
-                ->findAdminsWithoutConference($conference);
+    /**
+     * Lists all users that not administrators
+     *
+     * @Route("/invite", name="conference_admin_invite")
+     * @Method("GET")
+     * @Template()
+     * @ParamConverter("conference", class="ConferenceSchedulerBundle:Conference", options={"id"="conference_id"})
+     */
+    public function inviteAction(Request $request, Conference $conference) {
+        $query = $this->getDoctrine()
+                ->getManager()
+                ->getRepository('ConferenceSchedulerBundle:User')
+                ->findAdminsWithoutConferenceQuery($conference);
+
+        $pagination = $this->get('knp_paginator')
+                ->paginate($query, $request->query->getInt('page', 1))
+        ;
+
 
         return [
             'conference' => $conference,
-            'admins' => $admins,
+            'pagination' => $pagination,
         ];
     }
 
@@ -46,11 +67,26 @@ class ConferenceAdminController extends Controller {
      * @ParamConverter("conference", class="ConferenceSchedulerBundle:Conference", options={"id"="conference_id"})
      */
     public function addAction(Conference $conference, User $user) {
-        $conference->addAdmin($user);
+        $em = $this->getDoctrine()->getManager();
+        $role = $em->getRepository('ConferenceSchedulerBundle:Role')
+                ->findOneBy([
+            'role' => ConferenceAdmin::ROLE_CONFERENCE_ADMIN
+                ])
+        ;
 
-        $this->getDoctrine()->getManager()->flush();
-        
-        // @todo send notification to user
+        $admin = new ConferenceAdmin;
+        $admin->setUser($user);
+        $admin->setConference($conference);
+        $admin->setRole($role);
+
+        $conference->addAdmin($admin);
+
+        $em->flush();
+
+        // dispatch event
+        $event = new ConferenceEvent($conference, $this->getUser());
+        $this->get('event_dispatcher')
+                ->dispatch(ConferenceEvent::EVENT_ADMIN_ADD, $event);
 
         return $this->redirectToRoute('conference_admin_index', [
                     'conference_id' => $conference->getId(),
@@ -62,16 +98,41 @@ class ConferenceAdminController extends Controller {
      *
      * @Route("/{id}/remove", name="conference_admin_remove")
      * @Method({"GET"})
+     * @ParamConverter("conference", class="ConferenceSchedulerBundle:Conference", options={"id"="conference_id"})
      */
     public function removeAction(Conference $conference, User $user) {
-        // @todo before remove relation check if someone is still be administrator of conference
-        $conference->removeAdmin($user);
+        $em = $this->getDoctrine()->getManager();
+
+        $criteria = [
+            'conference' => $conference,
+            'user' => $user,
+        ];
+
+        // before remove relation check if someone is still be administrator of conference
+        $admin = $em->getRepository('ConferenceSchedulerBundle:ConferenceAdmin')
+                ->findOneBy($criteria)
+        ;
+
+        if ($admin === null) {
+            goto redirectToList;
+        }
+
+//        $conference->removeAdmin($admin);
+        $em->remove($admin);
+        $em->flush();
+
+        // dispatch event
+        $event = new ConferenceEvent($conference, $this->getUser());
+        $this->get('event_dispatcher')
+                ->dispatch(ConferenceEvent::EVENT_ADMIN_ADD, $event);
 
         $this->getDoctrine()->getManager()->flush();
 
-        return $this->redirectToRoute('conference_admin_index', [
-                    'conference_id' => $conference->getId(),
-        ]);
+        redirectToList: {
+            return $this->redirectToRoute('conference_admin_index', [
+                        'conference_id' => $conference->getId(),
+            ]);
+        }
     }
 
 }

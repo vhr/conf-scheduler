@@ -68,17 +68,21 @@ class User extends BaseUser {
      * @return string
      */
     public function getNames() {
-        return $this->username;
+        return $this->name;
     }
 
     /**
      * Get either a Gravatar URL or complete image tag for user.
      * 
+     * @param $size
      * @return string
      * @source https://gravatar.com/site/implement/images/php/
      */
-    public function getGravatar() {
-        $url = "https://www.gravatar.com/avatar/" . md5(strtolower(trim($this->email))) . "?s=" . 32;
+    public function getGravatar($size = 32) {
+        $slug = substr(md5("{$this->email}|{$this->username}"), 0, 12);
+        $url = "https://robohash.org/{$slug}.png?size={$size}x{$size}";
+
+//        $url = "https://www.gravatar.com/avatar/" . md5(strtolower(trim($this->email))) . "?s={$size}";
 
         return $url;
     }

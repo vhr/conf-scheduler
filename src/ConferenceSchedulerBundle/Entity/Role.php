@@ -3,6 +3,7 @@
 namespace ConferenceSchedulerBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use DateTime;
 
 /**
  * Role
@@ -10,8 +11,8 @@ use Doctrine\ORM\Mapping as ORM;
  * @ORM\Table(name="role")
  * @ORM\Entity(repositoryClass="ConferenceSchedulerBundle\Repository\RoleRepository")
  */
-class Role
-{
+class Role {
+
     /**
      * @var int
      *
@@ -29,6 +30,13 @@ class Role
     private $name;
 
     /**
+     * @var string
+     *
+     * @ORM\Column(name="role", type="string", length=255)
+     */
+    private $role;
+
+    /**
      * @var \DateTime
      *
      * @ORM\Column(name="created", type="datetime")
@@ -42,6 +50,20 @@ class Role
      */
     private $updated;
 
+    
+    public function __construct() {
+        $this->created = new DateTime;
+        $this->updated = new DateTime;
+    }
+    
+    /**
+     * Get name for string
+     * 
+     * @return string
+     */
+    public function __toString() {
+        return $this->name;
+    }
 
     /*
      * 
@@ -54,8 +76,7 @@ class Role
      *
      * @return int
      */
-    public function getId()
-    {
+    public function getId() {
         return $this->id;
     }
 
@@ -66,8 +87,7 @@ class Role
      *
      * @return Role
      */
-    public function setName($name)
-    {
+    public function setName($name) {
         $this->name = $name;
 
         return $this;
@@ -78,8 +98,7 @@ class Role
      *
      * @return string
      */
-    public function getName()
-    {
+    public function getName() {
         return $this->name;
     }
 
@@ -90,8 +109,7 @@ class Role
      *
      * @return Role
      */
-    public function setCreated($created)
-    {
+    public function setCreated($created) {
         $this->created = $created;
 
         return $this;
@@ -102,8 +120,7 @@ class Role
      *
      * @return \DateTime
      */
-    public function getCreated()
-    {
+    public function getCreated() {
         return $this->created;
     }
 
@@ -114,8 +131,7 @@ class Role
      *
      * @return Role
      */
-    public function setUpdated($updated)
-    {
+    public function setUpdated($updated) {
         $this->updated = $updated;
 
         return $this;
@@ -126,8 +142,32 @@ class Role
      *
      * @return \DateTime
      */
-    public function getUpdated()
-    {
+    public function getUpdated() {
         return $this->updated;
+    }
+
+
+    /**
+     * Set role
+     *
+     * @param string $role
+     *
+     * @return Role
+     */
+    public function setRole($role)
+    {
+        $this->role = $role;
+
+        return $this;
+    }
+
+    /**
+     * Get role
+     *
+     * @return string
+     */
+    public function getRole()
+    {
+        return $this->role;
     }
 }

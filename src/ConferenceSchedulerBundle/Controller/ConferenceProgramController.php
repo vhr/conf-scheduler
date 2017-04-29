@@ -126,16 +126,18 @@ class ConferenceProgramController extends Controller {
      * @ParamConverter("conference", class="ConferenceSchedulerBundle:Conference", options={"id"="conference_id"})
      */
     public function deleteAction(Request $request, Conference $conference, ConferenceProgram $program) {
-        $form = $this->createDeleteForm($conference);
+        $form = $this->createDeleteForm($program);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
             $em = $this->getDoctrine()->getManager();
-            $em->remove($conference);
+            $em->remove($program);
             $em->flush();
         }
 
-        return $this->redirectToRoute('conference_program_index');
+        return $this->redirectToRoute('conference_program_index', [
+                    'conference_id' => $conference->getId(),
+        ]);
     }
 
     /**

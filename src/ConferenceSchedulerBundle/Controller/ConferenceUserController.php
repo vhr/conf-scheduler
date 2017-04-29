@@ -29,7 +29,9 @@ class ConferenceUserController extends Controller {
     public function indexAction(Conference $conference) {
         $em = $this->getDoctrine()->getManager();
 
-        $users = $conference->getUsers();
+        $users = $em->getRepository('ConferenceSchedulerBundle:User')
+                ->findNotUserOrLecturerInConference($conference)
+        ;
 
         return [
             'conference' => $conference,

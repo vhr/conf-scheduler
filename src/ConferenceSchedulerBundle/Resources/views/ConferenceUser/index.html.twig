@@ -8,22 +8,36 @@
         {% include 'ConferenceSchedulerBundle:Conference:tabs.html.twig' with {'conference': conference, 'active': 'users'} %}
 
         <div class="mdl-tabs__panel is-active">
-            <br>
-            <div class="mdl-list">
-                {% for user in users %}
-                <div class="mdl-list__item">
-                    <span class="mdl-list__item-primary-content">
-                        <i class="material-icons mdl-list__item-avatar">person</i>
-                        <span>{{ user.username }}</span>
-                    </span>
-                    <a class="mdl-list__item-secondary-action" href="{{ path('conference_user_remove', { 'conference_id': conference.id, 'id': user.id }) }}"><i class="material-icons">remove</i></a>
+            <div class="mdl-grid">
+                <div class="mdl-cell mdl-cell--6-col">
+                    <h3 class="mdl-layout-title">{{ 'Joined users'|trans }}</h3>
+                    <div class="mdl-list">
+                        {% for user in conference.users %}
+                            <div class="mdl-list__item">
+                                <span class="mdl-list__item-primary-content">
+                                    <i class="material-icons mdl-list__item-avatar">person</i>
+                                    <span>{{ user.username }}</span>
+                                </span>
+                                <a class="mdl-list__item-secondary-action" href="{{ path('conference_user_remove', { 'conference_id': conference.id, 'id': user.id }) }}"><i class="material-icons">remove</i></a>
+                            </div>
+                        {% endfor %}
+                    </div>
                 </div>
-                {% endfor %}
+                <div class="mdl-cell mdl-cell--6-col">
+                    <div class="mdl-list">
+                        {% for user in users %}
+                            <div class="mdl-list__item">
+                                <span class="mdl-list__item-primary-content">
+                                    <i class="material-icons mdl-list__item-avatar">person</i>
+                                    <span>{{ user.username }}</span>
+                                </span>
+                                <a class="mdl-list__item-secondary-action" href="{{ path('conference_user_add', { 'conference_id': conference.id, 'id': user.id }) }}">
+                                    <i class="material-icons">add</i>
+                                </a>
+                            </div>
+                        {% endfor %}
+                    </div>
+                </div>
             </div>
-    <br>
-    <a href="{{ path('conference_user_add', { 'conference_id': conference.id }) }}"  class="mdl-button mdl-js-button mdl-button--fab mdl-js-ripple-effect mdl-button--colored" title="Add me">
-        <i class="material-icons">add</i>
-    </a>
         </div>
-    </div>
-{% endblock %}
+    {% endblock %}

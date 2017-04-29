@@ -39,7 +39,7 @@ class ConferenceProgramLecturer {
      * @var \ConferenceSchedulerBundle\Entity\ConferenceProgram[]
      * 
      * @ORM\ManyToOne(targetEntity="ConferenceSchedulerBundle\Entity\ConferenceProgram", inversedBy="lecturers")
-     * @ORM\JoinColumn(name="lecturer_id", referencedColumnName="id")
+     * @ORM\JoinColumn(name="lecturer_id", referencedColumnName="id", onDelete="CASCADE")
      */
     private $program;
 

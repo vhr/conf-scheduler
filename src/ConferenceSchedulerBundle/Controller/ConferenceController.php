@@ -10,6 +10,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Component\HttpFoundation\Request;
 use ConferenceSchedulerBundle\Form\ConferenceType;
 use ConferenceSchedulerBundle\Event\ConferenceEvent;
+use ConferenceSchedulerBundle\Entity\ConferenceAdmin;
 use DateTime;
 
 /**
@@ -50,6 +51,17 @@ class ConferenceController extends Controller {
 
         if ($form->isSubmitted() && $form->isValid()) {
             $em = $this->getDoctrine()->getManager();
+
+            $role = $em->getRepository('ConferenceSchedulerBundle:Role')->findOneBy([
+                'role' => ConferenceAdmin::ROLE_CONFERENCE_OWNER,
+            ]);
+
+            $admin = new ConferenceAdmin;
+            $admin->setUser($this->getUser());
+            $admin->setConference($conference);
+            $admin->setRole($role);
+
+            $conference->addAdmin($admin);
             $em->persist($conference);
             $em->flush();
 
@@ -131,7 +143,7 @@ class ConferenceController extends Controller {
     public function dismissAction(Conference $conference) {
         $deleted = new DateTime;
         $conference->setDeleted($deleted);
-        
+
         // dispatch event
         $event = new ConferenceEvent($conference, $this->getUser());
         $this->get('event_dispatcher')

@@ -1,0 +1,8 @@
+#parameters:
+#    conference.registration.class: ConferenceSchedulerDevBundle\EventListener\RegistrationListener
+
+#services:
+#    conference.manager:
+#        class: "%conference.manager.class%"
+#        arguments:
+#            - "@doctrine.orm.default_entity_manager"

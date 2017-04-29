@@ -14,6 +14,7 @@ class ConferenceLecturer {
 
     const STATUS_ACTIVE = 1;
     const STATUS_PENDING = 2;
+    const STATUS_REJECTED = 3;
 
     /**
      * @var int
@@ -52,6 +53,29 @@ class ConferenceLecturer {
      */
     public function __construct() {
         $this->status = static::STATUS_PENDING;
+    }
+
+    /**
+     * Get status name
+     * 
+     * @return string
+     */
+    public function statusName() {
+        $name = '';
+
+        switch ($this->status) {
+            case static::STATUS_ACTIVE:
+                $name = 'Active';
+                break;
+            case static::STATUS_PENDING:
+                $name = 'Pending';
+                break;
+            case static::STATUS_REJECTED:
+                $name = 'Rejected';
+                break;
+        }
+
+        return $name;
     }
 
     /*
