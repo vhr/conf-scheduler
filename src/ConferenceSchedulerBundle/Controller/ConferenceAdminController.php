@@ -84,7 +84,7 @@ class ConferenceAdminController extends Controller {
         $em->flush();
 
         // dispatch event
-        $event = new ConferenceEvent($conference, $this->getUser());
+        $event = new ConferenceEvent($conference, $user);
         $this->get('event_dispatcher')
                 ->dispatch(ConferenceEvent::EVENT_ADMIN_ADD, $event);
         
@@ -124,7 +124,7 @@ class ConferenceAdminController extends Controller {
         $em->flush();
 
         // dispatch event
-        $event = new ConferenceEvent($conference, $this->getUser());
+        $event = new ConferenceEvent($conference, $user);
         $this->get('event_dispatcher')
                 ->dispatch(ConferenceEvent::EVENT_ADMIN_ADD, $event);
         

@@ -13,10 +13,10 @@
                     </span>
                     <span class="mdl-list__item-secondary-content">
                         <a id="user-admin-add" class="mdl-list__item-secondary-action" href="{{ path('conference_admin_invite', { 'conference_id': conference.id }) }}">
-                            <i class="material-icons">person_add</i>
+                            <i class="material-icons">group_add</i>
                         </a>
                         <div class="mdl-tooltip" data-mdl-for="user-admin-add">
-                            Add administrators
+                            {{ 'Add administrators'|trans }}
                         </div>
                     </span>
                 </div>
@@ -40,7 +40,7 @@
                                     <i class="material-icons">clear</i>
                                 </a>
                                 <div class="mdl-tooltip" data-mdl-for="user-admin-{{ user.id }}">
-                                    Remove user from administrators
+                                    {{ 'Remove user from administrators'|trans }}
                                 </div>
                             {% endif %}
                         </span>

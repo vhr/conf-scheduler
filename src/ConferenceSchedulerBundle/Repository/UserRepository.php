@@ -47,6 +47,24 @@ class UserRepository extends EntityRepository {
     }
 
     /**
+     * Find all users who are not in invited for lecturers and not join as users to conference
+     * 
+     * @param Conference $conference
+     * @return array
+     */
+    public function findNotUserOrLecturerInConferenceQuery(Conference $conference) {
+        $result = $this->createQueryBuilder('t')
+                ->leftJoin('ConferenceSchedulerBundle:ConferenceLecturer', 'cl', 'WITH', 't.id = cl.user')
+                ->leftJoin('ConferenceSchedulerBundle:ConferenceUser', 'cu', 'WITH', 't.id = cu.user')
+                ->where('(cl.id IS NULL OR cl.conference <> :conference) AND (cu.id IS NULL OR cu.conference <> :conference)')
+                ->setParameter('conference', $conference)
+                ->getQuery()
+        ;
+
+        return $result;
+    }
+
+    /**
      * Find all administrators who are not in specific conference
      * 
      * @param Conference $conference

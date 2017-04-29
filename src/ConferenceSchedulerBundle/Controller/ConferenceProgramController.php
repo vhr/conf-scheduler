@@ -83,7 +83,7 @@ class ConferenceProgramController extends Controller {
 
         return [
             'conference' => $conference,
-            'program' => $program,
+            'program' => $conferenceProgram,
             'form' => $form->createView(),
         ];
     }

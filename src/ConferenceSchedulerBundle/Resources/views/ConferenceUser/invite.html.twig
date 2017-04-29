@@ -2,7 +2,7 @@
 
 {% block body %}
     <div class="mdl-tabs mdl-js-tabs ">
-        {% include 'ConferenceSchedulerBundle:Conference:tabs.html.twig' with {'conference': conference, 'active': 'lecturers'} %}
+        {% include 'ConferenceSchedulerBundle:Conference:tabs.html.twig' with {'conference': conference, 'active': 'users'} %}
 
         <div class="mdl-tabs__panel is-active">
             <div class="mdl-list">
@@ -27,11 +27,11 @@
                             </span>
                         </span>
                         <span class="mdl-list__item-secondary-content">
-                            <a id="lecturer-add-{{ user.id }}" class="mdl-list__item-secondary-action" href="{{ path('conference_lecturer_add', { 'conference_id': conference.id, 'id': user.id }) }}" class="mdl-button mdl-js-button">
-                                <i class="material-icons">send</i>
+                            <a id="user-add-{{ user.id }}" class="mdl-list__item-secondary-action" href="{{ path('conference_user_add', { 'conference_id': conference.id, 'id': user.id }) }}" class="mdl-button mdl-js-button">
+                                <i class="material-icons">person_add</i>
                             </a>
-                            <div class="mdl-tooltip" data-mdl-for="lecturer-add-{{ user.id }}">
-                                {{ 'Send an invitation'|trans }}
+                            <div class="mdl-tooltip" data-mdl-for="user-add-{{ user.id }}">
+                                {{ 'Add user to conference'|trans }}
                             </div>
                         </span>
                     </div>

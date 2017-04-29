@@ -60,7 +60,7 @@ class ConferenceLecturer {
      * 
      * @return string
      */
-    public function statusName() {
+    public function getStatusName() {
         $name = '';
 
         switch ($this->status) {

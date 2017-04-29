@@ -82,7 +82,7 @@ class ConferenceLecturerController extends Controller {
         $em->flush();
 
         // dispatch event
-        $event = new ConferenceEvent($conference, $this->getUser());
+        $event = new ConferenceEvent($conference, $user);
         $this->get('event_dispatcher')
                 ->dispatch(ConferenceEvent::EVENT_LECTURER_ADD, $event);
 
@@ -112,20 +112,26 @@ class ConferenceLecturerController extends Controller {
             'user' => $user,
         ]);
 
+        if ($lecturer === null) {
+            goto redirectToList;
+        }
+
         $em->remove($lecturer);
         $em->flush();
 
         // dispatch event
-        $event = new ConferenceEvent($conference, $this->getUser());
+        $event = new ConferenceEvent($conference, $user);
         $this->get('event_dispatcher')
                 ->dispatch(ConferenceEvent::EVENT_LECTURER_DELETE, $event);
 
         // flashbag
         $this->addFlash('notice', 'User has been removed from lecturers');
 
-        return $this->redirectToRoute('conference_lecturer_index', [
-                    'conference_id' => $conference->getId(),
-        ]);
+        redirectToList: {
+            return $this->redirectToRoute('conference_lecturer_index', [
+                        'conference_id' => $conference->getId(),
+            ]);
+        }
     }
 
 }

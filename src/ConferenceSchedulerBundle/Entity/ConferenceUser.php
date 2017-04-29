@@ -68,6 +68,29 @@ class ConferenceUser {
         $this->status = static::STATUS_ACTIVE;
     }
 
+    /**
+     * Get status name
+     * 
+     * @return string
+     */
+    public function getStatusName() {
+        $name = '';
+
+        switch ($this->status) {
+            case static::STATUS_ACTIVE:
+                $name = 'Active';
+                break;
+            case static::STATUS_PENDING:
+                $name = 'Pending';
+                break;
+            case static::STATUS_REFUSED:
+                $name = 'Refused';
+                break;
+        }
+
+        return $name;
+    }
+
     /*
      * 
      * Auto generated

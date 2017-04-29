@@ -8,36 +8,41 @@
         {% include 'ConferenceSchedulerBundle:Conference:tabs.html.twig' with {'conference': conference, 'active': 'users'} %}
 
         <div class="mdl-tabs__panel is-active">
-            <div class="mdl-grid">
-                <div class="mdl-cell mdl-cell--6-col">
-                    <h3 class="mdl-layout-title">{{ 'Joined users'|trans }}</h3>
-                    <div class="mdl-list">
-                        {% for user in conference.users %}
-                            <div class="mdl-list__item">
-                                <span class="mdl-list__item-primary-content">
-                                    <i class="material-icons mdl-list__item-avatar">person</i>
-                                    <span>{{ user.username }}</span>
-                                </span>
-                                <a class="mdl-list__item-secondary-action" href="{{ path('conference_user_remove', { 'conference_id': conference.id, 'id': user.id }) }}"><i class="material-icons">remove</i></a>
-                            </div>
-                        {% endfor %}
-                    </div>
+            <div class="mdl-list">
+                <div class="mdl-list__item">
+                    <span class="mdl-list__item-primary-content">
+                        <span>
+                            <h6>{{ 'Joined users'|trans }} ({{ totalUsers }}/{{ conference.hall.userLimit }})</h6>
+                        </span>
+                    </span>
+                    <span class="mdl-list__item-secondary-content">
+                        <a id="user-add" class="mdl-list__item-secondary-action" href="{{ path('conference_user_invite', { 'conference_id': conference.id }) }}">
+                            <i class="material-icons">group_add</i>
+                        </a>
+                        <div class="mdl-tooltip" data-mdl-for="user-add">
+                            {{ 'Add users to the conference'|trans }}
+                        </div>
+                    </span>
                 </div>
-                <div class="mdl-cell mdl-cell--6-col">
-                    <div class="mdl-list">
-                        {% for user in users %}
-                            <div class="mdl-list__item">
-                                <span class="mdl-list__item-primary-content">
-                                    <i class="material-icons mdl-list__item-avatar">person</i>
-                                    <span>{{ user.username }}</span>
-                                </span>
-                                <a class="mdl-list__item-secondary-action" href="{{ path('conference_user_add', { 'conference_id': conference.id, 'id': user.id }) }}">
-                                    <i class="material-icons">add</i>
-                                </a>
-                            </div>
-                        {% endfor %}
+                {% for confUser in conference.users %}
+                    {% set user = confUser.user %}
+                    <div class="mdl-list__item mdl-list__item--three-line">
+                        <span class="mdl-list__item-primary-content">
+                            {% if user.gravatar %}
+                                <img src="{{ user.gravatar(40) }}" class="mdl-list__item-avatar" alt="{{ user.names|e }}">
+                            {% else %}
+                                <i class="material-icons mdl-list__item-avatar">person</i>
+                            {% endif %}
+                            <span>{{ user.names }}</span>
+                            <span class="mdl-list__item-text-body">
+                                {{ confUser.statusName }}
+                            </span>
+                        </span>
+                        <a class="mdl-list__item-secondary-action" href="{{ path('conference_user_remove', { 'conference_id': conference.id, 'id': user.id }) }}">
+                            <i class="material-icons">clear</i>
+                        </a>
                     </div>
-                </div>
+                {% endfor %}
             </div>
         </div>
     {% endblock %}

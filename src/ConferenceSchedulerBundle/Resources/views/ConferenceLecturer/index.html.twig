@@ -20,7 +20,7 @@
                             <i class="material-icons">send</i>
                         </a>
                         <div class="mdl-tooltip" data-mdl-for="user-lecturer-add">
-                            Invite lectorers
+                            {{ 'Invite lectorers'|trans }}
                         </div>
                     </span>
                 </div>
@@ -42,26 +42,11 @@
                             <i class="material-icons">clear</i>
                         </a>
                         <div class="mdl-tooltip" data-mdl-for="lecturer-{{ user.id }}">
-                            Remove user from lecturers
+                            {{ 'Remove user from lecturers'|trans }}
                         </div>
                     </div>
                 {% endfor %}
             </div>
-            {#<div class="mdl-cell mdl-cell--6-col">
-                <div class="mdl-list">
-                    {% for user in users %}
-                        <div class="mdl-list__item">
-                            <span class="mdl-list__item-primary-content">
-                                <i class="material-icons mdl-list__item-avatar">person</i>
-                                <span>{{ user.username }}</span>
-                            </span>
-                            <a class="mdl-list__item-secondary-action" href="{{ path('conference_lecturer_add', { 'conference_id': conference.id, 'id': user.id }) }}">
-                                <i class="material-icons">add</i>
-                            </a>
-                        </div>
-                    {% endfor %}
-                </div>
-            </div>#}
         </div>
     </div>
 {% endblock %}
