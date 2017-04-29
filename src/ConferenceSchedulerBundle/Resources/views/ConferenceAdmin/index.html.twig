@@ -1,16 +1,26 @@
 {% extends 'base.html.twig' %}
 
-{% set nav = 'conference' %}
-
 {% block body %}
-
     <div class="mdl-tabs mdl-js-tabs ">
         {% include 'ConferenceSchedulerBundle:Conference:tabs.html.twig' with {'conference': conference, 'active': 'admins'} %}
-
         <div class="mdl-tabs__panel is-active">
-            <br>
             <div class="mdl-list">
-                {% for admin in conference.admins %}{# mdl-list__item--three-line#}
+                <div class="mdl-list__item">
+                    <span class="mdl-list__item-primary-content">
+                        <span>
+                            <h6>{{ 'Administrators'|trans }}</h6>
+                        </span>
+                    </span>
+                    <span class="mdl-list__item-secondary-content">
+                        <a id="user-admin-add" class="mdl-list__item-secondary-action" href="{{ path('conference_admin_invite', { 'conference_id': conference.id }) }}">
+                            <i class="material-icons">person_add</i>
+                        </a>
+                        <div class="mdl-tooltip" data-mdl-for="user-admin-add">
+                            Add administrators
+                        </div>
+                    </span>
+                </div>
+                {% for admin in conference.admins %}
                     {% set user = admin.user %}
                     <div class="mdl-list__item mdl-list__item--three-line">
                         <span class="mdl-list__item-primary-content">
@@ -26,39 +36,17 @@
                         </span>
                         <span class="mdl-list__item-secondary-content">
                             {% if app.user.id != user.id %}
-                                {#<span class="mdl-list__item-secondary-info">remove</span>#}
-                                <a class="mdl-list__item-secondary-action" href="{{ path('conference_admin_remove', { 'conference_id': conference.id, 'id': user.id }) }}">
+                                <a id="user-admin-{{ user.id }}" class="mdl-list__item-secondary-action" href="{{ path('conference_admin_remove', { 'conference_id': conference.id, 'id': user.id }) }}">
                                     <i class="material-icons">clear</i>
                                 </a>
+                                <div class="mdl-tooltip" data-mdl-for="user-admin-{{ user.id }}">
+                                    Remove user from administrators
+                                </div>
                             {% endif %}
                         </span>
                     </div>
                 {% endfor %}
             </div>
-            <a class="mdl-button mdl-js-button mdl-js-ripple-effect" href="{{ path('conference_admin_invite', { 'conference_id': conference.id }) }}">
-                Invite
-            </a>
-            {#<br>
-            <table class="mdl-data-table mdl-js-data-table mdl-shadow--2dp">
-                <thead>
-                    <tr>
-                        <th class="mdl-data-table__cell--non-numeric">Username</th>
-                        <th class="mdl-data-table__cell--non-numeric">Email</th>
-                        <th>Actions</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {% for user in admins %}
-                        <tr>
-                            <td class="mdl-data-table__cell--non-numeric">{{ user.username }}</td>
-                            <td class="mdl-data-table__cell--non-numeric">{{ user.email }}</td>
-                            <td>
-                                <a href="{{ path('conference_admin_add', { 'conference_id': conference.id, 'id': user.id }) }}" class="mdl-button mdl-js-button">add</a>
-                            </td>
-                        </tr>
-                    {% endfor %}
-                </tbody>
-            </table>#}
         </div>
     </div>
 {% endblock %}

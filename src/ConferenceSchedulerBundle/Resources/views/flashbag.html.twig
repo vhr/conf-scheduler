@@ -1,0 +1,22 @@
+{% if app.session.flashBag.has('notice') %}
+    <div aria-live="assertive" aria-atomic="true" aria-relevant="text" class="mdl-snackbar mdl-js-snackbar notice">
+        <div class="mdl-snackbar__text"></div>
+        <button type="button" class="mdl-snackbar__action"></button>
+    </div>
+    <script>
+        (function () {
+            'use strict';
+            $(document).ready(function () {
+                var notification = document.querySelector('.mdl-js-snackbar.notice');
+
+                setTimeout(function () {
+        {% for flash_message in app.session.flashBag.get('notice') %}
+                        notification.MaterialSnackbar.showSnackbar({
+                            message: '{{ flash_message|e }}'
+                        });
+                    }, 400);
+        {% endfor %}
+                });
+            }());
+    </script>
+{% endif %}

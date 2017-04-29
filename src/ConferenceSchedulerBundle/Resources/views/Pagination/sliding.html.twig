@@ -1,0 +1,44 @@
+{# default Sliding pagination control implementation #}
+
+{% if pageCount > 1 %}
+    <div class="mdl-paging">
+        {#<span class="mdl-paging__per-page">
+            <span class="mdl-paging__per-page-label">Results par page:</span>
+        </span>
+        <span class="mdl-paging__count">1-10 of 25</span>#}
+        {#{% if first is defined and current != first %}
+            <span class="first">
+                <a href="{{ path(route, query|merge({(pageParameterName): first})) }}" class="mdl-button mdl-js-button mdl-js-ripple-effect">&lt;&lt;</a>
+            </span>
+        {% endif %}#}
+
+        {% if previous is defined %}
+            <a href="{{ path(route, query|merge({(pageParameterName): previous})) }}" class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon mdl-paging__prev">
+                <i class="material-icons">keyboard_arrow_left</i>
+            </a>
+        {% endif %}
+
+        {#{% for page in pagesInRange %}
+            {% if page != current %}
+                <span class="page">
+                    <a href="{{ path(route, query|merge({(pageParameterName): page})) }}" class="mdl-button mdl-js-button mdl-js-ripple-effect">{{ page }}</a>
+                </span>
+            {% else %}
+                <span class="current">{{ page }}</span>
+            {% endif %}
+    
+        {% endfor %}#}
+
+        {% if next is defined %}
+            <a href="{{ path(route, query|merge({(pageParameterName): next})) }}" class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon mdl-paging__next">
+                <i class="material-icons">keyboard_arrow_right</i>
+            </a>
+        {% endif %}
+
+        {#{% if last is defined and current != last %}
+            <span class="last">
+                <a href="{{ path(route, query|merge({(pageParameterName): last})) }}" class="mdl-button mdl-js-button mdl-js-ripple-effect">&gt;&gt;</a>
+            </span>
+        {% endif %}#}
+    </div>
+{% endif %}

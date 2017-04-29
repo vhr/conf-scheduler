@@ -87,8 +87,11 @@ class ConferenceAdminController extends Controller {
         $event = new ConferenceEvent($conference, $this->getUser());
         $this->get('event_dispatcher')
                 ->dispatch(ConferenceEvent::EVENT_ADMIN_ADD, $event);
+        
+        // flashbag
+        $this->addFlash('notice', 'User is added');
 
-        return $this->redirectToRoute('conference_admin_index', [
+        return $this->redirectToRoute('conference_admin_invite', [
                     'conference_id' => $conference->getId(),
         ]);
     }
@@ -117,7 +120,6 @@ class ConferenceAdminController extends Controller {
             goto redirectToList;
         }
 
-//        $conference->removeAdmin($admin);
         $em->remove($admin);
         $em->flush();
 
