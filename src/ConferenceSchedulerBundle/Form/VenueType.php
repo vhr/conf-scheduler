@@ -13,7 +13,10 @@ class VenueType extends AbstractType {
      * {@inheritdoc}
      */
     public function buildForm(FormBuilderInterface $builder, array $options) {
-        $builder->add('name')->add('address');
+        $builder->add('name')
+                ->add('address')
+                ->add('image')
+        ;
     }
 
     /**

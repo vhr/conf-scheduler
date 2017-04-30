@@ -18,10 +18,8 @@ class ConferenceType extends AbstractType {
      */
     public function buildForm(FormBuilderInterface $builder, array $options) {
         $builder->add('title')
-//                ->add('date', DateType::class)
-//                ->add('start', TimeType::class)
-//                ->add('end', TimeType::class)
                 ->add('description')
+                ->add('image')
                 ->add('access', ChoiceType::class, [
                     'choices' => [
                         'Open' => 1,

@@ -5,26 +5,43 @@ namespace ConferenceSchedulerBundle\Controller;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
+use Symfony\Component\HttpFoundation\Request;
+use ConferenceSchedulerBundle\Entity\Conference;
 
-class DefaultController extends Controller {
+class PublicConferenceController extends Controller {
 
     /**
      * @Route("/", name="homepage")
      * @Template()
      */
-    public function indexAction() {
-        $conferences = $this->getDoctrine()
+    public function indexAction(Request $request) {
+        $query = $this->getDoctrine()
                 ->getManager()
                 ->getRepository('ConferenceSchedulerBundle:Conference')
-                ->findAll();
+                ->findAllByAccessQuery($this->getUser());
+
+        $pagination = $this->get('knp_paginator')
+                ->paginate($query, $request->query->getInt('page', 1))
+        ;
 
         return [
-            'conferences' => $conferences,
+            'pagination' => $pagination,
         ];
     }
 
     /**
-     * @Route("/schedule", name="schedule_index")
+     * @Route("/{id}/conference", name="public_conference_show")
+     * @Template()
+     */
+    public function showAction(Conference $conference) {
+
+        return [
+            'conference' => $conference,
+        ];
+    }
+
+    /**
+     * @Route("/schedule", name="public_schedule")
      * @Template()
      */
     public function scheduleAction() {
@@ -35,6 +52,21 @@ class DefaultController extends Controller {
 
         return [
 //            'conferences' => $conferences,
+        ];
+    }
+
+    /**
+     * @Route("/halls", name="public_halls")
+     * @Template()
+     */
+    public function hallsAction() {
+        $halls = $this->getDoctrine()
+                ->getManager()
+                ->getRepository('ConferenceSchedulerBundle:Hall')
+                ->findAll();
+
+        return [
+            'halls' => $halls,
         ];
     }
 

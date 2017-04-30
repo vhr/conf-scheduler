@@ -39,6 +39,13 @@ class Conference {
     private $description;
 
     /**
+     * @var string
+     *
+     * @ORM\Column(name="image", type="string", length=255, nullable=true)
+     */
+    private $image;
+
+    /**
      * @var int
      *
      * @ORM\Column(name="access", type="smallint", nullable=true)
@@ -539,4 +546,28 @@ class Conference {
         return $this->users;
     }
 
+
+    /**
+     * Set image
+     *
+     * @param string $image
+     *
+     * @return Conference
+     */
+    public function setImage($image)
+    {
+        $this->image = $image;
+
+        return $this;
+    }
+
+    /**
+     * Get image
+     *
+     * @return string
+     */
+    public function getImage()
+    {
+        return $this->image;
+    }
 }

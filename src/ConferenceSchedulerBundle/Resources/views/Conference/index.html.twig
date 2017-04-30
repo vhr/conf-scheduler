@@ -24,6 +24,9 @@
         {% for conference in pagination %}
             <div class="mdl-list__item mdl-list__item--three-line">
                 <span class="mdl-list__item-primary-content">
+                    {% if conference.image %}
+                        <img src="{{ conference.image }}" class="mdl-list__item-avatar" alt="{{ conference.title|e }}">
+                    {% endif %}
                     <span href="{{ path('conference_show', { 'id': conference.id }) }}">{{ conference.title }}</span>
                     <span class="mdl-list__item-text-body">
                         {% if conference.programStart %}

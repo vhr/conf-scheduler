@@ -17,7 +17,7 @@ class ConferenceRepository extends EntityRepository {
      * @param User $user
      * @return \Doctrine\ORM\Query
      */
-    public function findAllByAccessQuery(User $user) {
+    public function findAllByAccessQuery(User $user = null) {
         $result = $this->createQueryBuilder('t')
                 ->where('t.date IS NULL OR t.date >= :now')
                 ->setParameter('now', new DateTime)

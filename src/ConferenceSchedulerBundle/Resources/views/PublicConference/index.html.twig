@@ -1,0 +1,34 @@
+{% extends "::base.html.twig" %}
+
+{% block title %}
+    {{ 'Conferences'|trans }}
+{% endblock %}
+
+{% block layout_title %}
+    {{ 'Conferences'|trans }}
+{% endblock %}
+
+{% block body %}
+    <div class="mdl-grid">
+        {% for conference in pagination %}
+            <div class="mdl-cell mdl-cell--4-col mdl-card mdl-shadow--2dp">{# portfolio-card mdl-shadow--4dp #}
+                <div class="mdl-card__media">
+                    <img class="article-image" src="{{ conference.image }}" border="0" height="200" alt="{{ conference.title|e }}">
+                </div>
+                <div class="mdl-card__title">
+                    <h2 class="mdl-card__title-text">{{ conference.title }}</h2>
+                </div>
+                <div class="mdl-card__supporting-text">
+                    {% if conference.programStart %}
+                        {{ '%date% starts at %start% ends at %end%'|trans({ '%date%': conference.date|date('M d'), '%start%': conference.programStart|date('H:i'), '%end%': conference.programEnd|date('H:i') }) }}
+                    {% else %}
+                        {{ conference.date|date('M d') }}
+                    {% endif %}
+                </div>
+                <div class="mdl-card__actions mdl-card--border">
+                    <a class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect" href="{{ path('public_conference_show', { 'id': conference.id }) }}">{{ 'More'|trans }}</a>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+{% endblock %}

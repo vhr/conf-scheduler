@@ -37,6 +37,20 @@ class Hall {
     private $userLimit;
 
     /**
+     * @var string
+     *
+     * @ORM\Column(name="image", type="string", length=255, nullable=true)
+     */
+    private $image;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="description", type="text")
+     */
+    private $description;
+
+    /**
      * @ORM\ManyToOne(targetEntity="ConferenceSchedulerBundle\Entity\Venue")
      * @ORM\JoinColumn(name="venue_id", referencedColumnName="id")
      */
@@ -179,4 +193,50 @@ class Hall {
         return $this->goods;
     }
 
+    /**
+     * Set image
+     *
+     * @param string $image
+     *
+     * @return Hall
+     */
+    public function setImage($image) {
+        $this->image = $image;
+
+        return $this;
+    }
+
+    /**
+     * Get image
+     *
+     * @return string
+     */
+    public function getImage() {
+        return $this->image;
+    }
+
+
+    /**
+     * Set description
+     *
+     * @param string $description
+     *
+     * @return Hall
+     */
+    public function setDescription($description)
+    {
+        $this->description = $description;
+
+        return $this;
+    }
+
+    /**
+     * Get description
+     *
+     * @return string
+     */
+    public function getDescription()
+    {
+        return $this->description;
+    }
 }

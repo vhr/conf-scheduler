@@ -31,6 +31,13 @@ class Venue {
     /**
      * @var string
      *
+     * @ORM\Column(name="image", type="string", length=255, nullable=true)
+     */
+    private $image;
+
+    /**
+     * @var string
+     *
      * @ORM\Column(name="address", type="text", nullable=true)
      */
     private $address;
@@ -94,4 +101,28 @@ class Venue {
         return $this->address;
     }
 
+
+    /**
+     * Set image
+     *
+     * @param string $image
+     *
+     * @return Venue
+     */
+    public function setImage($image)
+    {
+        $this->image = $image;
+
+        return $this;
+    }
+
+    /**
+     * Get image
+     *
+     * @return string
+     */
+    public function getImage()
+    {
+        return $this->image;
+    }
 }

@@ -17,6 +17,8 @@ class HallType extends AbstractType {
     public function buildForm(FormBuilderInterface $builder, array $options) {
         $builder->add('name')
                 ->add('userLimit')
+                ->add('image')
+                ->add('description')
                 ->add('goods', CollectionType::class, [
                     'entry_type' => GoodsType::class,
                     'allow_add' => true,
