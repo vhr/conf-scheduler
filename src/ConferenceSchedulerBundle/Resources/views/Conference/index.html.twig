@@ -42,7 +42,7 @@
                         <i class="material-icons">more_vert</i>
                     </button>
 
-                    <ul class="mdl-menu mdl-menu--bottom-left mdl-js-menu mdl-js-ripple-effect" for="conference-menu-{{ conference.id }}">
+                    <ul class="mdl-menu mdl-menu--bottom-right mdl-js-menu mdl-js-ripple-effect" for="conference-menu-{{ conference.id }}">
                         {% if conference.isDeleted == false %}
                             <li class="mdl-menu__item mdl-menu__item--full-bleed-divider" href="{{ path('conference_edit', { 'id': conference.id }) }}">
                                 {{ 'Edit'|trans }}

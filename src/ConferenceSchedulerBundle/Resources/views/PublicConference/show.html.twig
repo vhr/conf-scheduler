@@ -13,14 +13,17 @@
 {% endblock %}
 
 {% block body %}
-    <h1>{{ conference.title }}</h1>
-    <i>
-        {% if conference.programStart %}
+    <h3 style="margin: 20px 20px">{{ conference.title }} </h3>
+    
+    <p style="margin: 0 20px">
+        <i class="mdl-color-text--primary">
+            {% if conference.programStart %}
             {{ '%date% starts at %start% ends at %end%'|trans({ '%date%': conference.date|date('M d'), '%start%': conference.programStart|date('H:i'), '%end%': conference.programEnd|date('H:i') }) }}
         {% else %}
             {{ conference.date|date('M d') }}
         {% endif %}
-    </i>
+        </i>
+    </p>
 {#    <img class="article-image" src="{{ conference.image }}" border="0" width="100%" alt="{{ conference.title|e }}"/>#}
 
     {% if conference.programs|length > 0 %}
@@ -47,15 +50,15 @@
         </div>
     {% endif %}
 
-    <p>{{ conference.description|nl2br }}</p>
+    <p style="margin: 0 20px">{{ conference.description|nl2br }}</p>
 
     {% if joined == null %}
         <div class="mdl-grid">
             <div class="mdl-cell mdl-cell--6-col">
-                <a href="{{ path('public_conference_join', { 'id': conference.id }) }}" class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--raised mdl-color--primary mdl-color-text--white">{{ 'Join'|trans }}</a>
+                <h5>{{ 'Price: %price%'|trans({ '%price%': conference.price }) }}</h5>
             </div>
             <div class="mdl-cell mdl-cell--6-col">
-                <h5>{{ 'Price: %price%'|trans({ '%price%': conference.price }) }}</h5>
+                <a href="{{ path('public_conference_join', { 'id': conference.id }) }}" style="float: right" class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--raised mdl-color--primary mdl-color-text--white">{{ 'Join'|trans }}</a>
             </div>
         </div>
     {% else %}

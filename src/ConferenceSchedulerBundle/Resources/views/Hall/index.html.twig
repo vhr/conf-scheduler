@@ -47,7 +47,7 @@
                             <i class="material-icons">more_vert</i>
                         </button>
 
-                        <ul class="mdl-menu mdl-menu--bottom-left mdl-js-menu mdl-js-ripple-effect" for="hall-menu-{{ hall.id }}">
+                        <ul class="mdl-menu mdl-menu--bottom-right mdl-js-menu mdl-js-ripple-effect" for="hall-menu-{{ hall.id }}">
                             <li class="mdl-menu__item" href="{{ path('hall_show', { 'venue_id': venue.id, 'id': hall.id }) }}">
                                 {{ 'Preview'|trans }}
                             </li>
