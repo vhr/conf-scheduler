@@ -35,9 +35,9 @@
                         </span>
                         <span class="mdl-list__item-text-body">
                             {% for lecturer in event.lecturers %}
-                                <span id="lecturer-{{ lecturer.id }}" class="mdl-chip mdl-chip--contact">
+                                <span id="lecturer-{{ lecturer.id }}" class="mdl-chip mdl-chip--contact{% if lecturer.mustVisit %} mdl-color--primary{% else %} mdl-color--grey-500{% endif %}">
                                     <img class="mdl-chip__contact" src="{{ lecturer.user.gravatar }}"></img>
-                                    <span class="mdl-chip__text{% if lecturer.mustVisit %} mdl-color-text--primary{% endif %}">{{ lecturer.user.names }}</span>
+                                    <span class="mdl-chip__text mdl-color-text--white">{{ lecturer.user.names }}</span>
                                 </span>
                                 {% if lecturer.mustVisit %}
                                     <div class="mdl-tooltip" data-mdl-for="lecturer-{{ lecturer.id }}">

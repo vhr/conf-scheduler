@@ -39,6 +39,13 @@ class User extends BaseUser {
     protected $name;
 
     /**
+     * @var int
+     *
+     * @ORM\Column(name="coins", type="smallint", options={"default" : 1000})
+     */
+    private $coins;
+
+    /**
      * @var \DateTime
      *
      * @ORM\Column(name="created", type="datetime")
@@ -174,4 +181,28 @@ class User extends BaseUser {
         return $this->name;
     }
 
+
+    /**
+     * Set coins
+     *
+     * @param integer $coins
+     *
+     * @return User
+     */
+    public function setCoins($coins)
+    {
+        $this->coins = $coins;
+
+        return $this;
+    }
+
+    /**
+     * Get coins
+     *
+     * @return integer
+     */
+    public function getCoins()
+    {
+        return $this->coins;
+    }
 }

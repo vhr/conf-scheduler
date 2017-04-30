@@ -9,12 +9,17 @@
 
     {{ form_start(form) }}
     {{ form_widget(form) }}
-    <input type="submit" value="Create" />
+    <div class="mdl-grid">
+        <div class="mdl-cell mdl-cell--6-col">
+            <button type="submit" class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--raised mdl-color--primary mdl-color-text--white">
+                {{ 'Create'|trans }}
+            </button>
+        </div>
+        <div class="mdl-cell mdl-cell--6-col">
+            <a href="{{ path('conference_index', { 'id': conference.id }) }}" class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--raised mdl-color--grey-600 mdl-color-text--white">
+                {{ 'Back'|trans }}
+            </a>
+        </div>
+    </div>
     {{ form_end(form) }}
-
-    <ul>
-        <li>
-            <a href="{{ path('conference_index') }}">Back to the list</a>
-        </li>
-    </ul>
 {% endblock %}

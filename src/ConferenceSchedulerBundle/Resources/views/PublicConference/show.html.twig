@@ -17,7 +17,7 @@
             {{ conference.date|date('M d') }}
         {% endif %}
     </i>
-    <img class="article-image" src="{{ conference.image }}" border="0" width="100%" alt="{{ conference.title|e }}">
+    <img class="article-image" src="{{ conference.image }}" border="0" width="100%" alt="{{ conference.title|e }}"/>
 
     {% if conference.programs|length > 0 %}
         <div class="mdl-list">
@@ -44,6 +44,41 @@
     {% endif %}
 
     <p>{{ conference.description|nl2br }}</p>
+
+    {% if joined == null %}
+        <div class="mdl-grid">
+            <div class="mdl-cell mdl-cell--6-col">
+                <a href="{{ path('public_conference_join', { 'id': conference.id }) }}" class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--raised mdl-color--primary mdl-color-text--white">{{ 'Join'|trans }}</a>
+            </div>
+            <div class="mdl-cell mdl-cell--6-col">
+                <h5>{{ 'Price: %price%'|trans({ '%price%': conference.price }) }}</h5>
+            </div>
+        </div>
+    {% else %}
+        <h5 style="text-align: center" class="mdl-color-text--accent">{{ 'You have joined'|trans }}</h5>
+    {% endif %}
+
+    {% if conference.hall %}
+        <div class="mdl-list">
+            <div class="mdl-list__item">
+                <span class="mdl-list__item-primary-content">
+                    <h4 id="hall">{{ 'Hall'|trans }} {{ totalUsers }}/{{ conference.hall.userLimit }}</h4>
+                </span>
+            </div>
+            {% set hall = conference.hall %}
+            <div class="mdl-list__item mdl-list__item--three-line">
+                <span class="mdl-list__item-primary-content">
+                    {% if hall.image %}
+                        <img src="{{ hall.image }}" class="mdl-list__item-avatar" alt="{{ hall.name|e }}">
+                    {% endif %}
+                    <span>{{ hall.name }}</span>
+                    <span class="mdl-list__item-text-body">
+                        {{ hall.venue.address }}
+                    </span>
+                </span>
+            </div>
+        </div>
+    {% endif %}
 
     {% if conference.hall.goods|length > 0 %}
         <div class="mdl-list">

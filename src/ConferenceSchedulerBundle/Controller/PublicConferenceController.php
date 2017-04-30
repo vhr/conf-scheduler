@@ -5,8 +5,11 @@ namespace ConferenceSchedulerBundle\Controller;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Component\HttpFoundation\Request;
 use ConferenceSchedulerBundle\Entity\Conference;
+use ConferenceSchedulerBundle\Entity\ConferenceUser;
+use ConferenceSchedulerBundle\Event\ConferenceEvent;
 
 class PublicConferenceController extends Controller {
 
@@ -34,25 +37,93 @@ class PublicConferenceController extends Controller {
      * @Template()
      */
     public function showAction(Conference $conference) {
+        $user = $this->getUser();
+        $joined = null;
+        $em = $this->getDoctrine()
+                ->getManager()
+        ;
+
+        if ($user) {
+            $criteria = [
+                'conference' => $conference,
+                'user' => $user,
+            ];
+            $joined = $em->getRepository('ConferenceSchedulerBundle:ConferenceUser')
+                    ->findOneBy($criteria);
+        }
+
+        $totalUsers = $em->getRepository('ConferenceSchedulerBundle:ConferenceUser')
+                ->countByConference($conference);
 
         return [
             'conference' => $conference,
+            'joined' => $joined,
+            'totalUsers' => $totalUsers,
         ];
     }
 
     /**
-     * @Route("/schedule", name="public_schedule")
-     * @Template()
+     * @Security("has_role('ROLE_USER')")
+     * @Route("/{id}/join", name="public_conference_join")
      */
-    public function scheduleAction() {
-//        $conferences = $this->getDoctrine()
-//                ->getManager()
-//                ->getRepository('ConferenceSchedulerBundle:Conference')
-//                ->findAll();
+    public function joinAction(Conference $conference) {
+        $user = $this->getUser();
+        $coins = $user->getCoins() - $conference->getPrice();
+        if ($coins < 0) {
+            $this->addFlash('notice', 'You don\'t have enough coins');
 
-        return [
-//            'conferences' => $conferences,
+            goto redirectToConference;
+        }
+
+        $em = $this->getDoctrine()
+                ->getManager()
+        ;
+
+        $criteria = [
+            'conference' => $conference,
+            'user' => $user,
         ];
+        $exists = $em->getRepository('ConferenceSchedulerBundle:ConferenceUser')
+                ->findOneBy($criteria);
+
+        if ($exists) {
+            $this->addFlash('notice', 'You have already joined');
+
+            goto redirectToConference;
+        }
+
+        $limit = $conference->getHall()->getUserLimit();
+        $totalUsers = $em->getRepository('ConferenceSchedulerBundle:ConferenceUser')
+                ->countByConference($conference);
+
+        // check for user limit of hall
+        if ($totalUsers >= $limit) {
+            $this->addFlash('notice', 'You have reached the limit of the hall');
+
+            goto redirectToConference;
+        }
+
+        $user->setCoins($coins);
+
+
+        $conferenceUser = new ConferenceUser;
+        $conferenceUser->setConference($conference);
+        $conferenceUser->setUser($user);
+
+        $conference->addUser($conferenceUser);
+
+        $em->flush();
+
+        // dispatch event
+        $event = new ConferenceEvent($conference, $user);
+        $this->get('event_dispatcher')
+                ->dispatch(ConferenceEvent::EVENT_USER_ADD, $event);
+
+        redirectToConference: {
+            return $this->redirectToRoute('public_conference_show', [
+                        'id' => $conference->getId(),
+            ]);
+        }
     }
 
     /**
@@ -70,51 +141,4 @@ class PublicConferenceController extends Controller {
         ];
     }
 
-    /*     *
-     * @Method({"GET"})
-     * @Route("/")
-     * @Template()
-     * /
-      public function indexAction() {
-      $entities = $this->getDoctrine()
-      ->getManager()
-      ->getRepository('ConferenceSchedulerBundle:Conference')
-      ->findAll();
-
-      return [
-      'conferences' => $entities,
-      ];
-      }
-
-      /* *
-     * @Method({"GET"})
-     * @Route("/conference/open", name="conference_open")
-     * @Template()
-     * /
-      public function openAction() {
-      $entities = $this->getDoctrine()
-      ->getManager()
-      ->getRepository('ConferenceSchedulerBundle:Conference')
-      ->findAll();
-
-      return [
-      'conferences' => $entities,
-      ];
-      }
-
-      /* *
-     * @Method({"GET"})
-     * @Route("/conference/particular", name="conference_particular")
-     * @Template()
-     * /
-      public function particularAction() {
-      $entities = $this->getDoctrine()
-      ->getManager()
-      ->getRepository('ConferenceSchedulerBundle:Conference')
-      ->findAll();
-
-      return [
-      'conferences' => $entities,
-      ];
-      } */
 }

@@ -44,7 +44,7 @@ twig:
     globals:
         schedular_title: '%schedular_title%'
     form_themes:
-        - 'Form/form_mdl_layout.html.twig'
+        - '@ConferenceSchedulerBundle/Resources/views/Form/form_mdl_layout.html.twig'
 
 # Doctrine Configuration
 doctrine:

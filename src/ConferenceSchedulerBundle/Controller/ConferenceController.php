@@ -70,7 +70,10 @@ class ConferenceController extends Controller {
             $em->persist($conference);
             $em->flush();
 
-            return $this->redirectToRoute('conference_show', array('id' => $conference->getId()));
+            // flashbag
+            $this->addFlash('notice', 'Conference created');
+
+            return $this->redirectToRoute('conference_index', array('id' => $conference->getId()));
         }
 
         return [
@@ -87,11 +90,8 @@ class ConferenceController extends Controller {
      * @Template()
      */
     public function showAction(Conference $conference) {
-        $deleteForm = $this->createDeleteForm($conference);
-
         return [
             'conference' => $conference,
-            'delete_form' => $deleteForm->createView(),
         ];
     }
 
@@ -103,40 +103,25 @@ class ConferenceController extends Controller {
      * @Template()
      */
     public function editAction(Request $request, Conference $conference) {
-        $deleteForm = $this->createDeleteForm($conference);
         $editForm = $this->createForm(ConferenceType::class, $conference);
         $editForm->handleRequest($request);
 
         if ($editForm->isSubmitted() && $editForm->isValid()) {
-            $this->getDoctrine()->getManager()->flush();
+            $this->getDoctrine()
+                    ->getManager()
+                    ->flush()
+            ;
 
-            return $this->redirectToRoute('conference_edit', array('id' => $conference->getId()));
+            // flashbag
+            $this->addFlash('notice', 'Conference edited');
+
+            return $this->redirectToRoute('conference_index', array('id' => $conference->getId()));
         }
 
         return [
             'conference' => $conference,
             'edit_form' => $editForm->createView(),
-            'delete_form' => $deleteForm->createView(),
         ];
-    }
-
-    /**
-     * Deletes a conference entity.
-     *
-     * @Route("/{id}", name="conference_delete")
-     * @Method("DELETE")
-     */
-    public function deleteAction(Request $request, Conference $conference) {
-        $form = $this->createDeleteForm($conference);
-        $form->handleRequest($request);
-
-        if ($form->isSubmitted() && $form->isValid()) {
-            $em = $this->getDoctrine()->getManager();
-            $em->remove($conference);
-            $em->flush();
-        }
-
-        return $this->redirectToRoute('conference_index');
     }
 
     /**
@@ -158,22 +143,10 @@ class ConferenceController extends Controller {
                 ->getManager()
                 ->flush();
 
-        return $this->redirectToRoute('conference_index');
-    }
+        // flashbag
+        $this->addFlash('notice', 'Conference has dismissed');
 
-    /**
-     * Creates a form to delete a conference entity.
-     *
-     * @param Conference $conference The conference entity
-     *
-     * @return \Symfony\Component\Form\Form The form
-     */
-    private function createDeleteForm(Conference $conference) {
-        return $this->createFormBuilder()
-                        ->setAction($this->generateUrl('conference_delete', array('id' => $conference->getId())))
-                        ->setMethod('DELETE')
-                        ->getForm()
-        ;
+        return $this->redirectToRoute('conference_index');
     }
 
 }

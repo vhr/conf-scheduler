@@ -74,11 +74,14 @@
         {% if is_granted('IS_AUTHENTICATED_FULLY') %}
             {% if app.user.gravatar %}
                 <ul class="mdl-list">
-                    <li class="mdl-list__item">
+                    <li class="mdl-list__item mdl-list__item--three-line">
                         <span class="mdl-list__item-primary-content">
                             <img src="{{ app.user.gravatar(40) }}" class="mdl-list__item-avatar" alt="{{ app.user.names|e }}"></img>
                             <span>
                                 {{ app.user.names }}
+                            </span>
+                            <span class="mdl-list__item-text-body">
+                                {{ 'cash $%cash%'|trans({ '%cash%': app.user.coins|number_format }) }}
                             </span>
                         </span>
                     </li>
@@ -98,8 +101,12 @@
             <a class="mdl-navigation__link" href="{{ path('public_halls') }}">{{ 'Halls'|trans }}</a>
             <span class="mdl-navigation__title mdl-color-text--grey-800"></span>
             {% if is_granted('IS_AUTHENTICATED_FULLY') %}
-                <a class="mdl-navigation__link" href="{{ path('conference_index') }}">{{ 'My conferences'|trans }}</a>
-                <a class="mdl-navigation__link" href="{{ path('venue_index') }}">{{ 'Venues\\Halls'|trans }}</a>
+                {% if is_granted('ROLE_CONFERENCE_OWNER') %}
+                    <a class="mdl-navigation__link" href="{{ path('conference_index') }}">{{ 'My conferences'|trans }}</a>
+                {% endif %}
+                {% if is_granted('ROLE_ADMIN') %}
+                    <a class="mdl-navigation__link" href="{{ path('venue_index') }}">{{ 'Venues\\Halls'|trans }}</a>
+                {% endif %}
                 <a class="mdl-navigation__link" href="{{ path('fos_user_security_logout') }}">{{ 'Logout'|trans }}</a>
             {% else %}
                 <a class="mdl-navigation__link" href="{{ path('fos_user_security_login') }}">{{ 'Login'|trans }}</a>

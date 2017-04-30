@@ -12,18 +12,18 @@
     <section class="mdl-layout__tab-panel is-active">
         {{ form_start(edit_form) }}
         {{ form_widget(edit_form) }}
-        <input type="submit" value="Edit" />
+        <div class="mdl-grid">
+            <div class="mdl-cell mdl-cell--6-col">
+                <button type="submit" class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--raised mdl-color--primary mdl-color-text--white">
+                    {{ 'Edit'|trans }}
+                </button>
+            </div>
+            <div class="mdl-cell mdl-cell--6-col">
+                <a href="{{ path('conference_dismiss', { 'id': conference.id }) }}" class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--raised mdl-color--grey-600 mdl-color-text--white">
+                    {{ 'Dismiss'|trans }}
+                </a>
+            </div>
+        </div>
         {{ form_end(edit_form) }}
-
-        <ul>
-            <li>
-                <a href="{{ path('conference_index') }}">Back to the list</a>
-            </li>
-            <li>
-                {{ form_start(delete_form) }}
-                <input type="submit" value="Delete">
-                {{ form_end(delete_form) }}
-            </li>
-        </ul>
     </section>
 {% endblock %}
