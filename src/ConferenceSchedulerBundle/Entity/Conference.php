@@ -5,6 +5,7 @@ namespace ConferenceSchedulerBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use DateTime;
 use Doctrine\Common\Collections\ArrayCollection;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * Conference
@@ -28,6 +29,7 @@ class Conference {
      * @var string
      *
      * @ORM\Column(name="title", type="string", length=255)
+     * @Assert\NotBlank()
      */
     private $title;
 
@@ -35,6 +37,7 @@ class Conference {
      * @var string
      *
      * @ORM\Column(name="description", type="text")
+     * @Assert\NotBlank()
      */
     private $description;
 
@@ -56,6 +59,7 @@ class Conference {
      * @var int
      *
      * @ORM\Column(name="price", type="decimal", precision=7, scale=2, nullable=true)
+     * @Assert\NotBlank()
      */
     private $price;
 
@@ -93,6 +97,7 @@ class Conference {
      * 
      * @ORM\ManyToOne(targetEntity="ConferenceSchedulerBundle\Entity\Hall")
      * @ORM\JoinColumn(name="hall_id", referencedColumnName="id")
+     * @Assert\NotBlank()
      */
     private $hall;
 

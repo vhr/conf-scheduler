@@ -20,6 +20,7 @@ class ConferenceRepository extends EntityRepository {
     public function findAllByAccessQuery(User $user = null) {
         $result = $this->createQueryBuilder('t')
                 ->where('t.date IS NULL OR t.date >= :now')
+                ->andWhere('t.deleted IS NULL')
                 ->setParameter('now', new DateTime)
                 ->orderBy('t.date', 'ASC')
                 ->getQuery()
