@@ -65,6 +65,7 @@ class User extends BaseUser {
     public function __construct() {
         parent::__construct();
 
+        $this->coins = 1000;
         $this->setCreated(new DateTime);
         $this->setUpdated(new DateTime);
     }

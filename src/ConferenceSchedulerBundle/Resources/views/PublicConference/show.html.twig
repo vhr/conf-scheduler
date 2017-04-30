@@ -8,8 +8,12 @@
     {{ 'Conference'|trans }}
 {% endblock %}
 
+{% block layout_ribbon %}
+    {{ conference.image }}
+{% endblock %}
+
 {% block body %}
-    <h1 class="mdl-card__title-text">{{ conference.title }}</h1>
+    <h1>{{ conference.title }}</h1>
     <i>
         {% if conference.programStart %}
             {{ '%date% starts at %start% ends at %end%'|trans({ '%date%': conference.date|date('M d'), '%start%': conference.programStart|date('H:i'), '%end%': conference.programEnd|date('H:i') }) }}
@@ -17,7 +21,7 @@
             {{ conference.date|date('M d') }}
         {% endif %}
     </i>
-    <img class="article-image" src="{{ conference.image }}" border="0" width="100%" alt="{{ conference.title|e }}"/>
+{#    <img class="article-image" src="{{ conference.image }}" border="0" width="100%" alt="{{ conference.title|e }}"/>#}
 
     {% if conference.programs|length > 0 %}
         <div class="mdl-list">
