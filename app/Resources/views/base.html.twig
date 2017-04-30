@@ -1,188 +1,23 @@
 <!doctype html>
 <html lang="en">
-
     <head>
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
-        <meta name="description" content="A portfolio template that uses Material Design Lite.">
+        <meta name="description" content="">
         <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0">
         <title>{% block title %}Welcome!{% endblock %}</title>
         <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:regular,bold,italic,thin,light,bolditalic,black,medium&amp;lang=en">
-        <link rel="stylesheet" href="https://code.getmdl.io/1.3.0/material.deep_purple-pink.min.css" />
-        {#<link rel="stylesheet" href="{{ asset('styles.css') }}" />#}
-
-
+        {% stylesheets '@ConferenceSchedulerBundle/Resources/public/css/*' filter='cssrewrite' %}
+        <link rel="stylesheet" href="{{ asset_url }}" />
+        {% endstylesheets %}
         <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
     {% block stylesheets %}{% endblock %}
     <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}" />
-    <script src="https://code.jquery.com/jquery-2.2.4.min.js"></script>
-    <style>
-        li[href], span[href] {
-            cursor: pointer;
-        }
-        /**
- * Paging
- */
-
-        .mdl-paging {
-            color: rgba(0, 0, 0, 0.54);
-            display: -webkit-flex;
-            display: -ms-flexbox;
-            display: flex;
-            -webkit-justify-content: flex-end;
-            -ms-flex-pack: end;
-            justify-content: flex-end;
-            -webkit-align-items: center;
-            -ms-flex-align: center;
-            align-items: center;
-            height: 56px;
-            -webkit-flex-flow: row wrap;
-            -ms-flex-flow: row wrap;
-            flex-flow: row wrap;
-        }
-
-        .mdl-paging > * {
-            -webkit-flex: none;
-            -ms-flex: none;
-            flex: none;
-        }
-
-        .mdl-list + .mdl-paging {
-            margin: 0;
-        }
-
-        .mdl-paging__per-page {
-            position: relative;
-        }
-
-        .mdl-paging__per-page-label {
-            margin-right: 40px;
-        }
-
-        .mdl-paging__per-page-value {
-            position: absolute;
-            right: 36px;
-            top: 6px;
-        }
-
-        .mdl-paging__per-page + .mdl-paging__count {
-            margin-left: 24px;
-        }
-
-        .mdl-paging .mdl-menu {
-            min-width: 64px;
-        }
-
-        .mdl-paging__prev:last-child {
-            margin-right: 44px;
-        }
-
-        .mdl-paging__count + .mdl-paging__prev {
-            margin-left: 24px;
-        }
-
-        .mdl-paging__prev + .mdl-paging__next {
-            margin-left: 12px;
-        }
-
-        .mdl-paging__count + .mdl-paging__next {
-            margin-left: 68px;
-        }
-
-        /* Speed dial */
-
-        .mdl-speed-dial {
-            display: -webkit-flex;
-            display: -ms-flexbox;
-            display: flex;
-            bottom: 16px;
-            right: 16px;
-            -webkit-flex-flow: column-reverse nowrap;
-            -ms-flex-flow: column-reverse nowrap;
-            flex-flow: column-reverse nowrap;
-            -webkit-align-items: center;
-            -ms-flex-align: center;
-            align-items: center;
-            z-index: 999;
-            position: fixed;
-        }
-
-        .mdl-speed-dial .mdl-button--fab:first-child .material-icons:not(:only-child),
-        .mdl-speed-dial .mdl-button--mini-fab {
-            transition-duration: 0.2s;
-            transition-timing-function: cubic-bezier(0, 0, 0.2, 1);
-            -webkit-transform-origin: center center;
-            transform-origin: center center;
-        }
-
-        .mdl-speed-dial .mdl-button--fab:first-child .material-icons:not(:only-child),
-        .mdl-speed-dial .mdl-button--mini-fab {
-            transition-property: -webkit-transform, opacity;
-            transition-property: transform, opacity;
-            will-change: transform, opacity;
-        }
-
-        .mdl-speed-dial.is-active .mdl-button--fab:first-child .material-icons:first-child,
-        .mdl-speed-dial .mdl-button--fab:first-child .material-icons:nth-child(2) {
-            opacity: 0;
-        }
-
-        .mdl-speed-dial.is-active .mdl-button--fab:first-child .material-icons:first-child {
-            transform: rotate(90deg) translate(-12px, 12px);
-        }
-
-        .mdl-speed-dial .mdl-button--fab:first-child .material-icons:nth-child(2) {
-            transform: rotate(-90deg);
-            top: 16px;
-            left: 16px;
-        }
-
-        .mdl-speed-dial.is-active .mdl-button--fab:first-child .material-icons:nth-child(2) {
-            opacity: 1;
-            transform: rotate(0deg);
-        }
-        /* Mini floating buttons */
-
-        .mdl-speed-dial .mdl-button--mini-fab {
-            -webkit-transform: scale(0, 0);
-            transform: scale(0, 0);
-            margin-bottom: 16px;
-        }
-
-        .mdl-speed-dial.is-active .mdl-button--mini-fab {
-            -webkit-transform: scale(1, 1);
-            transform: scale(1, 1);
-        }
-        /* Mini floating buttons animations */
-
-        .mdl-speed-dial .mdl-button--mini-fab:nth-of-type(6),
-        .mdl-speed-dial.is-active .mdl-button--mini-fab:nth-of-type(2) {
-            transition-delay: 0s;
-        }
-
-        .mdl-speed-dial .mdl-button--mini-fab:nth-of-type(5),
-        .mdl-speed-dial.is-active .mdl-button--mini-fab:nth-of-type(3) {
-            transition-delay: 50ms;
-        }
-
-        .mdl-speed-dial .mdl-button--mini-fab:nth-of-type(4) {
-            transition-delay: 100ms;
-        }
-
-        .mdl-speed-dial .mdl-button--mini-fab:nth-of-type(3),
-        .mdl-speed-dial.is-active .mdl-button--mini-fab:nth-of-type(5) {
-            transition-delay: 150ms;
-        }
-
-        .mdl-speed-dial .mdl-button--mini-fab:nth-of-type(2),
-        .mdl-speed-dial.is-active .mdl-button--mini-fab:nth-of-type(6) {
-            transition-delay: 200ms;
-        }
-        .mdl-navigation__title {
-            padding: 16px 40px;
-            font-weight: bold;
-        }
-    </style>
+    <script src="https://code.jquery.com/jquery-2.2.4.min.js"></script>    
+    {% javascripts
+    '@ConferenceSchedulerBundle/Resources/public/js/jquery-2.2.4.min.js' %}
+    <script src="{{ asset_url }}"></script>
+    {% endjavascripts %}
 </head>
 
 <body>
@@ -198,8 +33,7 @@
                 <!-- Navigation -->
                 <nav class="mdl-navigation mdl-layout--large-screen-only">
                     <a class="mdl-navigation__link" href="{{ path('homepage') }}">{{ 'Conferences'|trans }}</a>
-                    <a class="mdl-navigation__link" href="{{ path('schedule_index') }}">{{ 'Schedule'|trans }}</a>
-                    <a class="mdl-navigation__link" href="{{ path('schedule_index') }}">{{ 'Halls'|trans }}</a>
+                    <a class="mdl-navigation__link" href="{{ path('public_halls') }}">{{ 'Halls'|trans }}</a>
 
                     {% if is_granted('IS_AUTHENTICATED_FULLY') %}
                         {#<div class="mdl-navigation__link">
@@ -210,7 +44,7 @@
                                 for="user-notify-menu">
                                 <li class="mdl-menu__item">Some notification</li>
                             </ul>
-                        </div>#}
+                        </div>
                         <div class="mdl-navigation__link">
                             <button id="user-profile-menu" class="mdl-button mdl-js-button mdl-button--icon">
                                 {% if app.user.gravatar %}
@@ -220,14 +54,14 @@
                                 {% endif %}
                             </button>
                             <ul class="mdl-menu mdl-menu--bottom-right mdl-js-menu mdl-js-ripple-effect"
-                                for="user-profile-menu">
+                                for="user-profile-menu" style="z-index: 99999">
                                 <li class="mdl-menu__item" href="{{ path('conference_index') }}">{{ 'My conferences'|trans }}</li>
                                 <li class="mdl-menu__item mdl-menu__item--full-bleed-divider">{{ 'My schedule'|trans }}</li>
-                                    {#<li class="mdl-menu__item"><a href="{{ path('fos_user_profile_show') }}">{{ 'Profile'|trans }}</a></li>
-                                    <li class="mdl-menu__item"><a href="{{ path('fos_user_profile_edit') }}" class="mdl-button mdl-js-button mdl-js-ripple-effect">{{ 'Settings'|trans }}</a></li>#}
+                                <li class="mdl-menu__item"><a href="{{ path('fos_user_profile_show') }}">{{ 'Profile'|trans }}</a></li>
+                                <li class="mdl-menu__item"><a href="{{ path('fos_user_profile_edit') }}" class="mdl-button mdl-js-button mdl-js-ripple-effect">{{ 'Settings'|trans }}</a></li>
                                 <li class="mdl-menu__item" href="{{ path('fos_user_security_logout') }}">{{ 'Logout'|trans }}</li>
                             </ul>
-                        </div>
+                        </div>#}
                     {% else %}
                         <a class="mdl-navigation__link" href="{{ path('fos_user_security_login') }}">{{ 'Login'|trans }}</a>
                         <a class="mdl-navigation__link" href="{{ path('fos_user_registration_register') }}">{{ 'Sign in'|trans }}</a>
@@ -237,27 +71,31 @@
         {% block header %}{% endblock %}
     </header>
     <div class="mdl-layout__drawer">
-
-        {% if app.user.gravatar %}
-            <ul class="mdl-list">
-                <li class="mdl-list__item">
-                    <span class="mdl-list__item-primary-content">
-                        <img src="{{ app.user.gravatar(40) }}" class="mdl-list__item-avatar" alt="{{ app.user.names|e }}"></img>
-                        <span>
-                            {{ app.user.names|e }}
+        {% if is_granted('IS_AUTHENTICATED_FULLY') %}
+            {% if app.user.gravatar %}
+                <ul class="mdl-list">
+                    <li class="mdl-list__item">
+                        <span class="mdl-list__item-primary-content">
+                            <img src="{{ app.user.gravatar(40) }}" class="mdl-list__item-avatar" alt="{{ app.user.names|e }}"></img>
+                            <span>
+                                {{ app.user.names }}
+                            </span>
                         </span>
-                    </span>
-                </li>
-            </ul>
+                    </li>
+                </ul>
+            {% else %}
+                <span class="mdl-layout-title">
+                    {{ app.user.names }}
+                </span>
+            {% endif %}
         {% else %}
             <span class="mdl-layout-title">
                 {{ 'Conf schedule'|trans }}
             </span>
         {% endif %}
         <nav class="mdl-navigation">
-            <a class="mdl-navigation__link" href="{{ path('homepage') }}">{{ 'Conferences'|trans }}</a>
-            <a class="mdl-navigation__link" href="{{ path('schedule_index') }}">{{ 'Schedule'|trans }}</a>
-            <a class="mdl-navigation__link" href="{{ path('schedule_index') }}">{{ 'Halls'|trans }}</a>
+            <a class="mdl-navigation__link" href="{{ path('homepage') }}">{{ 'Conferences schedule'|trans }}</a>
+            <a class="mdl-navigation__link" href="{{ path('public_halls') }}">{{ 'Halls'|trans }}</a>
             <span class="mdl-navigation__title mdl-color-text--grey-800"></span>
             {% if is_granted('IS_AUTHENTICATED_FULLY') %}
                 <a class="mdl-navigation__link" href="{{ path('conference_index') }}">{{ 'My conferences'|trans }}</a>
@@ -269,67 +107,19 @@
             {% endif %}
         </nav>
     </div>
-    {#<div class="mdl-layout__drawer">
-        <span class="mdl-layout-title">Title</span>
-        <nav class="mdl-navigation">
-            <a class="mdl-navigation__link" href="">Link</a>
-            <a class="mdl-navigation__link" href="">Link</a>
-            <a class="mdl-navigation__link" href="">Link</a>
-            <a class="mdl-navigation__link" href="">Link</a>
-        </nav>
-    </div>#}
-    <main class="mdl-layout__content">
+    <main class="mdl-layout__content">{# mdl-color--grey-200 #}
         {#<div class="mdl-color--blue" style="width: 100%; height: 40vh; -webkit-flex-shrink: 0; -ms-flex-negative: 0; flex-shrink: 0;"></div>
         <div class="mdl-grid" style="margin-top: -35vh; -webkit-flex-shrink: 0; -ms-flex-negative: 0; flex-shrink: 0;">#}
         <div  style="max-width: 960px; margin: 10px auto 0;">{% block body %}{% endblock %}</div>
     </main>
 </div>
-{#</div>#}
-<script src="https://code.getmdl.io/1.3.0/material.min.js"></script>
 {% block javascripts %}{% endblock %}
-<script>
-    $(function () {
-        $(document).on('click', 'li[href], span[href]', function () {
-            window.location.href = $(this).attr('href');
-        });
-    });
-    /**
-     * Speed dials
-     */
-
-    var MaterialSpeedDial = function () {};
-
-// Add mouse event on element
-    MaterialSpeedDial.upgradeItem = function (item) {
-        if (item instanceof Element && item.matches(".mdl-speed-dial") !== false) {
-            if (item.firstElementChild !== null) {
-                // On mouse enter
-                item.firstElementChild.addEventListener("mouseenter", function (e) {
-                    item.classList.add("is-active");
-                });
-                // On mouse leave
-                item.addEventListener("mouseleave", function (e) {
-                    item.classList.remove("is-active");
-                });
-            }
-        }
-    };
-
-// Add events on multiple elements
-    MaterialSpeedDial.upgradeItems = function (items) {
-        for (var i = 0; i < items.length; i++) {
-            MaterialSpeedDial.upgradeItem(items[i]);
-        }
-    };
-
-    document.addEventListener("DOMContentLoaded", function () {
-
-        // Upgrading speed dials
-        var items = document.getElementsByClassName("mdl-speed-dial");
-        MaterialSpeedDial.upgradeItems(items);
-
-    });
-</script>
+{% javascripts
+    '@ConferenceSchedulerBundle/Resources/public/js/material.min.js'
+    '@ConferenceSchedulerBundle/Resources/public/js/menu.js'
+    '@ConferenceSchedulerBundle/Resources/public/js/pagination.js' %}
+<script src="{{ asset_url }}"></script>
+{% endjavascripts %}
 {% include 'ConferenceSchedulerBundle::flashbag.html.twig' %}
 </body>
 </html>
