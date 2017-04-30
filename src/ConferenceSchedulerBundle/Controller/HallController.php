@@ -27,15 +27,20 @@ class HallController extends Controller {
      * @Template()
      * @ParamConverter("venue", class="ConferenceSchedulerBundle:Venue", options={"id"="venue_id"})
      */
-    public function indexAction(Venue $venue) {
-        $em = $this->getDoctrine()->getManager();
+    public function indexAction(Request $request, Venue $venue) {
+        $query = $this->getDoctrine()
+                ->getManager()
+                ->getRepository('ConferenceSchedulerBundle:Hall')
+                ->findAllByVenueAndAccessQuery($venue, $this->getUser())
+        ;
 
-        $halls = $em->getRepository('ConferenceSchedulerBundle:Hall')
-                ->findByVenue($venue->getId());
+        $pagination = $this->get('knp_paginator')
+                ->paginate($query, $request->query->getInt('page', 1))
+        ;
 
         return [
             'venue' => $venue,
-            'halls' => $halls,
+            'pagination' => $pagination,
         ];
     }
 

@@ -1,0 +1,14 @@
+<div class="mdl-layout__tab-bar mdl-js-ripple-effect">
+    <a href="{{ path('venue_index') }}" class="mdl-tabs__tab">
+        {{ 'List'|trans }}
+    </a>
+    <a href="{{ path('venue_show', { 'id': venue.id }) }}" class="mdl-tabs__tab"{% if active|default() == 'preview' %} is-active{% endif %}>
+        {{ 'Preview'|trans }}
+    </a>
+    <a href="{{ path('venue_edit', { 'id': venue.id }) }}" class="mdl-tabs__tab"{% if active|default() == 'edit' %} is-active{% endif %}>
+        {{ 'Edit'|trans }}
+    </a>
+    <a href="{{ path('hall_index', { 'venue_id': venue.id }) }}" class="mdl-tabs__tab"{% if active|default() == 'halls' %} is-active{% endif %}>
+        {{ 'Halls'|trans }}
+    </a>
+</div>

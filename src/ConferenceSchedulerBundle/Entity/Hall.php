@@ -51,7 +51,7 @@ class Hall {
     private $description;
 
     /**
-     * @ORM\ManyToOne(targetEntity="ConferenceSchedulerBundle\Entity\Venue")
+     * @ORM\ManyToOne(targetEntity="ConferenceSchedulerBundle\Entity\Venue", inversedBy="halls")
      * @ORM\JoinColumn(name="venue_id", referencedColumnName="id")
      */
     private $venue;

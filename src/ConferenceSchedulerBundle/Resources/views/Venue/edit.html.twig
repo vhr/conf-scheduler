@@ -3,11 +3,7 @@
 {% set nav = 'venue' %}
 
 {% block header %}
-    <div class="mdl-tabs__tab-bar">
-        <a href="{{ path('venue_show', { 'id': venue.id }) }}" class="mdl-tabs__tab">Review</a>
-        <a href="{{ path('venue_edit', { 'id': venue.id }) }}" class="mdl-tabs__tab is-active">Edit</a>
-        <a href="{{ path('hall_index', { 'venue_id': venue.id }) }}" class="mdl-tabs__tab">Halls</a>
-    </div>
+    {% include 'ConferenceSchedulerBundle:Hall:tabs.html.twig' with {'venue': venue, 'active': 'edit'} %}
 {% endblock %}
 
 {% block body %}

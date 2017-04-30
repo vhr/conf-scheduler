@@ -1,55 +1,66 @@
 {% extends 'base.html.twig' %}
 
-{% set nav = 'venue' %}
+{% block title %}
+    {{ 'Halls'|trans }}
+{% endblock %}
+
+{% block layout_title %}
+    {{ 'Halls'|trans }}
+{% endblock %}
 
 {% block header %}
-    <div class="mdl-tabs__tab-bar">
-        <a href="{{ path('venue_show', { 'id': venue.id }) }}" class="mdl-tabs__tab">Review</a>
-        <a href="{{ path('venue_edit', { 'id': venue.id }) }}" class="mdl-tabs__tab">Edit</a>
-        <a href="{{ path('hall_index', { 'venue_id': venue.id }) }}" class="mdl-tabs__tab is-active">Halls</a>
-    </div>
+    {% include 'ConferenceSchedulerBundle:Hall:tabs.html.twig' with {'venue': venue, 'active': 'halls'} %}
 {% endblock %}
 
 {% block body %}
     <section class="mdl-layout__tab-panel is-active">
-        <br>
-        <table class="mdl-data-table mdl-js-data-table mdl-data-table--selectable mdl-shadow--2dp">
-            <thead>
-                <tr>
-                    <th>Id</th>
-                    <th>Name</th>
-                    <th>Userlimit</th>
-                    <th>Actions</th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for hall in halls %}
-                    <tr>
-                        <td><a href="{{ path('hall_show', { 'venue_id': venue.id, 'id': hall.id }) }}">{{ hall.id }}</a></td>
-                        <td>{{ hall.name }}</td>
-                        <td>{{ hall.userLimit }}</td>
-                        <td>
-                            <button id="hall-menu-{{ hall.id }}"
-                                    class="mdl-button mdl-js-button mdl-button--icon">
-                                <i class="material-icons">more_vert</i>
-                            </button>
+        <div class="mdl-list">
+            <div class="mdl-list__item">
+                <span class="mdl-list__item-primary-content">
+                    <span>
+                        <h6>{{ 'Halls'|trans }}</h6>
+                    </span>
+                </span>
+                <span class="mdl-list__item-secondary-content">
+                    <a id="hall-add" class="mdl-list__item-secondary-action" href="{{ path('hall_new', { 'venue_id': venue.id }) }}">
+                        <i class="material-icons">add</i>
+                    </a>
+                    <div class="mdl-tooltip" data-mdl-for="hall-add">
+                        {{ 'Create a hall'|trans }}
+                    </div>
+                </span>
+            </div>
+            {% for hall in pagination %}
+                <div class="mdl-list__item mdl-list__item--three-line">
+                    <span class="mdl-list__item-primary-content">
+                        {% if hall.image %}
+                            <img src="{{ hall.image }}" class="mdl-list__item-avatar" alt="{{ hall.name|e }}">
+                        {% endif %}
+                        <span href="{{ path('hall_show', { 'venue_id': venue.id, 'id': hall.id }) }}">{{ hall.name }}</span>
+                        <span class="mdl-list__item-text-body">
+                            {{ 'User limit %userLimit%'|trans({ '%userLimit%': hall.userLimit }) }}
+                        </span>
+                    </span>
+                    <span class="mdl-list__item-secondary-content">
+                        <button id="hall-menu-{{ hall.id }}"
+                                class="mdl-button mdl-js-button mdl-button--icon">
+                            <i class="material-icons">more_vert</i>
+                        </button>
 
-                            <ul class="mdl-menu mdl-menu--bottom-left mdl-js-menu mdl-js-ripple-effect" for="hall-menu-{{ hall.id }}">
-                                <li class="mdl-menu__item">
-                                    <a href="{{ path('hall_show', { 'venue_id': venue.id, 'id': hall.id }) }}">show</a>
-                                </li>
-                                <li class="mdl-menu__item">
-                                    <a href="{{ path('hall_edit', { 'venue_id': venue.id, 'id': hall.id }) }}">edit</a>
-                                </li>
-                            </ul>
-                        </td>
-                    </tr>
-                {% endfor %}
-            </tbody>
-        </table>
-        <br>
-        <a href="{{ path('hall_new', { 'venue_id': venue.id }) }}" class="mdl-button mdl-js-button mdl-button--fab mdl-js-ripple-effect mdl-button--colored" title="Create a new hall">
-            <i class="material-icons">add</i>
-        </a>
+                        <ul class="mdl-menu mdl-menu--bottom-left mdl-js-menu mdl-js-ripple-effect" for="hall-menu-{{ hall.id }}">
+                            <li class="mdl-menu__item" href="{{ path('hall_show', { 'venue_id': venue.id, 'id': hall.id }) }}">
+                                {{ 'Preview'|trans }}
+                            </li>
+                            <li class="mdl-menu__item" href="{{ path('hall_edit', { 'venue_id': venue.id, 'id': hall.id }) }}">
+                                {{ 'Edit'|trans }}
+                            </li>
+                        </ul>
+                    </span>
+                </div>
+            {% endfor %}
+        </div>
+        <div class="navigation">
+            {{ knp_pagination_render(pagination) }}
+        </div>
     </section>
 {% endblock %}

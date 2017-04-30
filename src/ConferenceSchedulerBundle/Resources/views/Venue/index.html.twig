@@ -1,47 +1,59 @@
 {% extends 'base.html.twig' %}
 
-{% set nav = 'venue' %}
+{% block layout_title %}
+    {{ 'Venues'|trans }}
+{% endblock %}
 
 {% block body %}
-    <table class="mdl-data-table mdl-js-data-table mdl-data-table--selectable mdl-shadow--2dp">
-        <thead>
-            <tr>
-                <th>Id</th>
-                <th class="mdl-data-table__cell--non-numeric">Name</th>
-                <th class="mdl-data-table__cell--non-numeric">Address</th>
-                <th>Actions</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for venue in venues %}
-                <tr>
-                    <td><a href="{{ path('venue_show', { 'id': venue.id }) }}">{{ venue.id }}</a></td>
-                    <td class="mdl-data-table__cell--non-numeric">{{ venue.name }}</td>
-                    <td class="mdl-data-table__cell--non-numeric">{{ venue.address }}</td>
-                    <td>
-                        <button id="venue-menu-{{ venue.id }}"
-                                class="mdl-button mdl-js-button mdl-button--icon">
-                            <i class="material-icons">more_vert</i>
-                        </button>
+    <div class="mdl-list">
+        <div class="mdl-list__item">
+            <span class="mdl-list__item-primary-content">
+                <span>
+                    <h6>{{ 'Venues'|trans }}</h6>
+                </span>
+            </span>
+            <span class="mdl-list__item-secondary-content">
+                <a id="venue-add" class="mdl-list__item-secondary-action" href="{{ path('venue_new') }}">
+                    <i class="material-icons">add</i>
+                </a>
+                <div class="mdl-tooltip" data-mdl-for="venue-add">
+                    {{ 'Create a venue'|trans }}
+                </div>
+            </span>
+        </div>
+        {% for venue in pagination %}
+            <div class="mdl-list__item mdl-list__item--three-line">
+                <span class="mdl-list__item-primary-content">
+                    {% if venue.image %}
+                        <img src="{{ venue.image }}" class="mdl-list__item-avatar" alt="{{ venue.name|e }}">
+                    {% endif %}
+                    <span href="{{ path('venue_show', { 'id': venue.id }) }}">{{ venue.name }}</span>
+                    <span class="mdl-list__item-text-body">
+                        {{ venue.address }}
+                    </span>
+                </span>
+                <span class="mdl-list__item-secondary-content">
+                    <button id="venue-menu-{{ venue.id }}"
+                            class="mdl-button mdl-js-button mdl-button--icon">
+                        <i class="material-icons">more_vert</i>
+                    </button>
 
-                        <ul class="mdl-menu mdl-menu--bottom-left mdl-js-menu mdl-js-ripple-effect" for="venue-menu-{{ venue.id }}">
-                            <li class="mdl-menu__item">
-                                <a href="{{ path('venue_show', { 'id': venue.id }) }}">show</a>
-                            </li>
-                            <li class="mdl-menu__item">
-                                <a href="{{ path('venue_edit', { 'id': venue.id }) }}">edit</a>
-                            </li>
-                            <li class="mdl-menu__item">
-                                <a href="{{ path('hall_index', { 'venue_id': venue.id }) }}">halls</a>
-                            </li>
-                        </ul>
-                    </td>
-                </tr>
-            {% endfor %}
-        </tbody>
-    </table>
-    <br>
-    <a href="{{ path('venue_new') }}"  class="mdl-button mdl-js-button mdl-button--fab mdl-js-ripple-effect mdl-button--colored" title="Create a new venue">
-        <i class="material-icons">add</i>
-    </a>
+                    <ul class="mdl-menu mdl-menu--bottom-left mdl-js-menu mdl-js-ripple-effect" for="venue-menu-{{ venue.id }}">
+                        <li class="mdl-menu__item" href="{{ path('venue_show', { 'id': venue.id }) }}">
+                            {{ 'Preview'|trans }}
+                        </li>
+                        <li class="mdl-menu__item" href="{{ path('venue_edit', { 'id': venue.id }) }}">
+                            {{ 'Edit'|trans }}
+                        </li>
+                        <li class="mdl-menu__item" href="{{ path('hall_index', { 'venue_id': venue.id }) }}">
+                            {{ 'Halls'|trans }}
+                        </li>
+                    </ul>
+                </span>
+            </div>
+        {% endfor %}
+    </div>
+    <div class="navigation">
+        {{ knp_pagination_render(pagination) }}
+    </div>
 {% endblock %}

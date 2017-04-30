@@ -24,13 +24,18 @@ class VenueController extends Controller {
      * @Method("GET")
      * @Template()
      */
-    public function indexAction() {
-        $em = $this->getDoctrine()->getManager();
+    public function indexAction(Request $request) {
+        $query = $this->getDoctrine()
+                ->getManager()
+                ->getRepository('ConferenceSchedulerBundle:Venue')
+                ->findAllByAccessQuery($this->getUser());
 
-        $venues = $em->getRepository('ConferenceSchedulerBundle:Venue')->findAll();
+        $pagination = $this->get('knp_paginator')
+                ->paginate($query, $request->query->getInt('page', 1))
+        ;
 
         return [
-            'venues' => $venues,
+            'pagination' => $pagination,
         ];
     }
 

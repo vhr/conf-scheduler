@@ -42,6 +42,14 @@ class Venue {
      */
     private $address;
 
+    /**
+     * @var \ConferenceSchedulerBundle\Entity\Hall[]
+     * 
+     * @ORM\OneToMany(targetEntity="ConferenceSchedulerBundle\Entity\Hall", mappedBy="venue", cascade={"persist"})
+     * @ORM\OrderBy({"name"="ASC"})
+     */
+    private $halls;
+
     /*
      * 
      * Auto generated
@@ -101,7 +109,6 @@ class Venue {
         return $this->address;
     }
 
-
     /**
      * Set image
      *
@@ -109,8 +116,7 @@ class Venue {
      *
      * @return Venue
      */
-    public function setImage($image)
-    {
+    public function setImage($image) {
         $this->image = $image;
 
         return $this;
@@ -121,8 +127,49 @@ class Venue {
      *
      * @return string
      */
-    public function getImage()
-    {
+    public function getImage() {
         return $this->image;
+    }
+
+    /**
+     * Constructor
+     */
+    public function __construct()
+    {
+        $this->halls = new \Doctrine\Common\Collections\ArrayCollection();
+    }
+
+    /**
+     * Add hall
+     *
+     * @param \ConferenceSchedulerBundle\Entity\Hall $hall
+     *
+     * @return Venue
+     */
+    public function addHall(\ConferenceSchedulerBundle\Entity\Hall $hall)
+    {
+        $this->halls[] = $hall;
+
+        return $this;
+    }
+
+    /**
+     * Remove hall
+     *
+     * @param \ConferenceSchedulerBundle\Entity\Hall $hall
+     */
+    public function removeHall(\ConferenceSchedulerBundle\Entity\Hall $hall)
+    {
+        $this->halls->removeElement($hall);
+    }
+
+    /**
+     * Get halls
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getHalls()
+    {
+        return $this->halls;
     }
 }

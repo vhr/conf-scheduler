@@ -3,31 +3,43 @@
 {% set nav = 'venue' %}
 
 {% block header %}
-    <div class="mdl-tabs__tab-bar">
-        <a href="{{ path('venue_show', { 'id': venue.id }) }}" class="mdl-tabs__tab is-active">Review</a>
-        <a href="{{ path('venue_edit', { 'id': venue.id }) }}" class="mdl-tabs__tab">Edit</a>
-        <a href="{{ path('hall_index', { 'venue_id': venue.id }) }}" class="mdl-tabs__tab">Halls</a>
-    </div>
+    {% include 'ConferenceSchedulerBundle:Hall:tabs.html.twig' with {'venue': venue, 'active': 'preview'} %}
 {% endblock %}
 
 {% block body %}
     <section class="mdl-layout__tab-panel is-active">
-        <table class="mdl-data-table mdl-js-data-table">
-            <tbody>
-                <tr>
-                    <th>Id</th>
-                    <td>{{ venue.id }}</td>
-                </tr>
-                <tr>
-                    <th>Name</th>
-                    <td>{{ venue.name }}</td>
-                </tr>
-                <tr>
-                    <th>Address</th>
-                    <td>{{ venue.address }}</td>
-                </tr>
-            </tbody>
-        </table>
+        <div class="mdl-card mdl-cell mdl-cell--12-col mdl-shadow--2dp">
+            <div class="mdl-card__media">
+                <img class="article-image" src="{{ venue.image }}" border="0" width="100%" alt="{{ venue.name|e }}">
+            </div>
+            <div class="mdl-card__title">
+                <h2 class="mdl-card__title-text">{{ venue.name }}</h2>
+            </div>
+            <div class="mdl-card__supporting-text">
+                {{ venue.address }}
+
+                <div class="mdl-list">
+                    <div class="mdl-list__item">
+                        <span class="mdl-list__item-primary-content">
+                            <h4 id="goods">{{ 'Halls'|trans }}</h4>
+                        </span>
+                    </div>
+                    {% for hall in venue.halls %}
+                        <div class="mdl-list__item mdl-list__item--three-line">
+                            <span class="mdl-list__item-primary-content">
+                                {% if hall.image %}
+                                    <img src="{{ hall.image }}" class="mdl-list__item-avatar" alt="{{ hall.name|e }}">
+                                {% endif %}
+                                <span href="{{ path('hall_show', { 'venue_id': venue.id, 'id': hall.id }) }}">{{ hall.name }}</span>
+                                <span class="mdl-list__item-text-body">
+                                    {{ 'User limit %userLimit%'|trans({ '%userLimit%': hall.userLimit }) }}
+                                </span>
+                            </span>
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
     </section>
 {% endblock %}
 {#{{ form_start(delete_form) }}
